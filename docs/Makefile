@@ -3,16 +3,16 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD = /home/telofy/documents/ace-research-library/ACE-Research-Library/bin/python /home/telofy/documents/ace-research-library/ACE-Research-Library/bin/sphinx-build
+SPHINXBUILD = ../bin/python ../bin/sphinx-build
 PAPER         =
-BUILDDIR      = /home/telofy/documents/ace-research-library/ACE-Research-Library/docs
+BUILDDIR      = ../docs
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
-ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) /home/telofy/documents/ace-research-library/ACE-Research-Library/docs/source
+ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) ../docs/source
 # the i18n builder cannot share the environment and doctrees with the others
-I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) /home/telofy/documents/ace-research-library/ACE-Research-Library/docs/source
+I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) ../docs/source
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
 
