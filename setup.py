@@ -8,13 +8,15 @@ from setuptools import setup
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
+with open('researchlibrary/version.py') as version_file:
+    exec(version_file.read())
 
 setup(
     name='researchlibrary',
-    version='0.0.1',
+    version=__version__,
     description='ACE Research Library',
     long_description=README,
-    author='Denis Drescher',
+    author='Animal Charity Evaluators',
     author_email='drescher@claviger.net',
     include_package_data=True,
     url='https://github.com/FUB-HCC/ACE-Research-Library',
