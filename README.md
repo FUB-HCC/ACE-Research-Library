@@ -4,7 +4,7 @@
 
 It should be sufficient to just run:
 
-    sudo aptitude install libpq-dev
+    sudo aptitude install python3-dev libpq-dev
     python3.4 bootstrap.py -c development.cfg
     bin/buildout -c development.cfg
 
