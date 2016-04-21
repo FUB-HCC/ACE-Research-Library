@@ -7,7 +7,7 @@ from .settings import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-INSTALLED_APPS += ('django_extensions',)
+#INSTALLED_APPS += ('django_extensions',)
 #INSTALLED_APPS += ('debug_toolbar', 'debug_panel')
 #MIDDLEWARE_CLASSES += ('debug_panel.middleware.DebugPanelMiddleware',)
 
