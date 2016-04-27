@@ -1,0 +1,14 @@
+language: python
+python:
+  - "3.4"
+install:
+  - sudo aptitude install python3-dev libpq-dev
+  - python bootstrap.py -c production.cfg
+  - bin/buildout -c production.cfg
+  - pip install coveralls
+script: bin/coverage run bin/django test researchlibrary
+notifications:
+  slack: ace-research-library:Xp8TJEwDG60LuyNsvEBcU2TP
+after_success:
+  - coveralls
+sudo: false
