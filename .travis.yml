@@ -3,8 +3,8 @@ python:
   - "3.4"
 install:
   - sudo aptitude install -y python3-dev libpq-dev
-  - python bootstrap.py -c production.cfg
-  - bin/buildout -c production.cfg
+  - python bootstrap.py -c staging.cfg
+  - bin/buildout -c staging.cfg
   - pip install coveralls
 script: bin/coverage run bin/django test researchlibrary
 notifications:
