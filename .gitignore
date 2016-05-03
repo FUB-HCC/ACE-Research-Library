@@ -22,3 +22,4 @@ local/
 /docs/*.bat
 /docs/doctrees/
 /docs/html/
+/.coverage
