@@ -2,7 +2,7 @@ language: python
 python:
   - "3.4"
 install:
-  - sudo aptitude install python3-dev libpq-dev g++ postgresql postgresql-contrib
+  - sudo aptitude install -y python3-dev libpq-dev g++ postgresql postgresql-contrib
   - python bootstrap.py -c production.cfg
   - bin/buildout -c production.cfg
   - pip install coveralls
