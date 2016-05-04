@@ -2,7 +2,7 @@ language: python
 python:
   - "3.4"
 install:
-  - sudo aptitude install -y python3-dev libpq-dev libzmq-dev
+  - sudo aptitude install -y python3-dev libpq-dev libzmq3-dev
   - python bootstrap.py -c staging.cfg
   - bin/buildout -c staging.cfg
   - pip install coveralls
