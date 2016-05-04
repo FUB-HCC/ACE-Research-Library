@@ -12,7 +12,6 @@ To setup the database:
 
     sudo aptitude install postgresql postgresql-contrib
     psql -U postgres -h localhost -f db_create.sql
-    bin/django makemigrations
     bin/django migrate
 
 ## Staging/Production Deployment
