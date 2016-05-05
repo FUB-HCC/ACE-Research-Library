@@ -4,8 +4,7 @@ from django.utils import timezone
 from django.http import HttpResponse
 from django.shortcuts import render
 from ..version import __version__
-
-from models import Author, Resource
+from .models import Author, Resource
 
 
 def status(request):
