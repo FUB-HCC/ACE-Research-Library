@@ -5,8 +5,10 @@ install:
   - sudo aptitude install -y python3-dev libpq-dev libzmq3-dev
   - python bootstrap.py -c staging.cfg
   - bin/buildout -c staging.cfg
+  - sudo -u postgres psql -f db_create.sql
+  - bin/django migrate
   - pip install coveralls
-script: bin/coverage run bin/django test researchlibrary
+script: bin/coverage run bin/django test researchlibrary --no-input
 notifications:
   slack: ace-research-library:Xp8TJEwDG60LuyNsvEBcU2TP
 after_success:
