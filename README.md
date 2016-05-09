@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/FUB-HCC/ACE-Research-Library.svg?branch=master)](https://travis-ci.org/FUB-HCC/ACE-Research-Library)
+[![Coverage Status](https://coveralls.io/repos/github/FUB-HCC/ACE-Research-Library/badge.svg?branch=master)](https://coveralls.io/github/FUB-HCC/ACE-Research-Library?branch=master)
+
 # ACE Research Library
 
 ## Development Install
