@@ -11,7 +11,7 @@ It should be sufficient to just run:
 To setup the database:
 
     sudo aptitude install postgresql postgresql-contrib
-    psql -U postgres -h localhost -f db_create.sql
+    sudo -u postgres psql -f db_create.sql
     bin/django migrate
 
 ## Staging/Production Deployment
@@ -28,7 +28,7 @@ Forthcoming.
 
 To populate the database with a set of testing-data:
 
-    psql -U postgres -h localhost -d rlibdb -f db_populate.sql
+    sudo -u postgres psql -d rlibdb -f db_populate.sql
 
 If the database is setup correctly, a list of resources should be visible in the django admin interface (/admin) aswell as the /list and /authors views.
 
