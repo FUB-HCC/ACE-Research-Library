@@ -79,10 +79,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'rlibdb',
-	'USER': 'rlibuser',
-	'PASSWORD': 'password',
-	'HOST': 'localhost',
-	'PORT': '',
+        'USER': 'rlibuser',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

@@ -1,15 +1,14 @@
 # -*- encoding: utf-8 -*-
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
-# pylint: disable=unused-wildcard-import,wildcard-import
-from .settings import *
+from .settings import *  # NOQA
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#INSTALLED_APPS += ('django_extensions',)
-#INSTALLED_APPS += ('debug_toolbar', 'debug_panel')
-#MIDDLEWARE_CLASSES += ('debug_panel.middleware.DebugPanelMiddleware',)
+# INSTALLED_APPS += ('django_extensions',)
+# INSTALLED_APPS += ('debug_toolbar', 'debug_panel')
+# MIDDLEWARE_CLASSES += ('debug_panel.middleware.DebugPanelMiddleware',)
 
 RESULTS_CACHE_SIZE = 100
 
@@ -19,7 +18,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     },
-    # this cache backend will be used by django-debug-panel
+    # This cache backend will be used by django-debug-panel
     'debug-panel': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/tmp/debug-panel-cache',
@@ -31,6 +30,6 @@ CACHES = {
 
 
 try:
-    from .settings_override import *
+    from .settings_override import *  # NOQA
 except ImportError:
     pass

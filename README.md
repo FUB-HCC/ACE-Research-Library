@@ -17,6 +17,10 @@ To setup the database:
     sudo -u postgres psql -f db_create.sql
     bin/django migrate
 
+Please install [pylama, pyflakes, and pep8](https://pylama.readthedocs.io/) on your computer to make sure your code is well readable:
+
+    pylama -l pep8,pyflakes researchlibrary
+
 ## Staging/Production Deployment
 
 Forthcoming.
