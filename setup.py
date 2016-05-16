@@ -30,11 +30,13 @@ setup(
     install_requires=[
         'Django',
         'django-jinja',
+        'django-filter',  # Optional addition to Django REST Framework
         'django-flat-theme',
         'django_compressor',
         'djangorestframework',
         'gspread',
-        'oauth2client',
+        'markdown',  # Optional addition to Django REST Framework
+        'oauth2client',  # For GSpread
         'psycopg2',
         'pytz',
     ],
