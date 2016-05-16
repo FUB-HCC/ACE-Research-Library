@@ -44,9 +44,11 @@ def list(request):
         )
 
     ls = {
+        'status': 200,
         'count': Resource.objects.count(),
         'next': "https://api.example.org/api/list/?page={}".format(page+1),
         'previous': "https://api.example.org/api/list/?page={}".format(page-1),
         'results': results
     }
-    return JsonResponse(ls)
+    return JsonResponse( ls )
+
