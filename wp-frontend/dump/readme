@@ -1,0 +1,3 @@
+without word "update" will create also database
+with update "install" will create only tables in database "wordpress"(name)
+

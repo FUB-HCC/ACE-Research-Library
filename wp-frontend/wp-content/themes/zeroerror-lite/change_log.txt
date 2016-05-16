@@ -1,0 +1,14 @@
+Version 1.0
+i) Intial version Release
+
+Version 1.1
+i) Fixed several issues as per reviewer pointed.
+
+Version 1.2
+i) Solved issues as per reviewer pointed.
+
+Version 1.3
+i) Solved issues as per reviewer pointed.
+
+Version 1.4
+i) Solved issues as per reviewer pointed.

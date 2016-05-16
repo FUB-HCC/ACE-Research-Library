@@ -1,0 +1,225 @@
+/*
+Theme Name: Zeroerror Lite
+Theme URI: http://gracethemes.com/themes/zeroerror-lite/
+Author: GRC Themes
+Author URI: http://gracethemes.com
+Description: Zeroerror Lite is a 100% responsive multipurpose WordPress theme with focus on corporate, industrial, commercial, and business websites. Demo: http://gracethemes.com/demo/zeroerror/
+
+Version: 1.4
+License: GNU General Public License
+License URI: license.txt
+Text Domain: zeroerror-lite
+Tags: green,black,white,one-column,two-columns,right-sidebar,responsive-layout,custom-background,featured-images,translation-ready,custom-colors,custom-menu,sticky-post,theme-options,threaded-comments
+
+Zeroerror Lite WordPress Theme has been created by grace Themes(gracethemes.com), 2015.
+Zeroerror Lite WordPress Theme is released under the terms of GNU GPL
+*/
+body{ margin:0; padding:0;line-height:20px; font-size:13px; color:#5c5c5c; font-family:'PT Sans', Helvetica, sans-serif;}
+*{ margin:0; padding:0; outline:none;}
+img{ border:none; margin:0; padding:0; height:auto}
+.wp-caption, .wp-caption-text, .sticky, .gallery-caption, .aligncenter{ margin:0; padding:0;}
+p{ margin:0; padding:0;}
+a{ text-decoration:none; color:#8EAE0E;}
+a:hover{ color:#333;}
+ol,ul{ margin:0; padding:0;}
+ul li ul, ul li ul li ul, ol li ol, ol li ol li ol{ margin-left:10px;}
+h1,h2,h3,h4,h5,h6{ color:#484f5e; font-family:'raleway', sans-serif; margin:0 0 20px; padding:0; line-height:1.1; font-weight:400; }
+h1{ font-size:36px;}
+h2{ font-size:30px;}
+h3{ font-size:24px;}
+h4{ font-size:20px;}
+h5{ font-size:18px;}
+h6{ font-size:14px;}
+.clear{ clear:both;}
+.alignnone{ width:100% !important;}
+img.alignleft, .alignleft{ float:left; margin:0 15px 0 0; padding:5px; border:1px solid #cccccc;}
+img.alignright, .alignright{ float:right; margin:0 0 0 15px; padding:5px; border:1px solid #cccccc;}
+.left{ float:left;}
+.right{ float:right;}
+.space50{ clear:both; height:50px;}
+.space100{ clear:both; height:100px;}
+.pagination{display:table; clear:both;}
+.pagination ul{list-style:none; margin:20px 0;}
+.pagination ul li{display:inline; float:left; margin-right:5px;}
+.pagination ul li span, .pagination ul li a{background:#646262; color:#fff; padding:5px 10px; display:inline-block;}
+.pagination ul li .current, .pagination ul li a:hover{background:#34c6f6;}
+
+#comment-nav-above .nav-previous, #comment-nav-below .nav-previous{ float:none !important; margin:10px 0;}
+ol.comment-list li{ list-style:none; margin-bottom:5px;}
+
+.logo{float:left; z-index:999; padding:12px 0;  color:#333;}
+.logo h1{font-weight:400; margin:0; line-height:36px; color:#333;}
+.logo a{ color:#8EAE0E;}
+.container{ width:1100px; margin:0 auto; position:relative;}
+
+
+/*header menu css*/
+.toggle{display: block;}
+.toggle a{width:100%; color:#ffffff; background:url(images/mobile_nav_right.png) no-repeat right center #3e3e3e; padding:10px 10px; margin-top:5px; font-size:16px;}
+.toggle a:hover{color:#ffffff !important;}
+.sitenav{display:none;}
+.header{width:100%; z-index:999999; top:0; background-color:#fff; box-shadow:0 2px 2px #F6F4F4; }
+.sitenav{ padding:0; text-align:right; float:right;}
+.sitenav ul { float:right; margin:0; padding:0; font-family:'raleway', sans-serif; font-weight:400; font-size:15px;}
+.sitenav ul li{ display:inline-block; margin:0; position:relative; text-align:center;}
+.sitenav ul li a{ padding:30px 13px; display:block; color:#333; border-top:1px solid transparent; }
+.sitenav ul li ul li{display:block; position:relative; float:none; top:-1px; }
+.sitenav ul li ul li a{display:block; padding-top:10px; padding-bottom:10px; position:relative; top:1px; text-align:left; border-top:1px solid #ccc;  }
+.sitenav ul li a:hover, .sitenav ul li.current_page_item a{ color:#8EAE0E; border-top:1px solid #8EAE0E; }
+
+.sitenav ul li ul{display:none; z-index:9999999; position:relative;}
+.sitenav ul li:hover > ul{display:block; width:200px; position:absolute; left:0; text-align:left; background-color:#fff;  box-shadow:0 2px 2px #333; }
+.sitenav ul li:hover ul li ul{display:none; position:relative;}
+.sitenav ul li:hover ul li:hover > ul{display:block; position:absolute; left:200px; top:1px;}
+
+
+/* = header top sign in  css
+-------------------------------------------------------------- */
+/*Header Top Bar CSS*/
+.headertop{ background-color:#fff; color:#8EAE0E; border-top:2px solid #8EAE0E; border-bottom:1px solid #E4E8ED;}
+.headertop .left{ font:600 16px/24px 'raleway';}
+.headertop .left .fa{ margin-right:10px; }
+.headertop .left a:hover{ color:#333; }
+.headertop .left span{border-left:1px solid #E4E8ED; margin-left:15px; padding-left:15px; line-height:44px; display:inline-block; }
+
+section#home_slider{ padding:0; }
+#FrontBlogPost, #wrapfirst, #wrapsecond{ padding:70px 0;}
+h2.section-title {color:#454545; font:300 36px/40px 'raleway',san-serif; text-align: center; }
+
+
+/* = Services section css
+-------------------------------------------------------------- */
+#wrapfirst{ background-color:#f9f9f9; text-align:center;}
+.services-wrap, .welcomewrap{ visibility:hidden;}
+.last_column{clear:right; margin-right:0 !important; }
+#wrapsecond h2{ font-size:40px; color:#333; font-weight:600; margin-bottom:0; text-align:center; }
+
+/*services section css*/
+.services-wrap .one_third { width:30%; float:left; margin:0 5% 0 0; }
+.services-wrap .one_third h4{ font-size:18px; margin:0 0 10px; color:#333; line-height:24px;}
+.services-wrap .one_third p{ margin-bottom:30px;}
+.services-wrap .one_third img{ float:left; margin:5px 15px 0 0;}
+.ReadMore{ background-color:#262626; color:#fff ; padding:8px 10px;}
+.MoreLink{ background-color:#262626; color:#fff ;display: inline-block; padding:6px 15px;}
+
+.welcomewrap p{ margin-bottom:30px;}
+.welcomewrap h2{  margin-bottom:20px; font-size:38px; border-bottom:2px solid #dddddd; padding-bottom:10px; text-align:center; display:inline-block;}
+
+/* = social icons css
+-------------------------------------------------------------- */
+.social-icons a{ border-right:1px solid #E4E8ED; color:#8EAE0E; width:45px; height:45px; line-height:45px; text-align:center;  vertical-align:middle; display:inline-block; transition:0.6s; -moz-transition:0.6s; -webkit-transition:0.6s; -o-transition:0.6s;  margin:0; padding:0; }
+.social-icons br{ display:none;}
+.social-icons a:hover{ color:#333;}
+
+.footer-icons a{ color:#fff; width:30px; height:30px; line-height:30px; border:1px solid #fff; text-align:center;  vertical-align:middle; display:inline-block; transition:0.6s; -moz-transition:0.6s; -webkit-transition:0.6s; -o-transition:0.6s;  margin:0 2px; padding:0; }
+.footer-icons br{ display:none;}
+.footer-icons a:hover{ color:#333; border-color:#333;}
+
+/* = Page lay out css
+-------------------------------------------------------------- */
+.site-main{ width:740px; margin:0; padding:0; float:left;}
+#sitefull{ width:100%; float:none;}
+#sitefull p{ margin-bottom:15px;}
+.page_content{ padding:25px 0;}
+.page_content p{ margin-bottom:20px; line-height:20px;}
+
+.blog_lists{ margin-bottom:30px; }
+.blog_lists h3{ margin-bottom:0px;}
+.blog_lists h3 a{ color:#484f5e;}
+.blog_lists h3 a:hover{ color:#8EAE0E;}
+.blog_lists p{ margin-bottom:10px;}
+.blog-meta{ font-style:italic; margin-bottom:8px;}
+.post-date, .post-comment, .post-categories{ display:inline; color:#333;} 
+.single_title{ margin-bottom:5px;}
+.BlogPosts{ width:31.2%; float:left; margin:0 3% 0 0;}
+.BlogPosts img{ width:100%;}
+.BlogPosts h2{ margin:10px 0; font-size:22px; }
+.post-thumb{ width:30%; float:left; margin:5px 25px 5px 0;}
+.post-thumb img{ width:100%; }
+
+/* = sidebar
+-------------------------------------------------------------- */
+#sidebar{ width:330px; float:right;}
+aside.widget{margin-bottom:30px; background-color:#f6f4f4; padding:20px; border:1px solid #edecec;}
+aside.widget ul{ list-style:disc; }
+h3.widget-title{ background-color:#8EAE0E; padding:12px 15px; margin-bottom:1px; color:#fff;}
+#sidebar ul li{ list-style:none;}
+#sidebar ul li a{ background:url(images/sidebar-arrow.png) no-repeat 0 14px; padding:10px 0 10px 20px; color:#3b3b3b; border-bottom:1px dashed #d0cfcf; display:block; }
+#sidebar ul li a:hover{ color:#34c6f6;}
+#sidebar ul li:last-child a{ border:none;}
+
+
+
+/* = Footer css
+-------------------------------------------------------------- */
+#footer-wrapper{background-color:#8EAE0E; position:relative; padding:45px 0 0; color:#fff;}
+.cols-4{width:24%; float:left; margin:0 3% 2% 0; }
+.widget-column-2 { width:19%;}
+.widget-column-4 { margin-right:0px !important;}
+.cols-4 h5{ font-weight:400; font-size:18px; color:#fff; margin-bottom:25px; border-bottom:1px solid #CDD99D; padding-bottom:15px; }
+.cols-4 ul{ margin:0; padding:0; list-style:inside disc;}
+.cols-4 ul li { padding:0; color:#fff;}
+.cols-4 ul li a { color:#fff; font:normal 12px/24px Arial, Helvetica, sans-serif; }
+.cols-4 ul li a:hover, .cols-4 ul li.current_page_item a { color:#333; }
+
+.cols-4 a.readmore span{ color:#fff;}
+.cols-4 p{ margin-bottom:0;}
+.cols-4 h1, .cols-4 h2, .cols-4 h3, .cols-4 h4, .cols-4 h5, .cols-4 h6{color:#fff;}
+.phone-no{ margin:0 0 20px; line-height:22px;}
+.phone-no a{color:#fff;}
+.phone-no a:hover{color:#333;}
+.phone-no strong { display:inline-block; color:#333;}
+.cols-4 .phone-no p{ margin-bottom:0;}
+.widget-column-2 a{font:400 20px/24px 'raleway',san-serif;}
+
+.copyright-wrapper {  background-color:#617804; position:relative; padding:15px 0;}
+.copyright-txt { float:left;}
+.copyright-txt span{color:#8EAE0E;}
+.design-by { float:right;}
+.recent-post{ min-height:70px; margin:0 0 20px 0;}
+.recent-post img{ float:left; width:55px; margin:3px 10px 5px 0; border:2px solid #fff;}
+.recent-post h6{ font-size:15px; color:#fff; margin:0 0 5px; font-weight:600;}
+.recent-post h6:hover{color:#484F5E;}
+.recent-post:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0;}
+
+/* Buttons */
+.button{ background-color:#ff6565; border-bottom:4px solid #e44545; color:#fff; padding:8px 20px; display:inline-block; border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; -o-border-radius:2px; -ms-border-radius:2px; }
+.button:hover{background-color:#34c6f6; border-color:#1898c2; color:#fff;}
+
+/* woocommerce CSS
+================================================*/
+a.added_to_cart{background:#e1472f; padding:5px; display:inline-block; color:#fff; line-height:1;}
+a.added_to_cart:hover{background:#000000;}
+a.button.added:before{content:'' !important;}
+#bbpress-forums ul li{padding:0;}
+#subscription-toggle a.subscription-toggle{padding:5px 10px; display:inline-block; color:#e1472f; margin-top:4px;}
+textarea.wp-editor-area{border:1px #ccc solid;}
+.woocommerce input[type=text], .woocommerce textarea{border:1px #ccc solid; padding:4px;}
+form.woocommerce-ordering select{ padding:5px; color:#777777;}
+.woocommerce table.shop_table th, .woocommerce-page table.shop_table th{ font-family:'raleway',san-serif; color:#ff8a00;}
+.woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price{ color:inherit !important;}
+h1.product_title, p.price{ margin-bottom:10px;}
+.woocommerce table.shop_table th, .woocommerce-page table.shop_table th{ font-family:'raleway',san-serif; color:#ff6d84;}
+.woocommerce ul.products li, #payment ul.payment_methods li{ list-style:none !important;}
+.woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price{ color:inherit !important;}
+.woocommerce table.shop_table th, .woocommerce table.shop_table td{ border-bottom:0px !important}
+
+/* Text meant only for screen readers. */
+.screen-reader-text {clip: rect(1px, 1px, 1px, 1px);position: absolute !important;	height: 1px;width: 1px;	overflow: hidden;}
+.screen-reader-text:focus {	background-color: #f1f1f1;	border-radius: 3px;	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);	clip: auto !important;	color: #21759b;	display: block;
+	font-size: 14px;font-size: 0.875rem;font-weight: bold;	height: auto;left: 5px;	line-height: normal;padding: 15px 23px 14px;text-decoration: none;	top: 5px;	width: auto;
+	z-index: 100000; /* Above WP toolbar. */
+}
+/* ============= Contact Page =========== */
+.wpcf7{ margin:30px 0 0; padding:0;}
+.wpcf7 input[type="text"], .wpcf7 input[type="tel"], .wpcf7 input[type="email"]{ width:40%; border:1px solid #cccccc; box-shadow:inset 1px 1px 2px #ccc; height:35px; padding:0 15px; color:#797979; margin-bottom:0;}
+.wpcf7 textarea{width:60%; border:1px solid #cccccc; box-shadow:inset 1px 1px 2px #ccc; height:150px; color:#797979; margin-bottom:25px; font:12px arial; padding:10px; padding-right:0;}
+.wpcf7 input[type="submit"]{background-color:#8EAE0E; width:auto; border:none; cursor:pointer; font:18px 'raleway',san-serif; color:#ffffff; padding:10px 40px; border-radius:3px;}	
+
+/* ============= Comment Form ============ */
+h1.screen-reader-text{font:22px 'raleway',san-serif;}
+.site-nav-previous, .nav-previous{ float:left;}
+.site-nav-next, .nav-next{ float:right;}
+h3#reply-title{font:300 18px 'raleway',san-serif;}
+#comments{ margin:30px 0 0; padding:0;}
+nav#nav-below{ margin-top:15px;}

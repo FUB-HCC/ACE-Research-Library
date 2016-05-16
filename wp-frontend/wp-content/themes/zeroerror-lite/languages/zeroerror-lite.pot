@@ -1,0 +1,427 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Zeroerror Lite\n"
+"POT-Creation-Date: 2016-01-22 00:00+0530\n"
+"PO-Revision-Date: 2016-01-22 00:01+0530\n"
+"Last-Translator: \n"
+"Language-Team: Grace Themes <support@gracethemes.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _;__;_e;getext\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: 404.php:14
+msgid "<strong>404</strong> Not Found"
+msgstr ""
+
+#: 404.php:17
+msgid ""
+"Looks like you have taken a wrong turn.....<br />Don't worry... it happens "
+"to the best of us."
+msgstr ""
+
+#: archive.php:30
+#, php-format
+msgid "Author: %s"
+msgstr ""
+
+#: archive.php:38
+#, php-format
+msgid "Day: %s"
+msgstr ""
+
+#: archive.php:41
+#, php-format
+msgid "Month: %s"
+msgstr ""
+
+#: archive.php:44
+#, php-format
+msgid "Year: %s"
+msgstr ""
+
+#: archive.php:47
+msgid "Asides"
+msgstr ""
+
+#: archive.php:50
+msgid "Images"
+msgstr ""
+
+#: archive.php:53
+msgid "Videos"
+msgstr ""
+
+#: archive.php:56
+msgid "Quotes"
+msgstr ""
+
+#: archive.php:59
+msgid "Links"
+msgstr ""
+
+#: archive.php:62 sidebar.php:18
+msgid "Archives"
+msgstr ""
+
+#: comments.php:36 comments.php:56
+msgid "Comment navigation"
+msgstr ""
+
+#: comments.php:37 comments.php:57
+msgid "&larr; Older Comments"
+msgstr ""
+
+#: comments.php:38 comments.php:58
+msgid "Newer Comments &rarr;"
+msgstr ""
+
+#: comments.php:68
+msgid "Comments are closed."
+msgstr ""
+
+#: content-page.php:18 content-single.php:33 content.php:29 image.php:59
+msgid "Pages:"
+msgstr ""
+
+#: content-page.php:23 content-single.php:45 image.php:33 image.php:65
+msgid "Edit"
+msgstr ""
+
+#: content-single.php:38 content.php:14
+msgid ", "
+msgstr ""
+
+#: content-single.php:39
+msgid "&nbsp;|&nbsp; Tags: "
+msgstr ""
+
+#: content.php:22
+msgid "Read More &raquo;"
+msgstr ""
+
+#: content.php:26
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: footer.php:14 inc/customizer.php:227
+msgid "About Us"
+msgstr ""
+
+#: footer.php:18 inc/customizer.php:238
+msgid ""
+"Donec ut ex ac nulla pellentesque mollis in a enim. Praesent placerat sapien "
+"mauris, vitae sodales tellus venenatis ac. Suspendisse suscipit velit id "
+"ultricies auctor. Duis turpis arcu, aliquet sed sollicitudin sed, porta quis "
+"urna. Quisque velit nibh, egestas et erat a, vehicula interdum augue."
+msgstr ""
+
+#: footer.php:25 inc/customizer.php:216
+msgid "Main Navigation"
+msgstr ""
+
+#: footer.php:36 inc/customizer.php:249
+msgid "Recent Posts"
+msgstr ""
+
+#: footer.php:55 inc/customizer.php:260
+msgid "Contact Info"
+msgstr ""
+
+#: footer.php:59
+msgid "100 King St Melbourne PIC 4000, Australia"
+msgstr ""
+
+#: footer.php:67 inc/customizer.php:313
+msgid "Phone: +123 456 7890"
+msgstr ""
+
+#: footer.php:106
+msgid "&copy; 2015 Zeroerror Lite. All Rights Reserved"
+msgstr ""
+
+#: footer.php:111 inc/customizer.php:282
+msgid "Design and Developed by Grace Themes"
+msgstr ""
+
+#: functions.php:32
+msgid "Primary Menu"
+msgstr ""
+
+#: functions.php:33
+msgid "Footer Menu"
+msgstr ""
+
+#: functions.php:61
+msgid "Blog Sidebar"
+msgstr ""
+
+#: functions.php:62
+msgid "Appears on blog page sidebar"
+msgstr ""
+
+#: header.php:30
+msgid "+123 456 7890"
+msgstr ""
+
+#: header.php:66
+msgid "Menu"
+msgstr ""
+
+#: header.php:109 header.php:128 header.php:137 header.php:145
+msgid "Read More"
+msgstr ""
+
+#: header.php:126
+msgid "Multipurpose WordPress themes"
+msgstr ""
+
+#: header.php:127 header.php:136 header.php:144
+msgid ""
+"Nunc sed lorem pretium, volutpat tortor id, adipiscing sem. Sed bibendum "
+"quis augue nec porta. Ut molestie tortor pulvinar, faucibus justo vitae, "
+"interdum nunc. Vestibulum imperdiet nisl vel condimentum faucibus."
+msgstr ""
+
+#: header.php:135
+msgid "High lavel Customization"
+msgstr ""
+
+#: header.php:143
+msgid "User Friendly Theme Options"
+msgstr ""
+
+#: header.php:178
+msgid "Theme Featured"
+msgstr ""
+
+#: header.php:180
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque augue eros, "
+"sit amet, consectetur adipiscing posuere elit."
+msgstr ""
+
+#: header.php:203
+msgid "Welcome to Our Website"
+msgstr ""
+
+#: header.php:204
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sodales "
+"suscipit tellus, ut tristique neque suscipit a. Mauris tristique lacus quis "
+"leo imperdiet sed pulvinar dui fermentum. Aenean sit amet diam non tortor "
+"sagittis varius. Aenean at lorem nulla, sit amet interdum nibh. Mauris sit "
+"amet dictum turpis. Sed ut sapien magna. Lorem ipsum dolor sit amet, "
+"consectetur adipiscing elit. <br /> <br />\n"
+"\n"
+"Aliquam gravida odio nec dui ornare tempus elementum lectus rhoncus. "
+"Suspendisse lobortis pellentesque orci, in sodales nisi pretium sit amet. "
+"Aenean vulputate, odio non euismod eleifend, magna nisl elementum lorem, ac "
+"venenatis nunc erat et metus. Nulla volutpat, urna eu congue venenatis, "
+"tellus odio hendrerit nibh, in commodo velit leo a ligula. Vestibulum ante "
+"ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae "
+"aenean sit amet diam non tortor sagittis varius. Aenean at lorem nulla, sit "
+"amet interdum nibh. Mauris sit amet dictum turpis. "
+msgstr ""
+
+#: image.php:23
+#, php-format
+msgid ""
+"Published <span class=\"entry-date\"><time class=\"entry-date\" datetime="
+"\"%1$s\">%2$s</time></span> at <a href=\"%3$s\">%4$s &times; %5$s</a> in <a "
+"href=\"%6$s\" rel=\"gallery\">%7$s</a>"
+msgstr ""
+
+#: image.php:38
+msgid "<span class=\"meta-nav\">&larr;</span> Previous"
+msgstr ""
+
+#: image.php:39
+msgid "Next <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: inc/customizer.php:51
+msgid "Color Scheme"
+msgstr ""
+
+#: inc/customizer.php:52
+msgid "More color options in PRO Version"
+msgstr ""
+
+#: inc/customizer.php:60
+msgid "Slider Settings"
+msgstr ""
+
+#: inc/customizer.php:62
+msgid ""
+"Featured Image Size Should be ( 1400x500 ) More slider settings available in "
+"PRO Version"
+msgstr ""
+
+#: inc/customizer.php:72
+msgid "Select page for slide one:"
+msgstr ""
+
+#: inc/customizer.php:82
+msgid "Select page for slide two:"
+msgstr ""
+
+#: inc/customizer.php:92
+msgid "Select page for slide three:"
+msgstr ""
+
+#: inc/customizer.php:98
+msgid "Homepage Three Boxes Section"
+msgstr ""
+
+#: inc/customizer.php:99
+msgid "Select Pages from the dropdown for homepage three boxes section"
+msgstr ""
+
+#: inc/customizer.php:134
+msgid "Homepage Welcome Section"
+msgstr ""
+
+#: inc/customizer.php:135
+msgid "Select Page from the dropdown for first section"
+msgstr ""
+
+#: inc/customizer.php:150
+msgid "Social Settings"
+msgstr ""
+
+#: inc/customizer.php:151
+msgid "More social icon available in PRO Version"
+msgstr ""
+
+#: inc/customizer.php:162
+msgid "Add facebook link here"
+msgstr ""
+
+#: inc/customizer.php:172
+msgid "Add twitter link here"
+msgstr ""
+
+#: inc/customizer.php:181
+msgid "Add google plus link here"
+msgstr ""
+
+#: inc/customizer.php:190
+msgid "Add linkedin link here"
+msgstr ""
+
+#: inc/customizer.php:199
+msgid "Footer Area"
+msgstr ""
+
+#: inc/customizer.php:221
+msgid "Add title for menu"
+msgstr ""
+
+#: inc/customizer.php:232
+msgid "Add title for about us"
+msgstr ""
+
+#: inc/customizer.php:243
+msgid "Add description for about us"
+msgstr ""
+
+#: inc/customizer.php:254
+msgid "Add title for footer recent posts"
+msgstr ""
+
+#: inc/customizer.php:265
+msgid "Add title for footer contact info"
+msgstr ""
+
+#: inc/customizer.php:271
+msgid "2015 Zeroerror Lite. All Rights Reserved"
+msgstr ""
+
+#: inc/customizer.php:276
+msgid "Change Copyright Text"
+msgstr ""
+
+#: inc/customizer.php:287
+msgid "Change your credit link"
+msgstr ""
+
+#: inc/customizer.php:294
+msgid "Contact Details"
+msgstr ""
+
+#: inc/customizer.php:295
+msgid "Add you contact details here"
+msgstr ""
+
+#: inc/customizer.php:301
+msgid "100 King St, Melbourne PIC 4000, Australia"
+msgstr ""
+
+#: inc/customizer.php:306
+msgid "Add contact address here"
+msgstr ""
+
+#: inc/customizer.php:317
+msgid "Add contact number here."
+msgstr ""
+
+#: inc/customizer.php:327
+msgid "Add you email here"
+msgstr ""
+
+#: inc/template-tags.php:43
+msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
+msgstr ""
+
+#: inc/template-tags.php:47
+msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: inc/template-tags.php:184
+#, php-format
+msgid ""
+"<span class=\"posted-on\">Published %1$s</span><span class=\"byline\"> by "
+"%2$s</span>"
+msgstr ""
+
+#: no-results.php:14
+msgid "Nothing Found"
+msgstr ""
+
+#: no-results.php:20
+#, php-format
+msgid ""
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: no-results.php:24
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: no-results.php:29
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: search.php:16
+#, php-format
+msgid "Search Results for: %s"
+msgstr ""
+
+#: sidebar.php:11
+msgid "Category"
+msgstr ""
+
+#: sidebar.php:24
+msgid "Meta"
+msgstr ""

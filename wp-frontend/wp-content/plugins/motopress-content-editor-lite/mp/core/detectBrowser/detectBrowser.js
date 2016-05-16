@@ -1,0 +1,2 @@
+jQuery(document).ready(function(b){var a=navigator.userAgent.toLowerCase();MPCEBrowser={Version:(a.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/)||[])[1],Chrome:/chrome/.test(a),Safari:/webkit/.test(a),Opera:/opera/.test(a),IE:/msie/.test(a)&&!/opera/.test(a),Mozilla:/mozilla/.test(a)&&!/(compatible|webkit)/.test(a)};if(MPCEBrowser.IE||MPCEBrowser.Opera)b('a[href*="motopress_visual_editor"]').attr("href","javascript:void(0);").css({cursor:"default",color:"gray"}),-1!==location.pathname.indexOf("edit.php")&&
+b(".motopress_edit_link").remove()});

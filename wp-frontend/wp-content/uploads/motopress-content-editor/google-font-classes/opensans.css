@@ -1,0 +1,5 @@
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:300,regular,700');
+.mpce-font-opensans *{font-family: Open Sans;}
+.mpce-font-opensans-300 *{font-family : Open Sans;}.mpce-font-opensans-300 *{font-style:normal !important;font-weight:300 !important;}.mpce-font-opensans-300 strong{ font-weight: 400 !important;}.mpce-font-opensans-300 em{font-style:italic !important;}
+.mpce-font-opensans-regular *{font-family : Open Sans;}.mpce-font-opensans-regular *{font-style:normal !important;font-weight:400 !important;}.mpce-font-opensans-regular strong{ font-weight: 700 !important;}.mpce-font-opensans-regular em{font-style:italic !important;}
+.mpce-font-opensans-700 *{font-family : Open Sans;}.mpce-font-opensans-700 *{font-style:normal !important;font-weight:700 !important;}.mpce-font-opensans-700 strong{ font-weight: 700 !important;}.mpce-font-opensans-700 em{font-style:italic !important;}
