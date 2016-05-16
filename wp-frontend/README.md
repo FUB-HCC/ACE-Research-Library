@@ -1,7 +1,7 @@
 
-This Readme is for installaion of Wordpress-Fontend.
+This Readme is for the installaion of Wordpress-Fontend.
 
-To run WordPress is recommend your host supports:
+To run WordPress it is recommended that your host supports:
 
     PHP version 5.6 or greater
     MySQL version 5.6 or greater OR MariaDB version 10.0 or greater
@@ -29,7 +29,7 @@ Login and password for wp admin:
 login: tarix
 password: 123321
 
-Database configuration, that i use:
+Database configuration, that I use:
 databasename: wordpress
 database login: tarix
 database password: 12

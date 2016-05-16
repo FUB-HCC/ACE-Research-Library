@@ -1,6 +1,7 @@
 import json
 from django.views.generic.list import ListView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.core import serializers
 from ..version import __version__
 from .models import Author, Resource
 
@@ -17,7 +18,7 @@ def status(request):
 
 def list(request):
     page = int(request.GET.get('page', 1))
-    mlen = 3
+    mlen = 3 #Number of entries per page
 
     all_entries = Resource.objects.all()[(page-1)*mlen:(page)*mlen]
     results = []
@@ -25,8 +26,9 @@ def list(request):
     for res in all_entries:
         results.append(
             {
-                'authors': res.authors.all(),
-                'editors': res.editors.all(),
+                #Alternative: 'authors': serializers.serialize('python', res.authors.all()),
+                'authors': [{'name': author.name} for author in res.authors.all()],
+		'editors': [{'name': editor.name} for editor in res.editors.all()],
                 'title': res.title,
                 'subtitle': res.subtitle,
                 'abstract': res.abstract,
@@ -43,9 +45,8 @@ def list(request):
 
     ls = {
         'count': Resource.objects.count(),
-        'next': "https://api.example.org/api/list?page={}".format(page+1),
-        'previous': "https://api.example.org/api/list?page={}".format(page-1),
+        'next': "https://api.example.org/api/list/?page={}".format(page+1),
+        'previous': "https://api.example.org/api/list/?page={}".format(page-1),
         'results': results
     }
-    return HttpResponse(json.dumps(ls, default=str),
-                        content_type='application/json')
+    return JsonResponse(ls)
