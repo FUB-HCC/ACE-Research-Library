@@ -13,7 +13,7 @@ with open('researchlibrary/version.py') as version_file:
 
 setup(
     name='researchlibrary',
-    version=__version__,
+    version=__version__,  # NOQA
     description='ACE Research Library',
     long_description=README,
     author='Animal Charity Evaluators',
@@ -28,10 +28,13 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
     ],
     install_requires=[
+        'Django',
         'django-jinja',
         'django-flat-theme',
         'django_compressor',
-        'Django',
+        'djangorestframework',
+        'gspread',
+        'oauth2client',
         'psycopg2',
         'pytz',
     ],
