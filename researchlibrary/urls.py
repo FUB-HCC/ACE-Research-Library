@@ -20,7 +20,6 @@ from .api import views as api_views
 
 urlpatterns = [
     url(r'^$', api_views.status, name='status_view'),
-    url(r'^authors/$', api_views.AuthorListView.as_view()),
-    url(r'^list/$', api_views.ResourceListView.as_view()),
+    url(r'^list/$', api_views.list, name='list'),
     url(r'^admin/', admin.site.urls),
 ]

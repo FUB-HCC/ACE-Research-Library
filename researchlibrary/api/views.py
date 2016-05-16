@@ -14,11 +14,38 @@ def status(request):
                         content_type='application/json')
 
 
-class AuthorListView(ListView):
-    template_name = 'api/author_list.html'
-    model = Author
 
+def list(request):
+    page = int(request.GET.get('page', 1))
+    mlen = 3
 
-class ResourceListView(ListView):
-    template_name = 'api/resource_list.html'
-    model = Resource
+    all_entries = Resource.objects.all()[(page-1)*mlen:(page)*mlen]
+    results = []
+
+    for res in all_entries:
+        results.append(
+            {
+                'authors': res.authors.all(),
+                'editors': res.editors.all(),
+                'title': res.title,
+                'subtitle': res.subtitle,
+                'abstract': res.abstract,
+                'publisher': res.publisher,
+                'journal': res.journal,
+                'date': str(res.date),
+                'volume': str(res.volume),
+                'pages': res.pages(),
+                'series': res.series,
+                'edition': res.edition,
+                'url': str(res.url),
+            }
+        )
+
+    ls = {
+        'count': Resource.objects.count(),
+        'next': "https://api.example.org/api/list?page={}".format(page+1),
+        'previous': "https://api.example.org/api/list?page={}".format(page-1),
+        'results': results
+    }
+    return HttpResponse(json.dumps(ls, default=str),
+                        content_type='application/json')

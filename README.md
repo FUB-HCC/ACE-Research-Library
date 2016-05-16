@@ -33,12 +33,6 @@ Forthcoming.
 
     bin/django test researchlibrary
 
-To populate the database with a set of testing-data:
-
-    sudo -u postgres psql -d rlibdb -f db_populate.sql
-
-If the database is setup correctly, a list of resources should be visible in the django admin interface (/admin) aswell as the /list and /authors views.
-
 ## Documentation
 
 To build:
