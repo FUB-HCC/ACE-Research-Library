@@ -54,13 +54,13 @@
 		<hr class="lib-link-sep" />
 	</div>
     <div id="main" class="col-md-10 container container-fluid typeahead-demo main-container main">
-				  <form name="Search" ng-submit="search(query)">
+				  <form name="Search" ng-submit="search(searchitem)">
 		 
 					  <div class="input-group">
-					  	<input class="form-control" name="searchtext" type="text" ng-model="query" placeholder="Locations loaded via $http"
-						 uib-typeahead="paper.title for paper in getAutoPaper($viewValue) | filter:$viewValue | limitTo:8" typeahead-loading="loadingLocations" typeahead-no-results="noResults" >
+					  	<input class="form-control" name="searchtext" type="text" ng-model="searchitem" placeholder="Locations loaded via $http"
+						 uib-typeahead="paper.title for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8" typeahead-loading="loadingLocations" typeahead-no-results="noResults" >
 					  	<span class="input-group-btn">
-						   <button class="btn btn-default" type="button" ng-click="search(query)">
+						   <button class="btn btn-default" type="button" ng-click="search(searchitem)">
 						   		<i class="glyphicon glyphicon-search"></i> Search
 						   </button>
 					   	</span>
@@ -71,13 +71,6 @@
 					   <div ng-show="noResults">
 						   <i class="glyphicon glyphicon-remove"></i> No Results Found
 					   </div>
-			<!--		     Search: <input name="searchtext" type="text" ng-model="query" placeholder="Locations loaded via $http"
-										uib-typeahead="address for address in getAutoPaper($viewValue) | limitTo:8" typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control input-search">
-					   <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-					   <div ng-show="noResults">
-						   <i class="glyphicon glyphicon-remove"></i> No Results Found
-					   </div>
-			-->
 				  </form>
 				  <div align="right">
 					  <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -111,11 +104,8 @@
 					  </div>
 					 </div>
 					</div>
-
-
-
 		<ul>
-        	<li ng-repeat="paper in papers | filter:query">
+        	<li ng-repeat="paper in papers | filter:searchitem">
 					<h4 class="lib-link-name"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
 					<div>
 							<i> <small><span class="lib-link-citation">
@@ -152,8 +142,9 @@
 					<hr class="lib-link-sep" />
 			</li>
 		</ul>
-
-
+		<div align="center">
+		<uib-pagination  boundary-links="true" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+		</div>
 	</div>
   </div>
   </body>
