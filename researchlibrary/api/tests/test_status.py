@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from ..version import __version__
+from ...version import __version__
 
 
 class StatusTests(TestCase):
