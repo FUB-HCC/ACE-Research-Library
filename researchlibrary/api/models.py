@@ -2,45 +2,27 @@ import datetime
 
 from django.db import models
 from django.core.exceptions import ValidationError
-from .models_choices import SOURCETYPE_CHOICES, ST_DEF, COUNTRY_CHOICES, C_DEF
+from .models_choices import SOURCETYPE_CHOICES, RESOURCE_TYPE_CHOICES
 
 
-class Publisher(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-    adress = models.CharField(max_length=50, blank=True)
-    city = models.CharField(max_length=50, blank=True)
-    state_providence = models.CharField(max_length=50, blank=True)
-    country = models.CharField(max_length=50, choices=COUNTRY_CHOICES, default=C_DEF, blank=True)
-    website = models.URLField(blank=True)
+class Person(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
     class Meta:
-        ordering = ['name', 'country']
+        abstract = True
 
 
-class Editor(models.Model):
-    name = models.CharField(max_length=50, blank=True)
+class Editor(Person):
 
     def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
+        return '{} ed.'.format(self.name)
 
 
-class Author(models.Model):
-    firstname = models.CharField(max_length=30)
-    lastname = models.CharField(max_length=30)
-    biography = models.TextField(max_length=300, blank=True)
-    email = models.EmailField(blank=True)
-
-    def __str__(self):
-        return (self.firstname + ' ' + self.lastname)
-
-    class Meta:
-        ordering = ['lastname', 'firstname']
+class Author(Person):
+	pass
 
 
 class Category(models.Model):
@@ -49,24 +31,32 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:
-        ordering = ['name']
+
+class Keyword(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 
 class Resource(models.Model):
     # Mandatory fields
     authors = models.ManyToManyField(Author)
-    title = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=300, unique=True)
     date = models.DateField('date published')
+    resource_type = models.CharField(
+        max_length=30, choices=RESOURCE_TYPE_CHOICES, blank=True)
 
     # Optional fields
     resource_file = models.FileField(upload_to=None, max_length=100, blank=True)
-    url = models.URLField(max_length=100, blank=True)
+    url = models.URLField(max_length=2000, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
+    keywords = models.ManyToManyField(Keyword, blank=True)
     editors = models.ManyToManyField(Editor, blank=True)
-    publisher = models.ForeignKey(Publisher, blank=True, null=True)
+    publisher = models.CharField(max_length=300, blank=True)
     subtitle = models.CharField(max_length=50, blank=True)
-    abstract = models.TextField(max_length=300, blank=True)
+    abstract = models.TextField(blank=True)
+    review = models.TextField(blank=True)
     journal = models.CharField(max_length=30, blank=True)
     volume = models.IntegerField(blank=True, null=True)
     number = models.IntegerField(blank=True, null=True)
@@ -75,27 +65,19 @@ class Resource(models.Model):
     series = models.CharField(max_length=30, blank=True)
     edition = models.CharField(max_length=30, blank=True)
     sourcetype = models.CharField(
-        max_length=30, choices=SOURCETYPE_CHOICES, default=ST_DEF, blank=True)
+        max_length=30, choices=SOURCETYPE_CHOICES, blank=True)
 
     def clean(self):
         if self.date and self.date > datetime.date.today():
-            raise ValidationError("The entered date is invalid.")
+            raise ValidationError('The entered date is invalid.')
         if self.startpage and self.endpage and self.startpage > self.endpage:
-            raise ValidationError("The entered pagenumbers are invalid.")
-
-    def save(self, *args, **kwargs):
-        super(Resource, self).save(*args, **kwargs)
-        if self.editors.count() <= 0 and self.publisher:
-            pass  # TODO(?): Add publisher to editor
+            raise ValidationError('The entered pagenumbers are invalid.')
 
     def __str__(self):
         return self.title
 
     def pages(self):
         return str(self.startpage) + ' ' + str(self.endpage)
-
-    def was_published_recently(self):
-        return self.date >= datetime.date.today() - datetime.timedelta(days=30)
 
     def get_absolute_url(self):
         return '/resources/%i/' % self.id

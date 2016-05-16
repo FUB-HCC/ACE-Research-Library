@@ -1,52 +1,54 @@
 """Includes all Dropdown-choices used in models.py"""
 
-# SourceType choices
-TEXTBOOK = 'TEXTBOOK'
-NOVEL = 'NOVEL'
-BIOGRAPHY = 'BIOGRAPHY'
-LETTER = 'LETTER'
-INTERVIEW = 'INTERVIEW'
-ACADEMIC_PAPER = 'ACADEMIC_PAPER'
-NEWSPAPER_ARTICLE = 'NEWSPAPER_ARTICLE'
-JOURNAL = 'JOURNAL'
-BOOK = 'BOOK'
-CONFERENCE_PAPER = 'CONFERENCE_PAPER'
-BLOG = 'BLOG'
-ST_DEF = 'OTHER'
 
-SOURCETYPE_CHOICES = (
-    (TEXTBOOK, 'Textbook'),
-    (NOVEL, 'Novel'),
-    (BIOGRAPHY, 'Biography'),
-    (LETTER, 'Letter'),
-    (INTERVIEW, 'Interview'),
-    (ACADEMIC_PAPER, 'Academic Paper'),
-    (NEWSPAPER_ARTICLE, 'Newspaper Article'),
-    (JOURNAL, 'Journal'),
+# Format choices
+
+NEWS_ARTICLE = 'NEWS_ARTICLE'
+BLOG_ARTICLE = 'BLOG_ARTICLE'
+OPINION_PIECE = 'OPINION_PIECE'
+HISTORICAL_DOCUMENT = 'HISTORICAL_DOCUMENT'
+ENCYCLOPEDIA_ARTICLE = 'ENCYCLOPEDIA_ARTICLE'
+STUDY = 'STUDY'
+CASESTUDY = 'CASESTUDY'
+QUASI_EXPERIMENT = 'QUASI_EXPERIMENT'
+RCT = 'RCT'
+RESEARCH_SUMMARY = 'RESEARCH_SUMMARY'
+METASTUDY = 'METASTUDY'
+SYSTEMATIC_REVIEW = 'SYSTEMATIC_REVIEW'
+BOOK = 'BOOK'
+OTHER = 'OTHER'
+
+RESOURCE_TYPE_CHOICES = (
+    (STUDY, 'Misc. object-level study'),
+    (CASESTUDY, 'Case study'),
+	(QUASI_EXPERIMENT, 'Quasi-experiment'),
+    (RCT, 'Randomized controlled trial'),
+	(RESEARCH_SUMMARY, 'Research summary (informal)'),
+    (METASTUDY, 'Metastudy (informal)'),
+    (SYSTEMATIC_REVIEW, 'Systematic review'),
+	(OPINION_PIECE, 'Opinion piece'),
+	(HISTORICAL_DOCUMENT, 'Historical document'),
+	(ENCYCLOPEDIA_ARTICLE, 'Encyclopedia article'),
     (BOOK, 'Book'),
-    (CONFERENCE_PAPER, 'Conference Paper'),
-    (BLOG, 'Blog'),
-    (ST_DEF, 'Other'),
+    (NEWS_ARTICLE, 'Misc. news article'),
+    (BLOG_ARTICLE, 'Misc. blog article'),
+    (OTHER, 'Other'),
 )
 
-# Country choices
-# TODO: Missing countries
-SPAIN = 'SPAIN'
-GERMANY = 'GERMANY'
-FRANCE = 'FRANCE'
-USA = 'USA'
-CANADA = 'CANADA'
-RUSSIA = 'RUSSIA'
-CHINA = 'CHINA'
-C_DEF = 'OTHER'
 
-COUNTRY_CHOICES = (
-    (SPAIN, 'Spain'),
-    (GERMANY, 'Germany'),
-    (FRANCE, 'France'),
-    (USA, 'United States Of America'),
-    (CANADA, 'Canada'),
-    (RUSSIA, 'Russia'),
-    (CHINA, 'China'),
-    (C_DEF, 'Other'),
+# SourceType choices
+
+NEWSPAPER = 'NEWSPAPER'
+JOURNAL = 'JOURNAL'
+BOOK = 'BOOK'
+CONFERENCE = 'CONFERENCE'
+BLOG = 'BLOG'
+
+SOURCETYPE_CHOICES = (
+    (NEWSPAPER, 'Newspaper'),
+    (JOURNAL, 'Journal'),
+    (BOOK, 'Book'),
+    (CONFERENCE, 'Conference'),
+    (BLOG, 'Blog'),
+    (OTHER, 'Other'),
 )
