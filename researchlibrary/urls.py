@@ -25,7 +25,7 @@ router.register(r'list', api_views.ResourceViewSet)
 
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     url(r'^$', api_views.status, name='status_view'),
     url(r'^admin/', admin.site.urls),
 ]
