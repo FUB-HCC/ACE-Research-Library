@@ -8,6 +8,8 @@ from .models_choices import SOURCETYPE_CHOICES, RESOURCE_TYPE_CHOICES
 class Person(models.Model):
     name = models.CharField(max_length=100)
 
+    def __unicode__(self):
+        return '{}'.format(self.name)
     def __str__(self):
         return '{}'.format(self.name)
 

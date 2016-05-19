@@ -41,6 +41,13 @@ INSTALLED_APPS = [
     'researchlibrary.api'
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
+    'DEFAULT_PAGINATION_CLASS': 'researchlibrary.api.pagination.ResourcePagination',
+    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
+    'PAGE_SIZE': 10,
+}
+
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -1,24 +1,44 @@
 import json
 from django.views.generic.list import ListView
 from django.http import HttpResponse, JsonResponse
-from django.core import serializers
 from ..version import __version__
-from .models import Author, Resource
+from .models import Resource, Author
+from rest_framework import viewsets, response, pagination
+from researchlibrary.api.serializers import ResourceSerializer
 
+
+class ResourceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows resources to be viewed or edited.
+    """
+    queryset = Resource.objects.all()
+    serializer_class = ResourceSerializer
+
+class ResourcePagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'len'
+    pax_page_size = 1000
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'results': data
+        })
 
 def status(request):
     status = {
         'status': 200,
         'version': __version__,
         'tagline': 'You know, for animals'}
-    return HttpResponse(json.dumps(status, default=str),
-                        content_type='application/json')
-
+    return JsonResponse( status )
 
 
 def list(request):
     page = int(request.GET.get('page', 1))
-    mlen = 3 #Number of entries per page
+    mlen = int(request.GET.get('len', 5))
 
     all_entries = Resource.objects.all()[(page-1)*mlen:(page)*mlen]
     results = []
