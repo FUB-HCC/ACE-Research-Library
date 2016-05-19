@@ -1,4 +1,4 @@
-from rest_framework import viewsets, response, pagination
+from rest_framework import response, pagination
 
 class ResourcePagination(pagination.PageNumberPagination):
     page_size = 10
