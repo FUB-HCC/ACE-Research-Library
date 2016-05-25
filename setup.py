@@ -32,6 +32,7 @@ setup(
         'django-jinja',
         'django-filter',  # Optional addition to Django REST Framework
         'django-flat-theme',
+        'django-haystack',
         'django_compressor',
         'djangorestframework',
         'gspread',
@@ -39,6 +40,7 @@ setup(
         'oauth2client',  # For GSpread
         'psycopg2',
         'pytz',
+        'Whoosh',
     ],
     zip_safe=False,
     entry_points={

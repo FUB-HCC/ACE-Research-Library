@@ -1,9 +1,12 @@
 from rest_framework import response, pagination
 
+
 class ResourcePagination(pagination.PageNumberPagination):
+
     page_size = 10
     page_size_query_param = 'len'
     pax_page_size = 1000
+
     def get_paginated_response(self, data):
         return response.Response({
             'status': 200,
@@ -12,4 +15,3 @@ class ResourcePagination(pagination.PageNumberPagination):
             'count': self.page.paginator.count,
             'results': data
         })
-

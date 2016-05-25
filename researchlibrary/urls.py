@@ -20,7 +20,8 @@ from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-router.register(r'list', api_views.ResourceViewSet)
+router.register(r'list', api_views.ResourceViewSet, base_name='list')
+router.register(r'search', api_views.SearchViewSet, base_name='search')
 
 
 
