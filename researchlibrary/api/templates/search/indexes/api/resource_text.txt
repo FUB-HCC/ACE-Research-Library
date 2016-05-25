@@ -1,0 +1,6 @@
+{{ object.title }}
+{{ object.subtitle }}
+{{ object.authors.name }}
+{{ object.editors.name }}
+{{ object.abstract }}
+{{ object.review }}
