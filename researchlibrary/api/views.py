@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from haystack.forms import SearchForm
 from rest_framework import viewsets
-from rest_framework.response import Response
 from ..version import __version__
 from .models import Resource
 from .serializers import ResourceSerializer, SearchSerializer
@@ -21,10 +20,10 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
 
 
-class SearchViewSet(viewsets.ViewSet):
+class SearchViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         form = SearchForm(request.GET)
-        if form.is_valid():
-            serializer = SearchSerializer(form.search(), many=True)
-            return Response(serializer.data)
+        page = self.paginate_queryset(form.search())
+        serializer = SearchSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
