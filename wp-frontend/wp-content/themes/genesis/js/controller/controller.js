@@ -2,19 +2,24 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $timeout, $q, $l
 
     $scope.len = 10;
     $scope.sugestlen = 10;
-    db.getPapersList($scope.len).then(function(response) {
+    //$scope.maxSize = 7;
+    init();    
+    db.getPapersList(1, $scope.len).then(function(response) {
         //$scope.papers = response.data.result;
-        $scope.papers = response.data;
+        $scope.papers = response.data.results;
+	$scope.totalItem = response.data.count * $scope.len;
+        console.log($scope.totalItem);
         build_filter();
     });
-    init();
+    //init();
 
     function init(){
         $scope.sidebar_hide = false;
         $scope.aclist = [];
         $scope.filter_frame = prototype_filter_frame();
         $scope.currentPage = 0;
-        $scope.totalItems = 64;
+        $scope.totalItems = 910;
+//	$scope.items-per-page = $scope.len;
         $scope.searchitem = '';
     };
     function prototype_filter_frame() {
@@ -32,16 +37,16 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $timeout, $q, $l
 
     $scope.pageChanged = function() {
         $log.log('Page changed to: ' + $scope.currentPage);
-        db.getPapersSearch($scope.searchitem, $scope.currentPage, $scope.len).then(function (response){
+        db.getPapersList($scope.currentPage, $scope.len).then(function (response){
             //$scope.papers = response.data.result;
-            $scope.papers = response.data;
+            $scope.papers = response.data.results;
         });
 
     };
 
     $scope.getPapersSuggest = function(q) {
         db.getPapersSuggest(q, $scope.sugestlen).then(function (response){
-            $scope.suggestlist = response.data;
+            $scope.suggestlist = response.data.results;
         });
         return $scope.suggestlist;
     };
@@ -49,7 +54,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $timeout, $q, $l
     $scope.search = function (searchitem) {
         console.log(searchitem);
         db.getPapersSearch(searchitem, 1, $scope.len).then(function (response){
-            $scope.papers = response.data;
+            $scope.papers = response.data.results;
             $scope.filter_frame = prototype_filter_frame();
             if (response.data) { $scope.sidebar_hide = true;}
             build_filter();
