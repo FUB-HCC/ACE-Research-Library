@@ -1,26 +1,18 @@
 researchLibrary.controller('mainCtrl', function ($scope, $http, $timeout, $q, $log, db) {
 
-    $scope.len = 10;
-    $scope.sugestlen = 10;
     //$scope.maxSize = 7;
-    init();    
-    db.getPapersList(1, $scope.len).then(function(response) {
-        //$scope.papers = response.data.result;
-        $scope.papers = response.data.results;
-	$scope.totalItem = response.data.count * $scope.len;
-        console.log($scope.totalItem);
-        build_filter();
-    });
-    //init();
+    init();
+    getPapers();
 
     function init(){
         $scope.sidebar_hide = false;
         $scope.aclist = [];
-        $scope.filter_frame = prototype_filter_frame();
-        $scope.currentPage = 0;
-        $scope.totalItems = 910;
-//	$scope.items-per-page = $scope.len;
+        $scope.currentPage = 1;
         $scope.searchitem = '';
+        $scope.len = 10;
+        $scope.sugestlen = 10;
+        $scope.papers = [];
+        $scope.maxSize = 5;
     };
     function prototype_filter_frame() {
         filter_frame = {
@@ -35,13 +27,18 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $timeout, $q, $l
         $scope.currentPage = pageNo;
     };
 
+    function getPapers(){
+        db.getPapersList($scope.currentPage, $scope.len).then(function (response){
+            $scope.totalItems = response.data.count;
+            angular.copy(response.data.results, $scope.papers);
+            console.log($scope.papers);
+            console.log($scope.totalItems);
+
+        });
+    };
     $scope.pageChanged = function() {
         $log.log('Page changed to: ' + $scope.currentPage);
-        db.getPapersList($scope.currentPage, $scope.len).then(function (response){
-            //$scope.papers = response.data.result;
-            $scope.papers = response.data.results;
-        });
-
+        getPapers();
     };
 
     $scope.getPapersSuggest = function(q) {
