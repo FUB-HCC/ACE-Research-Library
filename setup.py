@@ -39,6 +39,7 @@ setup(
         'markdown',  # Optional addition to Django REST Framework
         'oauth2client',  # For GSpread
         'psycopg2',
+        'python-dateutil',
         'pytz',
         'Whoosh',
     ],

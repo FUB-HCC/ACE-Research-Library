@@ -9,22 +9,10 @@ class Person(models.Model):
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return '{}'.format(self.name)
-    def __str__(self):
-        return '{}'.format(self.name)
-
-    class Meta:
-        abstract = True
-
-
-class Editor(Person):
+        return self.name
 
     def __str__(self):
-        return '{} ed.'.format(self.name)
-
-
-class Author(Person):
-	pass
+        return self.name
 
 
 class Category(models.Model):
@@ -43,7 +31,7 @@ class Keyword(models.Model):
 
 class Resource(models.Model):
     # Mandatory fields
-    authors = models.ManyToManyField(Author)
+    authors = models.ManyToManyField(Person)
     title = models.CharField(max_length=300, unique=True)
     date = models.DateField('date published')
     resource_type = models.CharField(
@@ -55,7 +43,7 @@ class Resource(models.Model):
     url = models.URLField(max_length=2000, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     keywords = models.ManyToManyField(Keyword, blank=True)
-    editors = models.ManyToManyField(Editor, blank=True)
+    editors = models.ManyToManyField(Person, blank=True)
     publisher = models.CharField(max_length=300, blank=True)
     subtitle = models.CharField(max_length=50, blank=True)
     abstract = models.TextField(blank=True)

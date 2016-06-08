@@ -2,6 +2,7 @@ import datetime
 import logging
 import re
 import gspread
+from dateutil.parser import parse as parse_date
 from oauth2client.service_account import ServiceAccountCredentials
 from django.core import management
 from django.db.models import Q
@@ -24,31 +25,26 @@ class Command(management.base.BaseCommand):
                                         ' email address from the credentials)'))
 
     def process(self, row):
-        # Parsing the citation seems harder than fixing the 100 entries manually.
-        anonymous_author, _ = Author.objects.get_or_create(name='Anonymous')
-        title, url, resource_type, keyword_names, review, citation, fulltext_url, \
-        category, _, discussion = row[:10]
-        if Resource.objects.filter(Q(title=title) | Q(url=url)).exists():
+        author_names, editor_names, date, publisher, title, subtitle, url, resource_type, \
+            keyword_names, abstract, review, fulltext_url, category, discussion, journal, volume, \
+            number, startpage, endpage, series, edition, source_type = row[:23]
+        if Resource.objects.filter(url=url).exists():
             logger.info('Skipping existing entry %r', title)
             return
-        category, _ = Category.objects.get_or_create(name=category.strip())
-        keywords = set()
-        for keyword_name in keyword_names.split(','):
-            keyword_name = keyword_name.strip()
-            keyword, _ = Keyword.objects.get_or_create(name=keyword_name)
-            keywords.add(keyword)
-        review += '\n\nCitation: {}\n\nDiscussion: {}'.format(citation, discussion)
-        year = re.search(r'\((\d{4})\)', citation)
-        if year:
-            date = '{}-01-01'.format(year.group(1))
-        else:
-            date = datetime.date.today()
+        authors = [Person.objects.get_or_create(name=author_name.strip())[0]
+                   for author_name in author_names.split(',')]
+        editors = [Person.objects.get_or_create(name=author_name.strip())[0]
+                   for author_name in author_names.split(',')]
+        keywords = [Keyword.objects.get_or_create(name=keyword_name.strip())[0]
+                    for keyword_name in keyword_names.split(',')]
+        categories = Category.objects.get_or_create(name=category.strip())[:1]
+        review += '\n\nDiscussion: {}'.format(discussion)
+        date = parse_date(date)
+        accessed = parse_date('2015-11-03')
         resource_type = {
             'Academic Paper': models_choices.STUDY,
             'Academic Paper (Unpublished)': models_choices.STUDY,
-            'Blogpost': models_choices.BLOG_ARTICLE,
             'Blog Post': models_choices.BLOG_ARTICLE,
-            'Blogpost/ Think tank piece': models_choices.BLOG_ARTICLE,
             'Book': models_choices.BOOK,
             'Historical Document': models_choices.HISTORICAL_DOCUMENT,
             'Industry Publication': models_choices.RESEARCH_SUMMARY,
@@ -57,15 +53,28 @@ class Command(management.base.BaseCommand):
             'Wikipedia Entry': models_choices.ENCYCLOPEDIA_ARTICLE,
             '': models_choices.OTHER}[resource_type]
         resource = Resource(
-            title=title.strip(),
             date=date,
+            accessed=accessed,
+            publisher=publisher.strip(),
+            title=title.strip(),
+            subtitle=subtitle.strip(),
             url=url.strip(),
+            resource_type=resource_type,
+            abstract=abstract.strip(),
             review=review.strip(),
-            resource_type=resource_type)
+            journal=journal.strip(),
+            volume=int(volume.strip()),
+            number=int(number.strip()),
+            startpage=int(startpage.strip()),
+            endpage=int(endpage.strip()),
+            series=series.strip(),
+            edition=edition.strip(),
+            source_type=source_type.strip())
         resource.save()
+        resource.authors = authors
+        resource.editors = editors
         resource.keywords = keywords
-        resource.authors = [anonymous_author]
-        resource.categories = [category]
+        resource.categories = categories
         resource.save()
 
     def handle(self, *args, **options):
