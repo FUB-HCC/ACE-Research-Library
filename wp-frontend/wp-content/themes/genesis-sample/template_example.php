@@ -143,7 +143,7 @@
 			</li>
 		</ul>
 		<div align="center">
-		<uib-pagination  boundary-links="true" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+		<uib-pagination  boundary-links="true" total-items="totalItems" ng-model="currentPage" force-ellipses="true" max-size="maxSize" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
 		</div>
 	</div>
   </div>
