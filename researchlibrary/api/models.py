@@ -21,6 +21,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'categories'
+
 
 class Keyword(models.Model):
     name = models.CharField(max_length=50)
@@ -31,9 +34,9 @@ class Keyword(models.Model):
 
 class Resource(models.Model):
     # Mandatory fields
-    authors = models.ManyToManyField(Person)
+    authors = models.ManyToManyField(Person, related_name='resources_authored')
     title = models.CharField(max_length=300, unique=True)
-    date = models.DateField('date published')
+    published = models.DateField('date published')
     resource_type = models.CharField(
         max_length=30, choices=RESOURCE_TYPE_CHOICES, blank=True)
 
@@ -43,18 +46,18 @@ class Resource(models.Model):
     url = models.URLField(max_length=2000, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     keywords = models.ManyToManyField(Keyword, blank=True)
-    editors = models.ManyToManyField(Person, blank=True)
+    editors = models.ManyToManyField(Person, related_name='resources_edited', blank=True)
     publisher = models.CharField(max_length=300, blank=True)
-    subtitle = models.CharField(max_length=50, blank=True)
+    subtitle = models.CharField(max_length=500, blank=True)
     abstract = models.TextField(blank=True)
     review = models.TextField(blank=True)
-    journal = models.CharField(max_length=30, blank=True)
+    journal = models.CharField(max_length=300, blank=True)
     volume = models.IntegerField(blank=True, null=True)
     number = models.IntegerField(blank=True, null=True)
     startpage = models.IntegerField(blank=True, null=True)
     endpage = models.IntegerField(blank=True, null=True)
-    series = models.CharField(max_length=30, blank=True)
-    edition = models.CharField(max_length=30, blank=True)
+    series = models.CharField(max_length=300, blank=True)
+    edition = models.CharField(max_length=300, blank=True)
     sourcetype = models.CharField(
         max_length=30, choices=SOURCETYPE_CHOICES, blank=True)
 
@@ -74,5 +77,5 @@ class Resource(models.Model):
         return '/resources/%i/' % self.id
 
     class Meta:
-        ordering = ['-date', 'title']
-        get_latest_by = 'date'
+        ordering = ['-published', 'title']
+        get_latest_by = 'published'

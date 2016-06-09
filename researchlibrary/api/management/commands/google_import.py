@@ -6,7 +6,7 @@ from dateutil.parser import parse as parse_date
 from oauth2client.service_account import ServiceAccountCredentials
 from django.core import management
 from django.db.models import Q
-from ...models import Author, Resource, Category, Keyword
+from ...models import Person, Resource, Category, Keyword
 from ... import models_choices
 
 SHEET = 'Sheet1'
@@ -25,9 +25,9 @@ class Command(management.base.BaseCommand):
                                         ' email address from the credentials)'))
 
     def process(self, row):
-        author_names, editor_names, date, publisher, title, subtitle, url, resource_type, \
+        _, author_names, editor_names, published, publisher, title, subtitle, url, resource_type, \
             keyword_names, abstract, review, fulltext_url, category, discussion, journal, volume, \
-            number, startpage, endpage, series, edition, source_type = row[:23]
+            number, startpage, endpage, series, edition, sourcetype = row[:23]
         if Resource.objects.filter(url=url).exists():
             logger.info('Skipping existing entry %r', title)
             return
@@ -38,8 +38,9 @@ class Command(management.base.BaseCommand):
         keywords = [Keyword.objects.get_or_create(name=keyword_name.strip())[0]
                     for keyword_name in keyword_names.split(',')]
         categories = Category.objects.get_or_create(name=category.strip())[:1]
-        review += '\n\nDiscussion: {}'.format(discussion)
-        date = parse_date(date)
+        if discussion.strip():
+            review += '\n\nDiscussion: {}'.format(discussion)
+        published = parse_date(published)
         accessed = parse_date('2015-11-03')
         resource_type = {
             'Academic Paper': models_choices.STUDY,
@@ -53,7 +54,7 @@ class Command(management.base.BaseCommand):
             'Wikipedia Entry': models_choices.ENCYCLOPEDIA_ARTICLE,
             '': models_choices.OTHER}[resource_type]
         resource = Resource(
-            date=date,
+            published=published,
             accessed=accessed,
             publisher=publisher.strip(),
             title=title.strip(),
@@ -63,13 +64,13 @@ class Command(management.base.BaseCommand):
             abstract=abstract.strip(),
             review=review.strip(),
             journal=journal.strip(),
-            volume=int(volume.strip()),
-            number=int(number.strip()),
-            startpage=int(startpage.strip()),
-            endpage=int(endpage.strip()),
+            volume=int(volume.strip()) if volume.strip() else None,
+            number=int(number.strip()) if number.strip() else None,
+            startpage=int(startpage.strip()) if startpage.strip() else None,
+            endpage=int(endpage.strip()) if endpage.strip() else None,
             series=series.strip(),
             edition=edition.strip(),
-            source_type=source_type.strip())
+            sourcetype=sourcetype.strip())
         resource.save()
         resource.authors = authors
         resource.editors = editors
@@ -85,6 +86,8 @@ class Command(management.base.BaseCommand):
         doc = gc.open_by_key(options['id'])
         worksheet = doc.worksheet(SHEET).get_all_values()
         for row in worksheet:
-            if row[0] == 'Title and Hyperlink':
+            if row[1] == 'Author':
                 continue
+            if row[1] == '':
+                break
             self.process(row)

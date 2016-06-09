@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.static import serve
 from .api import views as api_views
 from rest_framework import routers
-
+from . import settings
 
 router = routers.DefaultRouter()
 router.register(r'list', api_views.ResourceViewSet, base_name='list')
 router.register(r'search', api_views.SearchViewSet, base_name='search')
-
 
 
 urlpatterns = [
@@ -30,3 +30,8 @@ urlpatterns = [
     url(r'^$', api_views.status, name='status_view'),
     url(r'^admin/', admin.site.urls),
 ]
+
+
+urlpatterns += [
+    url(r'^{url}(?P<path>.*)'.format(url=settings.STATIC_URL[1:]),
+        serve, {'document_root': settings.STATIC_ROOT})]
