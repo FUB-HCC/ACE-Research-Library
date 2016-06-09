@@ -1,6 +1,6 @@
 import datetime
 from django.test import TestCase, Client
-from ..models import Author, Resource
+from ..models import Person, Resource
 
 
 class ListTests(TestCase):
@@ -13,9 +13,9 @@ class ListTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.client = Client()
-        author = Author(name='Mock Author')
+        author = Person(name='Mock Author')
         author.save()
-        resource = Resource(title='Mock Title', date=datetime.date.today())
+        resource = Resource(title='Mock Title', published=datetime.date.today())
         resource.save()
         resource.authors = [author]
         resource.save()

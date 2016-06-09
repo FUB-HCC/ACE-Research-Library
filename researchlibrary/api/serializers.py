@@ -10,17 +10,17 @@ class ResourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resource
         fields = ('authors', 'editors',  'title', 'subtitle', 'abstract', 'publisher', 'journal',
-                  'date', 'volume', 'number', 'pages', 'series', 'edition', 'url')
+                  'published', 'accessed', 'volume', 'number', 'pages', 'series', 'edition', 'url')
 
 
 class SearchSerializer(serializers.Serializer):
 
     id = serializers.CharField()
-    date = serializers.DateField()
+    published = serializers.DateField()
     text = serializers.CharField()
 
     def __init__(self, instance=None, data=serializers.empty, **kwargs):
         for entry in instance:
-            if isinstance(entry.date, datetime.datetime):
-                entry.date = entry.date.date()
+            if isinstance(entry.published, datetime.datetime):
+                entry.published = entry.published.date()
         return super().__init__(instance=instance, data=data, **kwargs)

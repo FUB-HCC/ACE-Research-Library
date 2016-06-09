@@ -3,7 +3,7 @@ import os
 from django.test import TestCase, Client
 from django.conf import settings
 from django.core.management import call_command
-from ..models import Author, Resource
+from ..models import Person, Resource
 
 
 settings.HAYSTACK_CONNECTIONS['default']['PATH'] = \
@@ -20,17 +20,17 @@ class SearchTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.client = Client()
-        author = Author(name='Mock Author')
+        author = Person(name='Mock Author')
         author.save()
         Resource.objects.bulk_create([
-            Resource(title='Mock Turtle', date=datetime.date.today()),
-            Resource(title='Mock Chicken', date=datetime.date.today()),
-            Resource(title='Mock Cow', date=datetime.date.today()),
-            Resource(title='Mock Pig', date=datetime.date.today()),
-            Resource(title='Mock Piglet', date=datetime.date.today()),
-            Resource(title='Mock Turkey', date=datetime.date.today()),
+            Resource(title='Mock Turtle', published=datetime.date.today()),
+            Resource(title='Mock Chicken', published=datetime.date.today()),
+            Resource(title='Mock Cow', published=datetime.date.today()),
+            Resource(title='Mock Pig', published=datetime.date.today()),
+            Resource(title='Mock Piglet', published=datetime.date.today()),
+            Resource(title='Mock Turkey', published=datetime.date.today()),
         ])
-        author.resource_set.add(*Resource.objects.all())
+        author.resources_authored.add(*Resource.objects.all())
         call_command('rebuild_index', interactive=False)
 
 
@@ -57,9 +57,9 @@ class SearchTests(TestCase):
         response = self.client.get('/api/search/?q=mock')
         self.assertIsInstance(response.json()['results'], list)
 
-    def test_date(self):
+    def test_published(self):
         response = self.client.get('/api/search/?q=mock')
-        self.assertTrue(response.json()['results'][0]['date'])
+        self.assertTrue(response.json()['results'][0]['published'])
 
     def test_text(self):
         response = self.client.get('/api/search/?q=mock')

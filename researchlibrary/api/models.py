@@ -62,8 +62,8 @@ class Resource(models.Model):
         max_length=30, choices=SOURCETYPE_CHOICES, blank=True)
 
     def clean(self):
-        if self.date and self.date > datetime.date.today():
-            raise ValidationError('The entered date is invalid.')
+        if self.published and self.published > datetime.date.today():
+            raise ValidationError('The entered published date is invalid.')
         if self.startpage and self.endpage and self.startpage > self.endpage:
             raise ValidationError('The entered pagenumbers are invalid.')
 
