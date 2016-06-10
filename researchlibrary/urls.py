@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^$', api_views.status, name='status_view'),
     url(r'^admin/', admin.site.urls),
+    url(r'^autosuggest/$', api_views.autosuggest),
+    url(r'^tmp_search/$', api_views.tmp_search),
 ]
 
 
