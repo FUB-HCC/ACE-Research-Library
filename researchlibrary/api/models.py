@@ -50,6 +50,7 @@ class Resource(models.Model):
     publisher = models.CharField(max_length=300, blank=True)
     subtitle = models.CharField(max_length=500, blank=True)
     abstract = models.TextField(blank=True)
+    fulltext = models.TextField(blank=True)
     review = models.TextField(blank=True)
     journal = models.CharField(max_length=300, blank=True)
     volume = models.IntegerField(blank=True, null=True)

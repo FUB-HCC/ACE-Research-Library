@@ -1,0 +1,20 @@
+{% extends "admin/change_list.html" %}
+{% load admin_urls admin_list %}
+
+{% block object-tools-items %}
+    {% if has_add_permission %}
+        <li>
+            {% url cl.opts|admin_urlname:'add_url' as add_url_url %}
+            <a href="{% add_preserved_filters add_url_url is_popup to_field %}" class="addlink">
+                Add {{ cl.opts.verbose_name }} by URL
+            </a>
+        </li>
+        <li>
+            {% url cl.opts|admin_urlname:'add_file' as add_file_url %}
+            <a href="{% add_preserved_filters add_file_url is_popup to_field %}" class="addlink">
+                Add {{ cl.opts.verbose_name }} by file
+            </a>
+        </li>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
