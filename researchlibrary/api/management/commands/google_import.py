@@ -6,7 +6,7 @@ from dateutil.parser import parse as parse_date
 from oauth2client.service_account import ServiceAccountCredentials
 from django.core import management
 from django.db.models import Q
-from ...models import Person, Resource, Category, Keyword
+from ...models import Resource, Category
 from ... import models_choices
 
 SHEET = 'Sheet1'
@@ -31,12 +31,9 @@ class Command(management.base.BaseCommand):
         if Resource.objects.filter(url=url).exists():
             logger.info('Skipping existing entry %r', title)
             return
-        authors = [Person.objects.get_or_create(name=author_name.strip())[0]
-                   for author_name in author_names.split(',')]
-        editors = [Person.objects.get_or_create(name=author_name.strip())[0]
-                   for author_name in author_names.split(',')]
-        keywords = [Keyword.objects.get_or_create(name=keyword_name.strip())[0]
-                    for keyword_name in keyword_names.split(',')]
+        authors = [author_name.strip() for author_name in author_names.split(',')]
+        editors = [editor_name.strip() for editor_name in editor_names.split(',')]
+        keywords = [keyword_name.strip() for keyword_name in keyword_names.split(',')]
         categories = Category.objects.get_or_create(name=category.strip())[:1]
         if discussion.strip():
             review += '\n\nDiscussion: {}'.format(discussion)
@@ -54,6 +51,9 @@ class Command(management.base.BaseCommand):
             'Wikipedia Entry': models_choices.ENCYCLOPEDIA_ARTICLE,
             '': models_choices.OTHER}[resource_type]
         resource = Resource(
+            authors=authors,
+            editors=editors,
+            keywords=keywords,
             published=published,
             accessed=accessed,
             publisher=publisher.strip(),
@@ -72,9 +72,6 @@ class Command(management.base.BaseCommand):
             edition=edition.strip(),
             sourcetype=sourcetype.strip())
         resource.save()
-        resource.authors = authors
-        resource.editors = editors
-        resource.keywords = keywords
         resource.categories = categories
         resource.save()
 

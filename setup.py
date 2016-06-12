@@ -34,6 +34,7 @@ setup(
         'django-flat-theme',
         'django-haystack',
         'django_compressor',
+        'django_select2',
         'djangorestframework',
         'gspread',
         'markdown',  # Optional addition to Django REST Framework

@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^$', api_views.status, name='status_view'),
     url(r'^admin/', admin.site.urls),
+    url(r'^select2/', include('django_select2.urls')),
 ]
 
 

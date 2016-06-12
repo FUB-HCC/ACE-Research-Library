@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'haystack',
     'rest_framework',
+    'django_select2',
 
     'researchlibrary.api'
 ]
@@ -73,6 +74,7 @@ ROOT_URLCONF = 'researchlibrary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'researchlibrary', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
