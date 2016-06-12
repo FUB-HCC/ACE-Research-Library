@@ -6,7 +6,7 @@ from dateutil.parser import parse as parse_date
 from oauth2client.service_account import ServiceAccountCredentials
 from django.core import management
 from django.db.models import Q
-from ...models import Resource, Category
+from ...models import Person, Resource, Category, Keyword
 from ... import models_choices
 
 SHEET = 'Sheet1'
@@ -31,9 +31,15 @@ class Command(management.base.BaseCommand):
         if Resource.objects.filter(url=url).exists():
             logger.info('Skipping existing entry %r', title)
             return
-        authors = [author_name.strip() for author_name in author_names.split(',')]
-        editors = [editor_name.strip() for editor_name in editor_names.split(',')]
-        keywords = [keyword_name.strip() for keyword_name in keyword_names.split(',')]
+        authors = [Person.objects.get_or_create(name=author_name.strip())[0]
+                   for author_name in author_names.split(',')
+                   if author_name.strip()]
+        editors = [Person.objects.get_or_create(name=editor_name.strip())[0]
+                   for editor_name in editor_names.split(',')
+                   if editor_name.strip()]
+        keywords = [Keyword.objects.get_or_create(name=keyword_name.strip())[0]
+                    for keyword_name in keyword_names.split(',')
+                    if keyword_name.strip()]
         categories = Category.objects.get_or_create(name=category.strip())[:1]
         if discussion.strip():
             review += '\n\nDiscussion: {}'.format(discussion)
@@ -51,9 +57,6 @@ class Command(management.base.BaseCommand):
             'Wikipedia Entry': models_choices.ENCYCLOPEDIA_ARTICLE,
             '': models_choices.OTHER}[resource_type]
         resource = Resource(
-            authors=authors,
-            editors=editors,
-            keywords=keywords,
             published=published,
             accessed=accessed,
             publisher=publisher.strip(),
@@ -72,6 +75,9 @@ class Command(management.base.BaseCommand):
             edition=edition.strip(),
             sourcetype=sourcetype.strip())
         resource.save()
+        resource.authors = authors
+        resource.editors = editors
+        resource.keywords = keywords
         resource.categories = categories
         resource.save()
 

@@ -1,9 +1,18 @@
 import datetime
 
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from .models_choices import SOURCETYPE_CHOICES, RESOURCE_TYPE_CHOICES
+
+
+class Person(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
 
 class Category(models.Model):
@@ -16,9 +25,16 @@ class Category(models.Model):
         verbose_name_plural = 'categories'
 
 
+class Keyword(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Resource(models.Model):
     # Mandatory fields
-    authors = ArrayField(models.CharField(max_length=100))
+    authors = models.ManyToManyField(Person, related_name='resources_authored')
     title = models.CharField(max_length=300, unique=True)
     published = models.DateField('date published')
     resource_type = models.CharField(
@@ -27,10 +43,10 @@ class Resource(models.Model):
     # Optional fields
     accessed = models.DateField('date accessed', null=True, blank=True)
     resource_file = models.FileField(upload_to=None, max_length=100, blank=True)
-    url = models.URLField(max_length=2000, verbose_name='URL', blank=True)
+    url = models.URLField(max_length=2000, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
-    keywords = ArrayField(models.CharField(max_length=100), default=list, blank=True)
-    editors = ArrayField(models.CharField(max_length=100), default=list, blank=True)
+    keywords = models.ManyToManyField(Keyword, blank=True)
+    editors = models.ManyToManyField(Person, related_name='resources_edited', blank=True)
     publisher = models.CharField(max_length=300, blank=True)
     subtitle = models.CharField(max_length=500, blank=True)
     abstract = models.TextField(blank=True)

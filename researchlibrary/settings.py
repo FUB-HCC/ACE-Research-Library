@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'researchlibrary.api',  # First position for static files override
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +42,6 @@ INSTALLED_APPS = [
     'haystack',
     'rest_framework',
     'django_select2',
-
-    'researchlibrary.api'
 ]
 
 HAYSTACK_CONNECTIONS = {

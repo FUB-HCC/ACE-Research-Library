@@ -1,5 +1,22 @@
 {% extends "admin/change_form.html" %}
 
-{% block submit_buttons_bottom %}
-    <input type="submit" value="Save and continue editing" name="_continue" class="default" />
+{% block extrastyle %}
+    {{ block.super }}
+    <style type="text/css">
+        .field-authors .help,
+        .field-editors .help,
+        .field-keywords .help {
+            display: none;
+        }
+        .field-authors .related-widget-wrapper,
+        .field-editors .related-widget-wrapper,
+        .field-keywords .related-widget-wrapper {
+            min-width: 50%;
+        }
+        .field-authors .related-widget-wrapper > span,
+        .field-editors .related-widget-wrapper > span,
+        .field-keywords .related-widget-wrapper > span {
+            min-width: 100% !important;
+        }
+    </style>
 {% endblock %}
