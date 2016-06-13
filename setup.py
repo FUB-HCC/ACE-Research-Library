@@ -42,6 +42,7 @@ setup(
         'psycopg2',
         'python-dateutil',
         'pytz',
+        'readability-lxml',
         'Whoosh',
     ],
     zip_safe=False,

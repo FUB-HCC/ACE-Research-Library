@@ -1,4 +1,6 @@
+import re
 import requests
+from readability.readability import Document
 from django.contrib import admin
 from django.forms import ModelForm
 from django.core.urlresolvers import reverse
@@ -100,6 +102,7 @@ class ResourceAdmin(admin.ModelAdmin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fulltext = None
+        self.title = None
 
     def augmented_title(self, obj):
         return format_html(
@@ -125,13 +128,18 @@ class ResourceAdmin(admin.ModelAdmin):
     def get_changeform_initial_data(self, request):
         initial = super(ResourceAdmin, self).get_changeform_initial_data(request)
         initial['fulltext'] = self.fulltext
+        initial['title'] = self.title
         return initial
 
     def add_url(self, request, form_url='', extra_context=None):
         if request.method == 'POST':
             url = request.POST['url']
             response = requests.get(url, timeout=10)
-            self.fulltext = response.text
+            self.title = Document(response.text).short_title()
+            self.fulltext = Document(response.text).summary()
+            self.fulltext = re.sub('<br[^>]+>', '\n', self.fulltext)
+            self.fulltext = re.sub('</?p[^>]+>', '\n\n', self.fulltext)
+            self.fulltext = re.sub('<[^>]+>', '', self.fulltext)
             # Manipulating the request
             request.method = 'GET'
             request.GET = request.POST
