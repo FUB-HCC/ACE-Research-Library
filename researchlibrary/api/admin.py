@@ -91,12 +91,8 @@ class ResourceAdmin(admin.ModelAdmin):
         ('Optional Fields', {
             'classes': ('collapse',),
             'fields': ('publisher', 'journal', 'volume', 'number', 'startpage',
-                       'endpage', 'series', 'edition', 'sourcetype'),
-        }),
-        ('Content Fields', {
-            'classes': ('collapse',),
-            'fields': ('resource_file', 'fulltext'),
-        }),
+                       'endpage', 'series', 'edition', 'sourcetype', 'fulltext'),
+        })
     )
 
     def __init__(self, *args, **kwargs):
@@ -121,7 +117,6 @@ class ResourceAdmin(admin.ModelAdmin):
         urls = super(ResourceAdmin, self).get_urls()
         new_urls = [
             url(r'^add_url/$', self.add_url, name='api_resource_add_url'),
-            url(r'^add_file/$', self.add_file, name='api_resource_add_file'),
         ]
         return new_urls + urls
 
@@ -147,16 +142,7 @@ class ResourceAdmin(admin.ModelAdmin):
         return URLResourceAdmin(model=self.model, admin_site=self.admin_site) \
             .add_view(request, form_url, extra_context=extra_context)
 
-    def add_file(self, request, form_url='', extra_context=None):
-        return FileResourceAdmin(model=self.model, admin_site=self.admin_site) \
-            .add_view(request, form_url, extra_context=extra_context)
-
 
 class URLResourceAdmin(admin.ModelAdmin):
     add_form_template = 'api/add_form.html'
     fieldsets = [(None, {'fields': ['url']})]
-
-
-class FileResourceAdmin(admin.ModelAdmin):
-    add_form_template = 'api/add_form.html'
-    fieldsets = [(None, {'fields': ['resource_file']})]

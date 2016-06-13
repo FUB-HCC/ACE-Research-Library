@@ -9,12 +9,6 @@
                 Add {{ cl.opts.verbose_name }} by URL
             </a>
         </li>
-        <li>
-            {% url cl.opts|admin_urlname:'add_file' as add_file_url %}
-            <a href="{% add_preserved_filters add_file_url is_popup to_field %}" class="addlink">
-                Add {{ cl.opts.verbose_name }} by file
-            </a>
-        </li>
     {% endif %}
     {{ block.super }}
 {% endblock %}
