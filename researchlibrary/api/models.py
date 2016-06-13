@@ -42,8 +42,8 @@ class Resource(models.Model):
 
     # Optional fields
     accessed = models.DateField('date accessed', null=True, blank=True)
-    resource_file = models.FileField(upload_to=None, max_length=100, blank=True)
     url = models.URLField(max_length=2000, blank=True)
+    fulltext_url = models.URLField(max_length=2000, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     keywords = models.ManyToManyField(Keyword, blank=True)
     editors = models.ManyToManyField(Person, related_name='resources_edited', blank=True)

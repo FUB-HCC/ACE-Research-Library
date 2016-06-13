@@ -10,6 +10,27 @@ from django_select2.forms import ModelSelect2TagWidget
 from .models import Person, Category, Keyword, Resource
 
 
+class Gist:
+
+    def __init__(self, html):
+        self.html = html
+        self.document = Document(html)
+
+    @property
+    def title(self):
+        self.document.short_title()
+
+    @property
+    def text(self):
+        text = self.document.summary()
+        text = re.sub('<br[^>]+>', '\n', text)
+        text = re.sub('</?p[^>]+>', '\n\n', text)
+        text = re.sub('<[^>]+>', '', text)
+        text = re.sub('^[ \t]+$', '', text)
+        text = re.sub('\n{3,}', '\n\n', text, flags=re.MULTILINE)
+        return text
+
+
 class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
 
     value_prefix = 'pk='
@@ -74,15 +95,16 @@ class ResourceAdmin(admin.ModelAdmin):
     change_list_template = 'api/change_list.html'
     change_form_template = 'api/change_form.html'
     list_display = ['augmented_title', 'concatenated_authors', 'published', 'resource_type']
-    search_fields = ['title', 'authors', 'editors', 'url', 'categories', 'keywords', 'publisher',
-                     'subtitle', 'abstract', 'review', 'journal', 'series', 'edition', 'sourcetype']
+    search_fields = ['title', 'authors__name', 'editors__name', 'url', 'categories__name',
+                     'keywords__name', 'publisher', 'subtitle', 'abstract', 'review',
+                     'journal', 'series', 'edition', 'sourcetype']
     list_filter = ['resource_type', 'categories', 'sourcetype']
     date_hierarchy = 'published'
     filter_horizontal = ['categories']
     fieldsets = (
         ('Main Fields', {
             'fields': ('title', 'subtitle', 'authors', 'editors', 'published', 'accessed', 'url',
-                       'resource_type')
+                       'fulltext_url', 'resource_type')
         }),
         ('Auxilliary Fields', {
             'classes': ('collapse',),
@@ -130,11 +152,9 @@ class ResourceAdmin(admin.ModelAdmin):
         if request.method == 'POST':
             url = request.POST['url']
             response = requests.get(url, timeout=10)
-            self.title = Document(response.text).short_title()
-            self.fulltext = Document(response.text).summary()
-            self.fulltext = re.sub('<br[^>]+>', '\n', self.fulltext)
-            self.fulltext = re.sub('</?p[^>]+>', '\n\n', self.fulltext)
-            self.fulltext = re.sub('<[^>]+>', '', self.fulltext)
+            gist = Gist(response.text)
+            self.title = gist.title
+            self.fulltext = gist.text
             # Manipulating the request
             request.method = 'GET'
             request.GET = request.POST

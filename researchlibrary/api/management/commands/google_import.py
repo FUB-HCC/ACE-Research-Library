@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(management.base.BaseCommand):
-    help = 'Imports the spreadsheet but leaves post-processing to humans'
+    help = 'Imports the research library spreadsheet'
 
     def add_arguments(self, parser):
         parser.add_argument('credentials', help='JSON file with credentials')
@@ -63,6 +63,7 @@ class Command(management.base.BaseCommand):
             title=title.strip(),
             subtitle=subtitle.strip(),
             url=url.strip(),
+            fulltext_url=fulltext_url.strip(),
             resource_type=resource_type,
             abstract=abstract.strip(),
             review=review.strip(),
