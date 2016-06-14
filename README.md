@@ -7,7 +7,7 @@
 
 It should be sufficient to just run:
 
-    sudo aptitude install python3-dev libpq-dev g++
+    sudo aptitude install python3-dev libpq-dev g++ libxml2-dev libxslt1-dev
     python3.4 bootstrap.py -c development.cfg
     bin/buildout -c development.cfg
 
