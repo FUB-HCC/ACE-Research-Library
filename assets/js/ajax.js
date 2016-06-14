@@ -4,7 +4,7 @@ $(function(){
 
 		$.ajax({
 			type: "POST",
-			url: "/autosuggest/",
+			url: "/api/suggest/",
 			data: {
 				'search_text' : $('#search').val(),
 				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
