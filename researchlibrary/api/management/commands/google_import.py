@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(management.base.BaseCommand):
-    help = 'Imports the spreadsheet but leaves post-processing to humans'
+    help = 'Imports the research library spreadsheet'
 
     def add_arguments(self, parser):
         parser.add_argument('credentials', help='JSON file with credentials')
@@ -32,11 +32,14 @@ class Command(management.base.BaseCommand):
             logger.info('Skipping existing entry %r', title)
             return
         authors = [Person.objects.get_or_create(name=author_name.strip())[0]
-                   for author_name in author_names.split(',')]
-        editors = [Person.objects.get_or_create(name=author_name.strip())[0]
-                   for author_name in author_names.split(',')]
+                   for author_name in author_names.split(',')
+                   if author_name.strip()]
+        editors = [Person.objects.get_or_create(name=editor_name.strip())[0]
+                   for editor_name in editor_names.split(',')
+                   if editor_name.strip()]
         keywords = [Keyword.objects.get_or_create(name=keyword_name.strip())[0]
-                    for keyword_name in keyword_names.split(',')]
+                    for keyword_name in keyword_names.split(',')
+                    if keyword_name.strip()]
         categories = Category.objects.get_or_create(name=category.strip())[:1]
         if discussion.strip():
             review += '\n\nDiscussion: {}'.format(discussion)
@@ -60,6 +63,7 @@ class Command(management.base.BaseCommand):
             title=title.strip(),
             subtitle=subtitle.strip(),
             url=url.strip(),
+            fulltext_url=fulltext_url.strip(),
             resource_type=resource_type,
             abstract=abstract.strip(),
             review=review.strip(),

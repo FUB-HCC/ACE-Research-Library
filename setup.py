@@ -34,6 +34,7 @@ setup(
         'django-flat-theme',
         'django-haystack',
         'django_compressor',
+        'django_select2',
         'djangorestframework',
         'gspread',
         'markdown',  # Optional addition to Django REST Framework
@@ -41,6 +42,7 @@ setup(
         'psycopg2',
         'python-dateutil',
         'pytz',
+        'readability-lxml',
         'Whoosh',
     ],
     zip_safe=False,

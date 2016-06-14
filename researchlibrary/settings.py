@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'researchlibrary.api',  # First position for static files override
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +42,7 @@ INSTALLED_APPS = [
     'whoosh',
     'haystack',
     'rest_framework',
-
-    'researchlibrary.api'
+    'django_select2',
 ]
 
 HAYSTACK_CONNECTIONS = {
@@ -74,6 +75,7 @@ ROOT_URLCONF = 'researchlibrary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'researchlibrary', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

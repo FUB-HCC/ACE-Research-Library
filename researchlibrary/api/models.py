@@ -42,14 +42,15 @@ class Resource(models.Model):
 
     # Optional fields
     accessed = models.DateField('date accessed', null=True, blank=True)
-    resource_file = models.FileField(upload_to=None, max_length=100, blank=True)
     url = models.URLField(max_length=2000, blank=True)
+    fulltext_url = models.URLField(max_length=2000, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     keywords = models.ManyToManyField(Keyword, blank=True)
     editors = models.ManyToManyField(Person, related_name='resources_edited', blank=True)
     publisher = models.CharField(max_length=300, blank=True)
     subtitle = models.CharField(max_length=500, blank=True)
     abstract = models.TextField(blank=True)
+    fulltext = models.TextField(blank=True)
     review = models.TextField(blank=True)
     journal = models.CharField(max_length=300, blank=True)
     volume = models.IntegerField(blank=True, null=True)
