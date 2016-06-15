@@ -1,3 +1,4 @@
+import json
 import re
 import requests
 from readability.readability import Document
@@ -6,6 +7,7 @@ from django.forms import ModelForm
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 from django.conf.urls import url
+from django.utils.safestring import mark_safe
 from django_select2.forms import ModelSelect2TagWidget
 from .models import Person, Category, Keyword, Resource
 
@@ -35,10 +37,6 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
 
     value_prefix = 'pk='
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.attrs['data-token-separators'] = r'[","]'
-
     def value_from_datadict(self, data, files, name):
         values = super().value_from_datadict(data, files, name)
         pks = []
@@ -52,14 +50,50 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
                 pks.append(obj.pk)
         return pks
 
+    def build_attrs(self, extra_attrs=None, **kwargs):
+        """Set select2’s AJAX attributes."""
+        attrs = super().build_attrs(extra_attrs=extra_attrs, **kwargs)
+        # Originally:
+        # {'data-token-separators': '[",", " "]',
+        #  'data-minimum-input-length': 1,
+        #  'data-tags': 'true',
+        #  'data-ajax--type': 'GET',
+        #  'data-ajax--cache': 'true',
+        #  'data-ajax--url': '/select2/fields/auto.json',
+        #  'class': 'django-select2 django-select2-heavy',
+        #  'name': 'authors',
+        #  'id': 'id_authors',
+        #  'data-field_id': 'MTQwNTg5NTg3NzM3NTEy:1bD5p3:suZhZBqbvSzNpEMGve-KGjfmffw',
+        #  'data-allow-clear': 'false'}
+        attrs['data-token-separators'] = r'[","]'
+        del attrs['data-ajax--url']
+        del attrs['data-ajax--type']
+        del attrs['data-ajax--cache']
+        return attrs
+
+    def prefix(self, item):
+        return '{}{}'.format(self.value_prefix, item)
+
     def render_option(self, selected_choices, option_value, option_label):
         """
         Mark the option value so that we can recognize it later.
         """
-        prefix = lambda item: '{}{}'.format(self.value_prefix, item)
-        selected_choices = map(prefix, selected_choices)
-        option_value = prefix(option_value)
+        selected_choices = map(self.prefix, selected_choices)
+        option_value = self.prefix(option_value)
         return super().render_option(selected_choices, option_value, option_label)
+
+    def render(self, name, value, attrs=None, choices=()):
+        output = super().render(name, value, attrs, choices)
+        output += """
+            <script type="text/javascript">
+                $('#%s').select2({
+                  data: %s
+                })
+            </script>\n
+        """ % (attrs['id'], json.dumps([
+                {'id': self.prefix(obj.pk), 'text': getattr(obj, self.field)}
+                for obj in self.model.objects.all()]))
+        return mark_safe(output)
 
 
 class PersonModelSelect2TagWidget(ModelSelect2TagWidgetBase):
