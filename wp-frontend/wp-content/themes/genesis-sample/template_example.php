@@ -58,7 +58,7 @@
 		 
 					  <div class="input-group">
 					  	<input class="form-control" name="searchtext" type="text" ng-model="searchitem" placeholder="Locations loaded via $http"
-						 uib-typeahead="paper.title for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8" typeahead-loading="loadingLocations" typeahead-no-results="noResults" >
+						 uib-typeahead="paper.result for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8" typeahead-loading="loadingLocations" typeahead-no-results="noResults" >
 					  	<span class="input-group-btn">
 						   <button class="btn btn-default" type="button" ng-click="search(searchitem)">
 						   		<i class="glyphicon glyphicon-search"></i> Search
@@ -105,7 +105,7 @@
 					 </div>
 					</div>
 		<ul>
-        	<li ng-repeat="paper in papers | filter:searchitem">
+        	<li ng-repeat="paper in papers">
 					<h4 class="lib-link-name"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
 					<div>
 							<i> <small><span class="lib-link-citation">

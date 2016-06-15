@@ -11,6 +11,10 @@ It should be sufficient to just run:
     python3.4 bootstrap.py -c development.cfg
     bin/buildout -c development.cfg
 
+To collect the default static files(.css, .js, ...)
+
+    bin/django collectstatic
+
 To setup the database:
 
     sudo aptitude install postgresql postgresql-contrib

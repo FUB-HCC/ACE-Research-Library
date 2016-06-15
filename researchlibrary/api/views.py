@@ -40,8 +40,8 @@ def tmp_search(request):
 
 
 def autosuggest(request):
-    if request.method == "POST":
-        search_text = request.POST['search_text']
+    if request.method == "GET":
+        search_text = request.GET['q']
     else:
         search_text = ''
     

@@ -31,13 +31,9 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $timeout, $q, $l
         db.getPapersList($scope.currentPage, $scope.len).then(function (response){
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
-            console.log($scope.papers);
-            console.log($scope.totalItems);
-
         });
     };
     $scope.pageChanged = function() {
-        $log.log('Page changed to: ' + $scope.currentPage);
         getPapers();
     };
 

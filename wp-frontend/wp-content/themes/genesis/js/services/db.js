@@ -5,19 +5,15 @@ researchLibrary.factory('db', ['$rootScope', '$http', 'config', '$q', function($
 
     return {
         getPapersList: function (page, len) {
-            var queryUrl = config.url + 'paper.json';
-            var queryUrl_cop = config.url + 'list/?' + 'page=' + page+'&len='+len;
-            return $http.get(queryUrl_cop);
+            var queryUrl = config.url + 'list/?' + 'page=' + page+'&len='+len;
+            return $http.get(queryUrl);
         },
         getPapersSearch: function (q, page, len) {
-            var queryUrl = config.url + 'paper.json';
-            var queryUrl_cop = config.url + 'search/?' + 'page=' + page+'&len='+len + '&q=' + q;
-            return $http.get(queryUrl_cop);
+            var queryUrl = config.url + 'search/?' + 'page=' + page+'&len='+len + '&q=' + q;
+            return $http.get(queryUrl);
         },
         getPapersSuggest: function (q, len) {
-            var queryUrl = config.url + 'paper.json';
-            /* you must write parameter for queries here down*/
-            var queryUrl_cop = config.url + '?' +'len='+len + '&q=' + q;
+            var queryUrl = config.url + 'suggest/?' +'len='+len + '&q=' + q;
             return $http.get(queryUrl);
         },
     };
