@@ -31,7 +31,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/suggest/$', api_views.autosuggest),
     url(r'^tmp_search/$', api_views.tmp_search),
-    url(r'^select2/', include('django_select2.urls')),
 ]
 
 

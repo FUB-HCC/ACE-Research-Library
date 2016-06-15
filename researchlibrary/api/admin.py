@@ -3,9 +3,10 @@ import re
 import requests
 from readability.readability import Document
 from django.contrib import admin
-from django.forms import ModelForm
+from django.forms import ModelForm, Media
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
+from django.conf import settings
 from django.conf.urls import url
 from django.utils.safestring import mark_safe
 from django_select2.forms import ModelSelect2TagWidget
@@ -38,6 +39,14 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
     value_prefix = 'pk='
 
     def value_from_datadict(self, data, files, name):
+        """
+        Override super()’s method so that we get to mark what is
+        a primary key and what is a name.
+
+        Existing values have primary keys, which Select2 posts as expected,
+        but when the user enters new data, it posts the strings such
+        that they are indistinguishable from the primary keys.
+        """
         values = super().value_from_datadict(data, files, name)
         pks = []
         for value in values:
@@ -50,8 +59,21 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
                 pks.append(obj.pk)
         return pks
 
+    def get_url(self):
+        """
+        Get noting at all.
+
+        Django Select2 abuses the cache to inject autosuggest values into the
+        admin view via AJAX. That’s terrible. Since we don’t use that view,
+        this method that references it needs to be overwritten.
+        """
+        pass
+
     def build_attrs(self, extra_attrs=None, **kwargs):
-        """Set select2’s AJAX attributes."""
+        """
+        Remove the data attributes for the AJAX call we don’t use and
+        customize a bit more.
+        """
         attrs = super().build_attrs(extra_attrs=extra_attrs, **kwargs)
         # Originally:
         # {'data-token-separators': '[",", " "]',
@@ -84,6 +106,7 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
 
     def render(self, name, value, attrs=None, choices=()):
         output = super().render(name, value, attrs, choices)
+        # Let’s think of something new if and when the page reaches 1+ MiB.
         output += """
             <script type="text/javascript">
                 $('#%s').select2({
@@ -94,6 +117,17 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
                 {'id': self.prefix(obj.pk), 'text': getattr(obj, self.field)}
                 for obj in self.model.objects.all()]))
         return mark_safe(output)
+
+    @property
+    def media(self):
+        """
+        Construct Media as a dynamic property.
+        .. Note:: For more information visit
+            https://docs.djangoproject.com/en/1.8/topics/forms/media/#media-as-a-dynamic-property
+        """
+        return Media(
+            js=(settings.SELECT2_JS,),
+            css={'screen': (settings.SELECT2_CSS,)})
 
 
 class PersonModelSelect2TagWidget(ModelSelect2TagWidgetBase):
