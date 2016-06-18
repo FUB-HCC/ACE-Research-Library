@@ -20,6 +20,8 @@ from .api import views as api_views
 from rest_framework import routers
 from . import settings
 
+admin.site.site_header = 'Research Library Administration'
+
 router = routers.DefaultRouter()
 router.register(r'list', api_views.ResourceViewSet, base_name='list')
 router.register(r'search', api_views.SearchViewSet, base_name='search')

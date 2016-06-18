@@ -1,19 +1,27 @@
 import json
 import re
 import requests
+from haystack.forms import SearchForm
 from readability.readability import Document
+from stop_words import get_stop_words
+from utilofies.stdlib import cached_property
 from django.contrib import admin
+from django.db.models import Count
 from django.forms import ModelForm, Media
+from django.http import JsonResponse
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
 from django.conf import settings
 from django.conf.urls import url
 from django.utils.safestring import mark_safe
+from django.views.decorators.csrf import csrf_exempt
 from django_select2.forms import ModelSelect2TagWidget
 from .models import Person, Category, Keyword, Resource
 
 
 class Gist:
+
+    stop_words = set(get_stop_words('en'))
 
     def __init__(self, html):
         self.html = html
@@ -23,7 +31,7 @@ class Gist:
     def title(self):
         self.document.short_title()
 
-    @property
+    @cached_property
     def text(self):
         text = self.document.summary()
         text = re.sub('<br[^>]+>', '\n', text)
@@ -33,31 +41,35 @@ class Gist:
         text = re.sub('\n{3,}', '\n\n', text, flags=re.MULTILINE)
         return text
 
+    @staticmethod
+    def _common_prefix(one, two):
+        parallelity = [x == y for x, y in zip(one, two)] + [False]
+        return parallelity.index(False)
+
+    def _find_representative(self, stem):
+        tokens = self.text.split()
+        prefixes = {token: self._common_prefix(token, stem) for token in tokens}
+        best = lambda token: (-token[1], len(token[0]))
+        return sorted(prefixes.items(), key=best)[0][0]
+
+    @property
+    def keywords(self):
+        whoosh_backend = SearchForm().searchqueryset.query.backend
+        if not whoosh_backend.setup_complete:
+            whoosh_backend.setup()
+        with whoosh_backend.index.searcher() as searcher:
+            keywords = searcher.key_terms_from_text(
+                'text', self.text, numterms=10, normalize=False)
+            keywords = list(zip(*keywords))[0]
+        return [self._find_representative(keyword) for keyword in keywords
+                if keyword not in self.stop_words]
+
 
 class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
 
-    value_prefix = 'pk='
-
     def value_from_datadict(self, data, files, name):
-        """
-        Override super()’s method so that we get to mark what is
-        a primary key and what is a name.
-
-        Existing values have primary keys, which Select2 posts as expected,
-        but when the user enters new data, it posts the strings such
-        that they are indistinguishable from the primary keys.
-        """
         values = super().value_from_datadict(data, files, name)
-        pks = []
-        for value in values:
-            if value.startswith(self.value_prefix):
-                # A value like “pk=42”
-                pks.append(int(value[len(self.value_prefix):]))
-            else:
-                # The actual name, like “Douglas Adams”
-                obj = self.model.objects.create(**{self.field: value})
-                pks.append(obj.pk)
-        return pks
+        return map(int, values)
 
     def get_url(self):
         """
@@ -93,29 +105,27 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
         del attrs['data-ajax--cache']
         return attrs
 
-    def prefix(self, item):
-        return '{}{}'.format(self.value_prefix, item)
-
-    def render_option(self, selected_choices, option_value, option_label):
-        """
-        Mark the option value so that we can recognize it later.
-        """
-        selected_choices = map(self.prefix, selected_choices)
-        option_value = self.prefix(option_value)
-        return super().render_option(selected_choices, option_value, option_label)
-
     def render(self, name, value, attrs=None, choices=()):
         output = super().render(name, value, attrs, choices)
         # Let’s think of something new if and when the page reaches 1+ MiB.
         output += """
             <script type="text/javascript">
-                $('#%s').select2({
-                  data: %s
-                })
+                var select = $('#%s');
+                select.select2({
+                    createTag: function(params) {
+                        return {id: -1, text: params.term}
+                    },
+                    tags: true,
+                    data: %s
+                });
+                select.on('select2:select', register('%s'));
             </script>\n
-        """ % (attrs['id'], json.dumps([
-                {'id': self.prefix(obj.pk), 'text': getattr(obj, self.field)}
-                for obj in self.model.objects.all()]))
+        """ % (
+            attrs['id'],
+            json.dumps([
+                {'id': obj.pk, 'text': getattr(obj, self.field)}
+                for obj in self.model.objects.all()]),
+            self.model._meta.model_name)
         return mark_safe(output)
 
     @property
@@ -139,10 +149,79 @@ class KeywordModelSelect2TagWidget(ModelSelect2TagWidgetBase):
     model = Keyword
     field = 'name'
 
+    def render(self, name, value, attrs=None, choices=()):
+        output = super().render(name, value, attrs, choices)
+        output += 'Suggestions: <span id="keyword_suggestions"></span>'
+        return mark_safe(output)
+
+
+class UsageCountListFilter(admin.SimpleListFilter):
+    title = 'Usage count'
+    parameter_name = 'usage_count'
+    count_field = 'resource__id'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('0', 'Unused'),
+            ('1', 'Used once'),
+            ('2', 'Used twice'),
+            ('3', 'Used thrice'),
+            ('4', 'Used often'),
+        )
+
+    def queryset(self, request, queryset):
+        value = int(self.value()) if self.value() else None
+        if value is not None and value < 4:
+            return queryset.annotate(resource_count=Count(self.count_field)) \
+                .filter(resource_count=value)
+        elif value is not None:
+            return queryset.annotate(resource_count=Count(self.count_field)) \
+                .filter(resource_count__gte=4)
+        else:
+            return queryset
+
+
+class AuthorUsageCountListFilter(UsageCountListFilter):
+    title = 'Usage count as author'
+    parameter_name = 'usage_count_as_author'
+    count_field = 'resources_authored__id'
+
+
+class EditorUsageCountListFilter(UsageCountListFilter):
+    title = 'Usage count as editor'
+    parameter_name = 'usage_count_as_editor'
+    count_field = 'resources_edited__id'
+
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'usage_count']
+    list_filter = [UsageCountListFilter]
+
+    def usage_count(self, obj):
+        return obj.resource_set.count()
+
+
+@admin.register(Keyword)
+class KeywordAdmin(admin.ModelAdmin):
+    list_display = ['name', 'usage_count']
+    list_filter = [UsageCountListFilter]
+
+    def usage_count(self, obj):
+        return obj.resource_set.count()
+
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ['name', 'usage_count_as_author', 'usage_count_as_editor']
+    list_filter = [AuthorUsageCountListFilter, EditorUsageCountListFilter]
+
+    def usage_count_as_author(self, obj):
+        return obj.resources_authored.count()
+
+    def usage_count_as_editor(self, obj):
+        return obj.resources_edited.count()
 
 
 class ResourceAdminForm(ModelForm):
@@ -189,6 +268,7 @@ class ResourceAdmin(admin.ModelAdmin):
         super().__init__(*args, **kwargs)
         self.fulltext = None
         self.title = None
+        self.keywords = None
 
     def augmented_title(self, obj):
         return format_html(
@@ -207,6 +287,8 @@ class ResourceAdmin(admin.ModelAdmin):
         urls = super(ResourceAdmin, self).get_urls()
         new_urls = [
             url(r'^add_url/$', self.add_url, name='api_resource_add_url'),
+            url(r'^create_person/$', self.create_person, name='api_resource_create_person'),
+            url(r'^create_keyword/$', self.create_keyword, name='api_resource_create_keyword'),
         ]
         return new_urls + urls
 
@@ -218,17 +300,45 @@ class ResourceAdmin(admin.ModelAdmin):
 
     def add_url(self, request, form_url='', extra_context=None):
         if request.method == 'POST':
+            extra_context = extra_context or {}
             url = request.POST['url']
             response = requests.get(url, timeout=10)
             gist = Gist(response.text)
             self.title = gist.title
             self.fulltext = gist.text
+            extra_context['keywords'] = gist.keywords
             # Manipulating the request
             request.method = 'GET'
             request.GET = request.POST
             return self.add_view(request, form_url, extra_context=extra_context)
         return URLResourceAdmin(model=self.model, admin_site=self.admin_site) \
             .add_view(request, form_url, extra_context=extra_context)
+
+    @csrf_exempt
+    def create_person(self, request):
+        """
+        Create a person.
+
+        Little wrapper to circumvent all the security stuff.
+        https://docs.djangoproject.com/en/1.9/ref/csrf/#ajax
+
+        TODO: Don’t circumvent all the security stuff.
+        """
+        person = Person.objects.create(name=request.POST['name'])
+        return JsonResponse({'id': person.pk, 'text': person.name})
+
+    @csrf_exempt
+    def create_keyword(self, request):
+        """
+        Create a keyword.
+
+        Little wrapper to circumvent all the security stuff.
+        https://docs.djangoproject.com/en/1.9/ref/csrf/#ajax
+
+        TODO: Don’t circumvent all the security stuff.
+        """
+        keyword = Keyword.objects.create(name=request.POST['name'])
+        return JsonResponse({'id': keyword.pk, 'text': keyword.name})
 
 
 class URLResourceAdmin(admin.ModelAdmin):

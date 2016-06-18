@@ -43,6 +43,8 @@ setup(
         'python-dateutil',
         'pytz',
         'readability-lxml',
+        'stop-words',
+        'utilofies',
         'Whoosh',
     ],
     zip_safe=False,

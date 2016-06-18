@@ -6,7 +6,7 @@ from .models_choices import SOURCETYPE_CHOICES, RESOURCE_TYPE_CHOICES
 
 
 class Person(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
         return self.name
@@ -14,9 +14,12 @@ class Person(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'people'
+
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name
@@ -26,7 +29,7 @@ class Category(models.Model):
 
 
 class Keyword(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name

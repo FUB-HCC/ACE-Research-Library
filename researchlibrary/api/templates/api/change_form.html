@@ -1,6 +1,7 @@
 {% extends "admin/change_form.html" %}
+{% load apitags %}
 
-{% block extrastyle %}
+{% block extrahead %}
     {{ block.super }}
     <style type="text/css">
         .field-authors .help,
@@ -18,5 +19,68 @@
         .field-keywords .related-widget-wrapper > span {
             min-width: 100% !important;
         }
+        .select2-container--default .select2-selection--multiple {
+            background-color: rgb(247, 247, 247);
+            border: 1px solid #ccc;
+        }
     </style>
+    <script type="text/javascript">
+        function register(model) {
+            return function(event) {
+                console.log(event);
+                if (event.params.data.id == -1) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/api/resource/create_' + model + '/',
+                        data: $.param({'name': event.params.data.text}),
+                        dataType: 'json',
+                        success: function(data) {
+                            $('option:contains("' + data.text + '")').filter(function() {
+                                return $(this).text() === data.text;
+                            }).attr('value', data.id);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            $('option[value="-1"]').remove();
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+    {{ block.super }}
+    <script type="text/javascript">
+        var keywords = {{ keywords|json }};
+        var output = '';
+        for (i=0; i<keywords.length; ++i) {
+          if (i in keywords) {
+            keyword = keywords[i];
+            output += '<a href="#">' + keyword + '</a>' + (i + 1 == keywords.length ? '' : ', ');
+          }
+        }
+        $('#keyword_suggestions').html(output);
+        $('#keyword_suggestions a').click(function (event) {
+            event.preventDefault();
+            var text = this.text;
+            var select = $('#id_keywords');
+            var tags = select.val();
+            if (tags === null)
+                tags = new Array();
+            var tag = select.find('option:contains("' + text + '")').filter(function() {
+                return $(this).text() === text;});
+            if (tag.length === 0) {
+                select.append('<option value="-1">' + this.text + '</option>');
+                tags.push('-1');
+                select.trigger('change').val(tags).trigger('change');
+                select.trigger({
+                    type: 'select2:select',
+                    params: {data: {id: -1, text: this.text}}});
+            } else {
+                tags.push(tag.attr('value'));
+                select.trigger('change').val(tags).trigger('change');
+            };
+        });
+    </script>
 {% endblock %}
