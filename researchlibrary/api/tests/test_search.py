@@ -16,6 +16,7 @@ class SearchTests(TestCase):
 
     # TODO: Extend according to https://trello.com/c/fAUsohvO/2-interface-prototype
     """
+    endpoint_url = '/api/v1/search/'
 
     @classmethod
     def setUpTestData(cls):
@@ -35,32 +36,32 @@ class SearchTests(TestCase):
 
 
     def test_content_type(self):
-        response = self.client.get('/api/search/?q=mock')
+        response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertEqual(response['content-type'], 'application/json')
 
     def test_status(self):
-        response = self.client.get('/api/search/?q=mock')
+        response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertEqual(response.json()['status'], 200)
         self.assertEqual(response.status_code, 200)
 
     def test_mock_count(self):
-        response = self.client.get('/api/search/?q=mock')
+        response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertIsInstance(response.json()['count'], int)
         self.assertTrue(response.json()['count'])  # Greater than zero
 
     def test_pig_count(self):
-        response = self.client.get('/api/search/?q=pig')
+        response = self.client.get(self.endpoint_url + '?q=pig')
         self.assertIsInstance(response.json()['count'], int)
         self.assertEqual(response.json()['count'], 1)
 
     def test_results(self):
-        response = self.client.get('/api/search/?q=mock')
+        response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertIsInstance(response.json()['results'], list)
 
     def test_published(self):
-        response = self.client.get('/api/search/?q=mock')
+        response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertTrue(response.json()['results'][0]['published'])
 
     def test_text(self):
-        response = self.client.get('/api/search/?q=mock')
+        response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertIsInstance(response.json()['results'][0]['text'], str)

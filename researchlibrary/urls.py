@@ -28,10 +28,10 @@ router.register(r'search', api_views.SearchViewSet, base_name='search')
 
 
 urlpatterns = [
-    url(r'^api/', include(router.urls)),
+    url(r'^api/v1/', include(router.urls)),
     url(r'^$', api_views.status, name='status_view'),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/suggest/$', api_views.autosuggest),
+    url(r'^api/v1/suggest/$', api_views.autosuggest),  # FIXME: Need to move into Rest Framework and into api app
     url(r'^tmp_search/$', api_views.tmp_search),
 ]
 
