@@ -67,10 +67,6 @@ class Gist:
 
 class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
 
-    def value_from_datadict(self, data, files, name):
-        values = super().value_from_datadict(data, files, name)
-        return map(int, values)
-
     def get_url(self):
         """
         Get noting at all.
@@ -339,6 +335,13 @@ class ResourceAdmin(admin.ModelAdmin):
         """
         keyword = Keyword.objects.create(name=request.POST['name'])
         return JsonResponse({'id': keyword.pk, 'text': keyword.name})
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['authors'].widget.can_add_related = False
+        form.base_fields['editors'].widget.can_add_related = False
+        form.base_fields['keywords'].widget.can_add_related = False
+        return form
 
 
 class URLResourceAdmin(admin.ModelAdmin):
