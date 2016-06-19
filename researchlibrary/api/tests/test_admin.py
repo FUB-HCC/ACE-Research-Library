@@ -3,6 +3,7 @@ import os
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.conf import settings
+from django.core.management import call_command
 from ..models import Person, Resource, Keyword
 
 
@@ -23,15 +24,18 @@ class SearchTests(TestCase):
         cls.user = User.objects.create_user(
             username='test', password='test', is_superuser=True, is_staff=True)
         cls.author = Person.objects.create(name='Mock Author')
-        Resource.objects.bulk_create([
-            Resource(title='Mock Turtle', published=datetime.date.today()),
-            Resource(title='Mock Chicken', published=datetime.date.today()),
-            Resource(title='Mock Cow', published=datetime.date.today()),
-            Resource(title='Mock Pig', published=datetime.date.today()),
-            Resource(title='Mock Piglet', published=datetime.date.today()),
-            Resource(title='Mock Turkey', published=datetime.date.today()),
-        ])
+        Resource.objects.create(title='Mock Turtle', published=datetime.date.today())
+        Resource.objects.create(title='Mock Chicken', published=datetime.date.today())
+        Resource.objects.create(title='Mock Cow', published=datetime.date.today())
+        Resource.objects.create(title='Mock Pig', published=datetime.date.today())
+        Resource.objects.create(title='Mock Piglet', published=datetime.date.today())
+        Resource.objects.create(title='Mock Turkey', published=datetime.date.today())
         cls.author.resources_authored.add(*Resource.objects.all())
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        call_command('clear_index', interactive=False)
 
     def setUp(self):
         self.client.force_login(self.user)

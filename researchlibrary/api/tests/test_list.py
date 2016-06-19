@@ -1,5 +1,6 @@
 import datetime
 from django.test import TestCase
+from django.core.management import call_command
 from ..models import Person, Resource
 
 
@@ -16,6 +17,11 @@ class ListTests(TestCase):
         author = Person.objects.create(name='Mock Author')
         resource = Resource.objects.create(title='Mock Title', published=datetime.date.today())
         resource.authors.add(author)
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        call_command('clear_index', interactive=False)
 
     def test_content_type(self):
         response = self.client.get(self.endpoint_url)

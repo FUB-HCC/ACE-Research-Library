@@ -2,6 +2,7 @@ import datetime
 import os
 from django.test import TestCase
 from django.conf import settings
+from django.core.management import call_command
 from ..models import Person, Resource
 
 
@@ -16,19 +17,23 @@ class SearchTests(TestCase):
     # TODO: Extend according to https://trello.com/c/fAUsohvO/2-interface-prototype
     """
     endpoint_url = '/api/v1/search/'
+    maxDiff = None
 
     @classmethod
     def setUpTestData(cls):
         author = Person.objects.create(name='Mock Author')
-        Resource.objects.bulk_create([
-            Resource(title='Mock Turtle', published=datetime.date.today()),
-            Resource(title='Mock Chicken', published=datetime.date.today()),
-            Resource(title='Mock Cow', published=datetime.date.today()),
-            Resource(title='Mock Pig', published=datetime.date.today()),
-            Resource(title='Mock Piglet', published=datetime.date.today()),
-            Resource(title='Mock Turkey', published=datetime.date.today()),
-        ])
+        Resource.objects.create(title='Mock Turtle', published=datetime.date.today())
+        Resource.objects.create(title='Mock Chicken', published=datetime.date.today())
+        Resource.objects.create(title='Mock Cow', published=datetime.date.today())
+        Resource.objects.create(title='Mock Pig', published=datetime.date.today())
+        Resource.objects.create(title='Mock Piglet', published=datetime.date.today())
+        Resource.objects.create(title='Mock Turkey', published=datetime.date.today())
         author.resources_authored.add(*Resource.objects.all())
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        call_command('clear_index', interactive=False)
 
     def test_content_type(self):
         response = self.client.get(self.endpoint_url + '?q=mock')
@@ -42,7 +47,7 @@ class SearchTests(TestCase):
     def test_mock_count(self):
         response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertIsInstance(response.json()['count'], int)
-        self.assertTrue(response.json()['count'])  # Greater than zero
+        self.assertEqual(response.json()['count'], 6)
 
     def test_pig_count(self):
         response = self.client.get(self.endpoint_url + '?q=pig')
