@@ -4,10 +4,15 @@
 {% block extrahead %}
     {{ block.super }}
     <style type="text/css">
-        .field-authors .help,
-        .field-editors .help,
-        .field-keywords .help {
+        .field-authors > div > p.help,
+        .field-editors > div > p.help,
+        .field-keywords > div > p.help {
             display: none;
+        }
+        .field-authors p.help,
+        .field-editors p.help,
+        .field-keywords p.help {
+            margin-left: 0 !important;
         }
         .field-authors .related-widget-wrapper,
         .field-editors .related-widget-wrapper,
@@ -22,6 +27,9 @@
         .select2-container--default .select2-selection--multiple {
             background-color: rgb(247, 247, 247);
             border: 1px solid #ccc;
+        }
+        .errors .select2-container--default .select2-selection--multiple {
+            border: 1px solid #ba2121;
         }
     </style>
     <script type="text/javascript">

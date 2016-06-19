@@ -6,6 +6,7 @@ from readability.readability import Document
 from stop_words import get_stop_words
 from utilofies.stdlib import cached_property
 from django.contrib import admin
+from django.contrib.admin.utils import unquote
 from django.db.models import Count
 from django.forms import ModelForm, Media
 from django.http import JsonResponse
@@ -21,6 +22,7 @@ from .models import Person, Category, Keyword, Resource
 
 class Gist:
 
+    keyword_pattern = re.compile(r'^[^\d]+$')
     stop_words = set(get_stop_words('en'))
 
     def __init__(self, html):
@@ -29,7 +31,7 @@ class Gist:
 
     @property
     def title(self):
-        self.document.short_title()
+        return self.document.short_title()
 
     @cached_property
     def text(self):
@@ -46,23 +48,34 @@ class Gist:
         parallelity = [x == y for x, y in zip(one, two)] + [False]
         return parallelity.index(False)
 
-    def _find_representative(self, stem):
-        tokens = self.text.split()
-        prefixes = {token: self._common_prefix(token, stem) for token in tokens}
+    @classmethod
+    def _find_representative(cls, stem, text):
+        tokens = text.split()
+        prefixes = {token: cls._common_prefix(token, stem) for token in tokens}
         best = lambda token: (-token[1], len(token[0]))
         return sorted(prefixes.items(), key=best)[0][0]
 
-    @property
-    def keywords(self):
+    @classmethod
+    def _is_good_keyword(cls, word):
+        return (word not in cls.stop_words) and \
+                cls.keyword_pattern.match(word)
+
+    @classmethod
+    def find_keywords(cls, text):
         whoosh_backend = SearchForm().searchqueryset.query.backend
         if not whoosh_backend.setup_complete:
             whoosh_backend.setup()
         with whoosh_backend.index.searcher() as searcher:
             keywords = searcher.key_terms_from_text(
-                'text', self.text, numterms=10, normalize=False)
-            keywords = list(zip(*keywords))[0]
-        return [self._find_representative(keyword) for keyword in keywords
-                if keyword not in self.stop_words]
+                'text', text, numterms=10, normalize=False)
+        keywords = list(zip(*keywords))[0]
+        keywords = [cls._find_representative(keyword, text) for keyword in keywords]
+        keywords = [keyword for keyword in keywords if cls._is_good_keyword(keyword)]
+        return keywords
+
+    @property
+    def keywords(self):
+        return self.find_keywords(self.text)
 
 
 class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
@@ -105,6 +118,7 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
         output = super().render(name, value, attrs, choices)
         # Let’s think of something new if and when the page reaches 1+ MiB.
         output += """
+            <p class="help">Complete tags by hitting enter or comma.</p>
             <script type="text/javascript">
                 var select = $('#%s');
                 select.select2({
@@ -112,6 +126,7 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
                         return {id: -1, text: params.term}
                     },
                     tags: true,
+                    // selectOnClose: true,  // Too much recursion error
                     data: %s
                 });
                 select.on('select2:select', register('%s'));
@@ -294,19 +309,32 @@ class ResourceAdmin(admin.ModelAdmin):
         initial['title'] = self.title
         return initial
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        obj = self.get_object(request, unquote(object_id))
+        extra_context = extra_context or {}
+        extra_context['keywords'] = Gist.find_keywords(obj.fulltext)
+        return super().change_view(request, object_id, form_url, extra_context=extra_context)
+
+    def add_view(self, request, form_url='', extra_context=None):
+        print(form_url)
+        extra_context = extra_context or {}
+        extra_context['keywords'] = Gist.find_keywords(self.fulltext)
+        return super().add_view(request, form_url, extra_context=extra_context)
+
     def add_url(self, request, form_url='', extra_context=None):
-        if request.method == 'POST':
+        if request.method == 'POST' and not (self.fulltext or self.title):
             extra_context = extra_context or {}
             url = request.POST['url']
             response = requests.get(url, timeout=10)
-            gist = Gist(response.text)
+            gist = Gist(html=response.text)
             self.title = gist.title
             self.fulltext = gist.text
             extra_context['keywords'] = gist.keywords
             # Manipulating the request
             request.method = 'GET'
             request.GET = request.POST
-            return self.add_view(request, form_url, extra_context=extra_context)
+            return self.add_view(
+                request, reverse('admin:api_resource_add'), extra_context=extra_context)
         return URLResourceAdmin(model=self.model, admin_site=self.admin_site) \
             .add_view(request, form_url, extra_context=extra_context)
 

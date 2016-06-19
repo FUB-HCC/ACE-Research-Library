@@ -34,7 +34,6 @@ class SearchTests(TestCase):
         author.resources_authored.add(*Resource.objects.all())
         call_command('rebuild_index', interactive=False)
 
-
     def test_content_type(self):
         response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertEqual(response['content-type'], 'application/json')

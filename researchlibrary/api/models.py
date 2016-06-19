@@ -45,8 +45,8 @@ class Resource(models.Model):
 
     # Optional fields
     accessed = models.DateField('date accessed', null=True, blank=True)
-    url = models.URLField(max_length=2000, blank=True)
-    fulltext_url = models.URLField(max_length=2000, blank=True)
+    url = models.URLField(max_length=2000, blank=True, verbose_name='URL')
+    fulltext_url = models.URLField(max_length=2000, blank=True, verbose_name='fulltext URL')
     categories = models.ManyToManyField(Category, blank=True)
     keywords = models.ManyToManyField(Keyword, blank=True)
     editors = models.ManyToManyField(Person, related_name='resources_edited', blank=True)
