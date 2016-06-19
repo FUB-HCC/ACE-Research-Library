@@ -90,5 +90,5 @@ class KeywordModelSelect2TagWidget(ModelSelect2TagWidgetBase):
 
     def render(self, name, value, attrs=None, choices=()):
         output = super().render(name, value, attrs, choices)
-        output += 'Suggestions: <span id="keyword_suggestions"></span>'
+        output += '<span id="keyword_suggestions">Suggestions: </span>'
         return mark_safe(output)

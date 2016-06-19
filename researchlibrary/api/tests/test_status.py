@@ -1,13 +1,9 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from ...version import __version__
 
 
 class StatusTests(TestCase):
     endpoint_url = '/'
-
-    @classmethod
-    def setUpTestData(cls):
-        cls.client = Client()
 
     def test_version(self):
         response = self.client.get(self.endpoint_url)

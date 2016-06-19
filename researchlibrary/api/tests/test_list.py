@@ -1,5 +1,5 @@
 import datetime
-from django.test import TestCase, Client
+from django.test import TestCase
 from ..models import Person, Resource
 
 
@@ -13,13 +13,9 @@ class ListTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.client = Client()
-        author = Person(name='Mock Author')
-        author.save()
-        resource = Resource(title='Mock Title', published=datetime.date.today())
-        resource.save()
-        resource.authors = [author]
-        resource.save()
+        author = Person.objects.create(name='Mock Author')
+        resource = Resource.objects.create(title='Mock Title', published=datetime.date.today())
+        resource.authors.add(author)
 
     def test_content_type(self):
         response = self.client.get(self.endpoint_url)

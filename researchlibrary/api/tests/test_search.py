@@ -1,8 +1,7 @@
 import datetime
 import os
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.conf import settings
-from django.core.management import call_command
 from ..models import Person, Resource
 
 
@@ -20,9 +19,7 @@ class SearchTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.client = Client()
-        author = Person(name='Mock Author')
-        author.save()
+        author = Person.objects.create(name='Mock Author')
         Resource.objects.bulk_create([
             Resource(title='Mock Turtle', published=datetime.date.today()),
             Resource(title='Mock Chicken', published=datetime.date.today()),
@@ -32,7 +29,6 @@ class SearchTests(TestCase):
             Resource(title='Mock Turkey', published=datetime.date.today()),
         ])
         author.resources_authored.add(*Resource.objects.all())
-        call_command('rebuild_index', interactive=False)
 
     def test_content_type(self):
         response = self.client.get(self.endpoint_url + '?q=mock')

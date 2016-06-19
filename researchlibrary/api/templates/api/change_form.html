@@ -64,11 +64,16 @@
         var output = '';
         for (i=0; i<keywords.length; ++i) {
           if (i in keywords) {
-            keyword = keywords[i];
+            var keyword = keywords[i];
             output += '<a href="#">' + keyword + '</a>' + (i + 1 == keywords.length ? '' : ', ');
           }
         }
-        $('#keyword_suggestions').html(output);
+        if (output) {
+            var initial = $('#keyword_suggestions').html();
+            $('#keyword_suggestions').html(initial + output);
+        } else {
+            $('#keyword_suggestions').remove();
+        }
         $('#keyword_suggestions a').click(function (event) {
             event.preventDefault();
             var text = this.text;

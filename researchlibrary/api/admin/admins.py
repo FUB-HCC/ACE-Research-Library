@@ -56,6 +56,7 @@ class EditorUsageCountListFilter(UsageCountListFilter):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'usage_count']
     list_filter = [UsageCountListFilter]
+    search_fields = ['name']
 
     def usage_count(self, obj):
         return obj.resource_set.count()
@@ -65,6 +66,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class KeywordAdmin(admin.ModelAdmin):
     list_display = ['name', 'usage_count']
     list_filter = [UsageCountListFilter]
+    search_fields = ['name']
 
     def usage_count(self, obj):
         return obj.resource_set.count()
@@ -74,6 +76,7 @@ class KeywordAdmin(admin.ModelAdmin):
 class PersonAdmin(admin.ModelAdmin):
     list_display = ['name', 'usage_count_as_author', 'usage_count_as_editor']
     list_filter = [AuthorUsageCountListFilter, EditorUsageCountListFilter]
+    search_fields = ['name']
 
     def usage_count_as_author(self, obj):
         return obj.resources_authored.count()
@@ -152,20 +155,21 @@ class ResourceAdmin(admin.ModelAdmin):
 
     def get_changeform_initial_data(self, request):
         initial = super(ResourceAdmin, self).get_changeform_initial_data(request)
-        initial['fulltext'] = self.fulltext
-        initial['title'] = self.title
+        initial['fulltext'] = getattr(request, 'fulltext', None)
+        initial['title'] = getattr(request, 'title', None)
         return initial
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         obj = self.get_object(request, unquote(object_id))
         extra_context = extra_context or {}
-        extra_context['keywords'] = Gist.find_keywords(obj.fulltext)
+        if obj.fulltext:
+            extra_context['keywords'] = Gist.find_keywords(obj.fulltext)
         return super().change_view(request, object_id, form_url, extra_context=extra_context)
 
     def add_view(self, request, form_url='', extra_context=None):
-        print(form_url)
         extra_context = extra_context or {}
-        extra_context['keywords'] = Gist.find_keywords(self.fulltext)
+        if hasattr(request, 'fulltext'):
+            extra_context['keywords'] = Gist.find_keywords(request.fulltext)
         return super().add_view(request, form_url, extra_context=extra_context)
 
     def add_url(self, request, form_url='', extra_context=None):
@@ -174,8 +178,8 @@ class ResourceAdmin(admin.ModelAdmin):
             url = request.POST['url']
             response = requests.get(url, timeout=10)
             gist = Gist(html=response.text)
-            self.title = gist.title
-            self.fulltext = gist.text
+            request.title = gist.title
+            request.fulltext = gist.text
             extra_context['keywords'] = gist.keywords
             # Manipulating the request
             request.method = 'GET'
