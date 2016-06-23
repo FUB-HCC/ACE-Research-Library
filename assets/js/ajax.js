@@ -3,10 +3,10 @@ $(function(){
 	$('#search').keyup(function() {
 
 		$.ajax({
-			type: "POST",
-			url: "/api/suggest/",
+			type: "GET",
+			url: "/api/v1/suggest/",
 			data: {
-				'search_text' : $('#search').val(),
+				'q' : $('#search').val(),
 				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
 			},
 			success: searchSuccess,

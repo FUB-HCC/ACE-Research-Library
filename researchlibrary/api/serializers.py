@@ -24,3 +24,8 @@ class SearchSerializer(serializers.Serializer):
             if isinstance(entry.published, datetime.datetime):
                 entry.published = entry.published.date()
         return super().__init__(instance=instance, data=data, **kwargs)
+
+    class Meta:
+        model = Resource
+        fields = ('authors', 'editors',  'title', 'subtitle', 'abstract', 'publisher', 'journal',
+                  'published', 'accessed', 'volume', 'number', 'pages', 'series', 'edition', 'url')

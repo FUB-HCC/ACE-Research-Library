@@ -1,5 +1,5 @@
 from haystack import indexes
-from .models import Resource, Person
+from .models import Resource, Person, Keyword
 
 
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
@@ -24,6 +24,17 @@ class PersonIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Person
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+class KeywordIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=False)
+    keyword = indexes.CharField(model_attr='name')
+    keyword_auto = indexes.EdgeNgramField(model_attr='name')
+
+    def get_model(self):
+        return Keyword
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
