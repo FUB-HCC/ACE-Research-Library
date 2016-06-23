@@ -1,1 +1,0 @@
-<?php/* * googlemap section */if (has_action('mp_emmet_section_map')) {    do_action('mp_emmet_section_map');}

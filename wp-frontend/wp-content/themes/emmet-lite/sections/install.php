@@ -1,1 +1,0 @@
-<?php/* * install section */if (has_action('mp_emmet_section_install')) {    do_action('mp_emmet_section_install');}

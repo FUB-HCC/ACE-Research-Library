@@ -1,1 +1,0 @@
-<?php/* * features section */if (has_action('mp_emmet_section_features')) {    do_action('mp_emmet_section_features');}
