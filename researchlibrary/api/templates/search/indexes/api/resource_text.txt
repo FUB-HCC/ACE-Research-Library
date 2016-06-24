@@ -2,5 +2,7 @@
 {{ object.subtitle }}
 {{ object.authors.name }}
 {{ object.editors.name }}
+{{ object.keywords.name }}
 {{ object.abstract }}
 {{ object.review }}
+{{ object.fulltext }}
