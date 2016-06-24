@@ -64,4 +64,4 @@ class SearchTests(TestCase):
 
     def test_text(self):
         response = self.client.get(self.endpoint_url + '?q=mock')
-        self.assertIsInstance(response.json()['results'][0]['text'], str)
+        self.assertIsInstance(response.json()['results'][0]['abstract'], str)
