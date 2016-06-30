@@ -18,10 +18,13 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     categories = indexes.MultiValueField(indexed=True, stored=True)
     authors = indexes.MultiValueField(indexed=True, stored=True)
     editors = indexes.MultiValueField(indexed=True, stored=True)
+    keywords = indexes.MultiValueField(indexed=True, stored=True)
     title = indexes.CharField(model_attr='title')
     subtitle = indexes.CharField(model_attr='subtitle')
     title_auto = indexes.EdgeNgramField(model_attr='title')
     subtitle_auto = indexes.EdgeNgramField(model_attr='subtitle')
+    #A search with the 'author:'-tag will look through this field:
+    author = indexes.CharField(indexed=True, stored=True)
 
     def get_model(self):
         return Resource
@@ -30,13 +33,19 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         return self.get_model().objects.all()
 
     def prepare_categories(self, obj):
-        return [c.name for c in obj.categories.all()]
+        return [c for c in obj.categories.all()]
 
     def prepare_authors(self, obj):
-        return [a.name for a in obj.authors.all()]
+        return [a for a in obj.authors.all()]
 
     def prepare_editors(self, obj):
-        return [e.name for e in obj.editors.all()]
+        return [e for e in obj.editors.all()]
+
+    def prepare_keywords(self, obj):
+        return [k for k in obj.keywords.all()]
+
+    def prepare_author(self, obj):
+        return (' '.join([a.name for a in obj.authors.all() | obj.editors.all()]))
 
 
 class PersonIndex(indexes.SearchIndex, indexes.Indexable):

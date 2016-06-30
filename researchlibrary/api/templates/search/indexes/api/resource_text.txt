@@ -1,8 +1,8 @@
 {{ object.title }}
 {{ object.subtitle }}
-{{ object.authors.name }}
-{{ object.editors.name }}
-{{ object.keywords.name }}
+{% for author in object.authors.all %} {{ author.name }} {% endfor %}
+{% for editor in object.editors.all %} {{ editor.name }} {% endfor %}
+{% for keyword in object.keywords.all %} {{ keyword.name }} {% endfor %}
 {{ object.abstract }}
 {{ object.review }}
 {{ object.fulltext }}
