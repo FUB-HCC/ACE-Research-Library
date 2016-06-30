@@ -45,29 +45,45 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $timeout, $q, $l
     };
 
     $scope.search = function (searchitem) {
-        console.log(searchitem);
         db.getPapersSearch(searchitem, 1, $scope.len).then(function (response){
-            $scope.papers = response.data.results;
+            $scope.totalItems = response.data.count;
+            angular.copy(response.data.results, $scope.papers);
+
             $scope.filter_frame = prototype_filter_frame();
             if (response.data) { $scope.sidebar_hide = true;}
             build_filter();
-            console.log(filter_frame);
         });
+    };
+    $scope.onSelect = function ($item, $model, $label) {
+        db.getPapersSearch($item.value, 1, $scope.len).then(function (response){
+            $scope.totalItems = response.data.count;
+            angular.copy(response.data.results, $scope.papers);
+            if (response.data) { $scope.sidebar_hide = true;}
+            $scope.filter_frame = prototype_filter_frame();
+            build_filter();
+        });
+    };
+    $scope.onFilter = function(index){
+        var cat = $scope.filter_frame.categories[index];
+        if (!$scope.origpapers) $scope.origpapers = $scope.papers;
+        $scope.papers = $scope.origpapers.filter(function (item, pos) {return item.categories.indexOf(cat) >=0 });
     };
 
     function build_filter(){
         for (i=0; i< $scope.papers.length; i++) {
-            console.log($scope.filter_frame.categories.indexOf($scope.papers[i].category));
-            if (($scope.filter_frame.categories.indexOf($scope.papers[i].category))<0) {
-                $scope.filter_frame.categories.push($scope.papers[i].category);
+            if ($scope.papers[i].categories) {
+                $scope.filter_frame.categories = $scope.filter_frame.categories.concat($scope.papers[i].categories);
+            }
+            if (($scope.filter_frame.publication_type.indexOf($scope.papers[i].resource_type))<0) {
+                $scope.filter_frame.publication_type.push($scope.papers[i].resource_type);
             };
-            if (($scope.filter_frame.publication_type.indexOf($scope.papers[i].sourcetype))<0) {
-                $scope.filter_frame.publication_type.push($scope.papers[i].sourcetype);
-            };
-            if (($scope.filter_frame.years.indexOf($scope.papers[i].date))<0) {
-                $scope.filter_frame.years.push($scope.papers[i].date);
+            if (($scope.filter_frame.years.indexOf($scope.papers[i].published))<0) {
+                $scope.filter_frame.years.push($scope.papers[i].published);
             };
         };
+        var cat = $scope.filter_frame.categories;
+        var res = cat.filter(function (item, pos) {return cat.indexOf(item) == pos});
+        $scope.filter_frame.categories = res;
         $scope.filter_frame.categories.sort();
         $scope.filter_frame.publication_type.sort();
         $scope.filter_frame.years.sort();

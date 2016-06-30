@@ -78,7 +78,6 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
             js=(settings.SELECT2_JS,),
             css={'screen': (settings.SELECT2_CSS,)})
 
-
 class PersonModelSelect2TagWidget(ModelSelect2TagWidgetBase):
     model = Person
     field = 'name'
