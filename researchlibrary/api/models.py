@@ -63,7 +63,8 @@ class Resource(models.Model):
     series = models.CharField(max_length=300, blank=True)
     edition = models.CharField(max_length=300, blank=True)
     sourcetype = models.CharField(
-        max_length=30, choices=SOURCETYPE_CHOICES, blank=True)
+        max_length=30, choices=SOURCETYPE_CHOICES, blank=True,
+        help_text='The type of the source, e.g., “book” for a book chapter.')
 
     def clean(self):
         if self.published and self.published > datetime.date.today():
