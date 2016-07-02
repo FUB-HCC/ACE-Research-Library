@@ -84,6 +84,5 @@ class Resource(models.Model):
     class Meta:
         ordering = ['-published', 'title']
         get_latest_by = 'published'
-
 Resource.authors.through.person.field.remote_field.on_delete = models.PROTECT
 Resource.editors.through.person.field.remote_field.on_delete = models.PROTECT

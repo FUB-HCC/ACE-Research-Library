@@ -1,5 +1,11 @@
 {% extends "api/change_form.html" %}
+{% load i18n %}
 
 {% block submit_buttons_bottom %}
-    <input type="submit" value="Continue" name="_continue" class="default" />
+    <div class="submit-row">
+        <input type="submit" value="Continue" name="_continue" class="default" />
+        <p class="deletelink-box"> {# Reusing the styling #}
+            <a href="javascript:history.back()" class="deletelink" style="background: #609ab6; margin-left: 5px;">{% trans "Cancel" %}</a>
+        </p>
+    </div>
 {% endblock %}
