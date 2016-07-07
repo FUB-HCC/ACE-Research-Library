@@ -3,6 +3,7 @@ from haystack.forms import SearchForm
 from stop_words import get_stop_words
 from readability.readability import Document
 from utilofies.stdlib import cached_property
+import string
 
 class Gist:
 
@@ -55,6 +56,10 @@ class Gist:
         keywords = list(zip(*keywords))[0]
         keywords = [cls._find_representative(keyword, text) for keyword in keywords]
         keywords = [keyword for keyword in keywords if cls._is_good_keyword(keyword)]
+        #no double keywords in list
+        keywords = list(set(keywords))
+        #no punctuation in suggested keywords
+        keywords = [''.join(c for c in s if c not in string.punctuation) for s in keywords]
         return keywords
 
     @property
