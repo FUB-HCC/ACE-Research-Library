@@ -54,6 +54,8 @@
                             $('option[value="-1"]').remove();
                         }
                     });
+                    // Registering the event handler again because it somehow gets lost.
+                    $(event.target).on('select2:select', register(model));
                 }
             }
         }

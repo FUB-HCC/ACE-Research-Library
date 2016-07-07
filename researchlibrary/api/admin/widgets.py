@@ -51,7 +51,7 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
                 var select = $('#%s');
                 select.select2({
                     createTag: function(params) {
-                        return {id: -1, text: params.term}
+                        return {id: -1, text: params.term, tag: true}
                     },
                     tags: true,
                     // selectOnClose: true,  // Too much recursion error
