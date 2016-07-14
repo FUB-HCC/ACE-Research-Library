@@ -2,6 +2,7 @@ import requests
 from django.contrib import admin
 from django.contrib.admin.utils import unquote
 from django.db.models import Count
+from django.db.models.functions import Lower
 from django.forms import ModelForm
 from django.http import JsonResponse
 from django.core.urlresolvers import reverse
@@ -68,8 +69,13 @@ class KeywordAdmin(admin.ModelAdmin):
     list_filter = [UsageCountListFilter]
     search_fields = ['name']
 
+    def get_queryset(self, request):
+        return Keyword.objects.annotate(kw_count=Count('resource'))
+
     def usage_count(self, obj):
-        return obj.resource_set.count()
+        return obj.kw_count
+    usage_count.short_description = 'Usage Count'
+    usage_count.admin_order_field = 'kw_count'
 
 
 @admin.register(Person)
@@ -139,6 +145,7 @@ class ResourceAdmin(admin.ModelAdmin):
             external_url=obj.url,
             title=obj.title)
     augmented_title.short_description = 'Title'
+    augmented_title.admin_order_field = 'title'
 
     def concatenated_authors(self, obj):
         return ', '.join([author.name for author in obj.authors.all()])
