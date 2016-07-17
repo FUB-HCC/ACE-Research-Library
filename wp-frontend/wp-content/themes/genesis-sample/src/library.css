@@ -1,0 +1,215 @@
+.body{
+	font-family: Myriad Pro;
+}
+.input-search{
+	width: 1000px;
+	height: 42px;
+}
+.body-lib{
+	/*padding-top: 5px;*/
+}
+
+.typeahead-demo .custom-popup-wrapper {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	display: none;
+	background-color: #f9f9f9;
+}
+
+.typeahead-demo .custom-popup-wrapper > .message {
+	padding: 10px 20px;
+	border-bottom: 1px solid #ddd;
+	color: #868686;
+}
+
+.typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+	position: static;
+	float: none;
+	display: block;
+	min-width: 160px;
+	background-color: transparent;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+}
+input.search {
+	-webkit-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+	-moz-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+	box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+}
+button.search {
+	-webkit-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+	-moz-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+	box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+
+	border-radius: 6px 6px 6px 6px;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 10px 6px 6px 6px;
+
+	background: url('../../genesis-sample/src/search.png');
+	background-color: white;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-position: 19px 9px;
+}
+.center {
+	position: fixed;
+	left: 40%;
+	top: 50%;
+	width: 100%;
+}
+input[type="text"]:focus{
+	border-color: rgba(55, 146, 155, 0.8);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(54, 148, 157, 0.6);
+	outline: 0 none;
+}
+
+h4, h4 > a{
+	color: rgba(54, 148, 157, 0.8);
+	text-decoration: none;
+	font-weight: bold;
+}
+.blocks {
+
+	padding-top: 16px;
+	padding-right: 10px;
+	padding-bottom: 15px;
+	padding-left: 10px;
+
+	border-radius: 6px 6px 6px 6px;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px 6px 6px 6px;
+	border: 1px solid #e8e8e8;
+	background-color: #ffffff;
+
+	-webkit-box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
+	-moz-box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
+	box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
+}
+.filter{
+	padding-top: 16px;
+	padding-right: 10px;
+	padding-bottom: 15px;
+	padding-left: 10px;
+
+	border-radius: 6px 6px 6px 6px;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px 6px 6px 6px;
+	border: 1px solid #e8e8e8;
+	background-color: #ffffff;
+
+	-webkit-box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
+	-moz-box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
+	box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
+}
+.body-lib {
+	padding-left: 11px;
+}
+.paper {
+	margin-bottom: 14px;
+}
+form {
+	padding-bottom: 22px;
+	margin-bottom: 0px;
+}
+.topheader{
+	padding-left: 11px;
+}
+.author {
+	color: #009953;
+}
+.publisher {
+	position: absolute;
+	right: 31px;   /* must be equal to parent's right padding */
+}
+.abstract{
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.centerImage
+{
+	text-align:center;
+	display:block;
+	position: absolute;
+	margin: 30px 10px 0px -30px;
+}
+div.vertical-line{
+	border-right: 1px solid #dcdcdc;
+}
+/*for filter - dropdown with check*/
+.dropdown-menu{
+/*	top:85%;
+	width:100%;*/
+	border-color: #00959e;
+	/*overflow: scroll*/
+}
+
+
+.nav-sidebar li  a:hover {
+	color: #37929b;
+	background-color: inherit;
+}
+.nav-sidebar li a {
+	color: #000000;
+	text-decoration: none;
+	padding: 7px 10px;
+
+	position: relative;
+	display: block;
+}
+.nav-sidebar .btn-group {
+	display: block;
+}
+
+.sidebar li {
+	border-bottom: 0px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+.sidebar h4{
+	margin: 0 0 8px;
+	padding: 0 0 0 10px;
+}
+
+
+
+.btn-default{
+	border-color: #00959e;
+	text-transform: capitalize;
+}
+.btn-default:hover{
+	border-color: #00959e;
+}
+.btn-default:focus, .btn-default.focus{
+	/*border: 1px solid transparent;*/
+	border-color: #00959e;
+}
+.imgfilter{
+	width:25px;
+	height: 25px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.imgauthor{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align: text-bottom;
+}
+.more{
+	color: #37929b;
+	text-align: center;
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+.more:hover{
+	color: #009953;
+	cursor: pointer;
+}

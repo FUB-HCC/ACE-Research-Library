@@ -1,0 +1,147 @@
+<div ng-controller="mainCtrl as ctrl">
+    <div class="row">
+        <div class="col-md-2 topheader">
+            <div>
+            <img src="/wordpress/wp-content/themes/genesis-sample/src/logo.png" alt="Logo" style="width:175px; height: 40px;">
+            </div>
+        </div>
+        <div class="col-md-10 topheader">
+            <form class="form-inline" name="Search" ng-submit="search(searchitem)">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="sr-only" for="search">Search</label>
+                        <input type="text" class="form-control search" id="search" style="width:290px; height: 42px;"  ng-model="searchitem"
+                               placeholder="Search in Library"  autocomplete="off"
+                               uib-typeahead="paper.value for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8"
+                               typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item,$model,$label)">
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-default search" type="submit" ng-click="search(searchitem)" style="width:65px; height: 42px;"></button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar filter" ng-show="sidebar_hide">
+
+            <h4>Filter by</h4>
+            <ul class="nav nav-sidebar">
+                <li class="active">
+                    <div ng-dropdown-multiselect="" options="dataPubTime" selected-model="setPubTime" checkboxes="true"
+                         translation-texts="fBtnPubTime" extra-settings="fSettingPubTime">
+                    </div>
+                    <span class="sr-only">(current)</span></a>
+                </li> <!-- class="active" kann-->
+                <li>
+                    <div ng-dropdown-multiselect="" options="dataCat" selected-model="setCat" checkboxes="true"
+                         translation-texts="fBtnCat" extra-settings="fSettingCat"></div>
+                    <span class="sr-only">(current)</span></a>
+                </li>
+                <li>
+                    <div ng-dropdown-multiselect="" options="dataKey" selected-model="setKey" checkboxes="true"
+                         translation-texts="fBtnKey" extra-settings="fSettingKey"></div>
+                    <span class="sr-only">(current)</span></a>
+                </li>
+                <li>
+                    <div ng-dropdown-multiselect="" options="dataPubType" selected-model="setPubType" checkboxes="true"
+                         translation-texts="fBtnPubType" extra-settings="fSettingPubType"></div>
+                    <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+
+
+            <hr class="lib-link-sep" />
+            <h4>Sort by</h4>
+            <ul class="nav nav-sidebar">
+                <li class="active">
+                    <a href="">
+                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-sample/src/icon/target.svg">
+                        &nbsp
+                        Relevance
+                        <span class="sr-only">(current)</span></a>
+                </li> <!-- class="active" kann-->
+                <li>
+                    <a href="">
+                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-sample/src/icon/calendar.svg">
+                        &nbsp
+                        Date
+                        <span class="sr-only">(current)</span></a>
+                </li> <!-- class="active" kann-->
+                <li>
+                    <a href="">
+                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-sample/src/icon/category.svg">
+                        &nbsp
+                        Categories
+                        <span class="sr-only">(current)</span></a>
+                </li> <!-- class="active" kann-->
+                <li>
+                    <a href="">
+                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-sample/src/icon/search_w_key.svg">
+                        &nbsp
+                        Keywords
+                        <span class="sr-only">(current)</span></a>
+                </li> <!-- class="active" kann-->
+                <li>
+                    <a href="">
+                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-sample/src/icon/copy.svg">
+                        &nbsp
+                        Publication Time
+                        <span class="sr-only">(current)</span></a>
+                </li> <!-- class="active" kann-->
+            </ul>
+        </div>
+        <div id="main" class="col-md-10 container container-fluid typeahead-demo main-container main body-lib">
+            <ul>
+                <li class="blocks paper" ng-repeat="paper in papers">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h4 class="lib-link-name"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
+                            <div class="vertical-line">
+                            <div class="author">
+                                <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-sample/src/icon/people.svg">
+                                <small>
+                                  <span ng-repeat="author in paper.authors">
+                                      <span ng-show="!($last)">
+                                      {{author}},
+                                      </span>
+                                  </span>
+                                  <span ng-repeat="author in paper.authors">
+                                      <span ng-show="$last">
+                                      {{author}}
+                                      </span>
+                                  </span>
+                                  <span ng-show="!paper.authors.length">No Author</span>
+                                  <span class="publisher">
+                                      {{paper.publisher}} , {{paper.published}}
+                                      <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-sample/src/icon/circle_.svg">
+                                  </span>
+                                </small>
+                            </div>
+                            <div class="abstract">
+                                {{paper.abstract}}
+                                &nbsp;
+                            </div>
+                                <div>
+                                    {{excerpt}}
+                                </div>
+                            <br>
+
+                            <strong>
+                                  <span class="lib-link-full"><a id="link-74" class="track_this_link" style="display: none;" href="#" target="_blank">Full Text Available</a>
+                                  </span>
+                            </strong>
+                            </div>
+                            <span class="glyphicon glyphicon-align-center more" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-md-1">
+                            <img class="centerImage" src="/wordpress/wp-content/themes/genesis-sample/src/icon/html.svg" alt="pdf" style="width:100px; height: 100px;" >
+                        </div>
+                    </div>
+                    <!--more-->
+                </li>
+            </ul>
+            <div align="center">
+                <uib-pagination  boundary-links="true" total-items="totalItems" ng-model="currentPage" force-ellipses="true" max-size="maxSize" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
