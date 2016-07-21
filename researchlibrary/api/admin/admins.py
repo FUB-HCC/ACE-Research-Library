@@ -90,10 +90,20 @@ class PersonAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
     def usage_count_as_author(self, obj):
-        return obj.resources_authored.count()
+        return obj.auth_count
 
     def usage_count_as_editor(self, obj):
-        return obj.resources_edited.count()
+        return obj.edi_count
+
+    def get_queryset(self, request):
+        return Person.objects.annotate(auth_count=Count('resources_authored')).annotate(edi_count=Count('resources_edited'))
+
+    def usage_count(self, obj):
+        return obj.ct_count
+    usage_count_as_author.short_description = 'Usage Count as author'
+    usage_count_as_author.admin_order_field = 'auth_count'
+    usage_count_as_editor.short_description = 'Usage Count as editor'
+    usage_count_as_editor.admin_order_field = 'edi_count'
 
 
 class ResourceAdminForm(ModelForm):
