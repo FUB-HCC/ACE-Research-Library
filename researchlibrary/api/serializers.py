@@ -30,7 +30,7 @@ class SearchSerializer(serializers.HyperlinkedModelSerializer):
     def fetch_excerpt(self, obj):
         try:
             return obj.highlighted['text'][0]
-        except TypeError:
+        except (TypeError, AttributeError):
             return ""
 
     class Meta:
