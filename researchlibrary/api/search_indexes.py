@@ -1,5 +1,5 @@
 from haystack import indexes
-from .models import Resource, Person, Keyword
+from .models import Resource, Person, Keyword, Category
 
 
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
@@ -32,6 +32,9 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
+    #def prepare_resource_type(self, obj):
+    #    return obj.get_resource_type_display()
+
     def prepare_categories(self, obj):
         return [c for c in obj.categories.all()]
 
@@ -59,6 +62,7 @@ class PersonIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
+
 class KeywordIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=False)
     keyword = indexes.CharField(model_attr='name')
@@ -69,3 +73,15 @@ class KeywordIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
+
+
+class CategoryIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=False)
+    category = indexes.CharField(model_attr='name')
+
+    def get_model(self):
+        return Category
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
