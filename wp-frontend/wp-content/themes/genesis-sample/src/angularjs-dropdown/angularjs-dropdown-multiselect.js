@@ -23,7 +23,7 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                 var template = '<div class="multiselect-parent btn-group dropdown-multiselect">';
                 template += '<a href="" class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleDropdown()">';
                 template += '<img class="imgfilter" ng-src="{{settings.imageURL}}">&nbsp {{getButtonText()}}</a>'
-                template += '<ul class="dropdown-menu dropdown-menu-form" ng-style="{display: open ? \'block\' : \'none\', height : settings.scrollable ? settings.scrollableHeight : \'auto\' }" >';
+                template += '<ul class="dfilter dropdown-menu dropdown-menu-form" ng-style="{display: open ? \'block\' : \'none\', height : settings.scrollable ? settings.scrollableHeight : \'auto\' }" >';
                 template += '<li ng-hide="!settings.showCheckAll || settings.selectionLimit > 0"><a data-ng-click="selectAll()"><span class="glyphicon glyphicon-ok"></span>  {{texts.checkAll}}</a>';
                 template += '<li ng-show="settings.showUncheckAll"><a data-ng-click="deselectAll();"><span class="glyphicon glyphicon-remove"></span>   {{texts.uncheckAll}}</a></li>';
                 template += '<li ng-hide="(!settings.showCheckAll || settings.selectionLimit > 0) && !settings.showUncheckAll" class="divider"></li>';
@@ -210,7 +210,7 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                             if (totalSelected === 0) {
                                 return $scope.texts.buttonDefaultText;
                             } else {
-                                return totalSelected + ' ' + $scope.texts.dynamicButtonTextSuffix;
+                                return  $scope.texts.dynamicButtonTextSuffix + ' ' + totalSelected;
                             }
                         }
                     } else {

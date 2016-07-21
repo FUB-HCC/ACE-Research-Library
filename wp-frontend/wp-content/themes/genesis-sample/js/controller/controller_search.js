@@ -26,12 +26,22 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
         return $scope.suggestlist;
     };
 
+    function getfiletype(){
+        for (i=0; i<$scope.papers.length; i++){
+            if ($scope.papers[i].url.slice(-3) == "pdf"){
+                $scope.papers[i].filetype = "pdf";
+            }
+            else $scope.papers[i].filetype = "html";
+        }
+    };
+
     $scope.search = function (searchitem) {
         if (searchitem) {
             db.getPapersSearch(searchitem, 1, $scope.len).then(function (response){
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
                 if (response.data.results) {
+                    getfiletype();
                     localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
                     $location.path('/searchfull');
@@ -42,6 +52,7 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
                 if (response.data.results) {
+                    getfiletype();
                     localStorage.setItem('papers',  JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
                     $location.path('/searchfull');
@@ -54,6 +65,7 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
             if (response.data.results) {
+                getfiletype();
                 localStorage.setItem('papers',  JSON.stringify($scope.papers));
                 localStorage.setItem('totalItems', $scope.totalItems);
                 $location.path('/searchfull');

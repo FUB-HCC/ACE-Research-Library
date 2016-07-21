@@ -25,23 +25,23 @@
 
             <h4>Filter by</h4>
             <ul class="nav nav-sidebar">
-                <li class="active">
+                <li ng-class="{clicked: setPubTime.length}">
                     <div ng-dropdown-multiselect="" options="dataPubTime" selected-model="setPubTime" checkboxes="true"
                          translation-texts="fBtnPubTime" extra-settings="fSettingPubTime">
                     </div>
                     <span class="sr-only">(current)</span></a>
                 </li> <!-- class="active" kann-->
-                <li>
+                <li ng-class="{clicked: setCat.length}">
                     <div ng-dropdown-multiselect="" options="dataCat" selected-model="setCat" checkboxes="true"
                          translation-texts="fBtnCat" extra-settings="fSettingCat"></div>
                     <span class="sr-only">(current)</span></a>
                 </li>
-                <li>
+                <li ng-class="{clicked: setKey.length}">
                     <div ng-dropdown-multiselect="" options="dataKey" selected-model="setKey" checkboxes="true"
                          translation-texts="fBtnKey" extra-settings="fSettingKey"></div>
                     <span class="sr-only">(current)</span></a>
                 </li>
-                <li>
+                <li ng-class="{clicked: setPubType.length}">
                     <div ng-dropdown-multiselect="" options="dataPubType" selected-model="setPubType" checkboxes="true"
                          translation-texts="fBtnPubType" extra-settings="fSettingPubType"></div>
                     <span class="sr-only">(current)</span></a>
@@ -96,32 +96,59 @@
                         <div class="col-md-11">
                             <h4 class="lib-link-name"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
                             <div class="vertical-line">
-                            <div class="author">
-                                <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-sample/src/icon/people.svg">
-                                <small>
-                                  <span ng-repeat="author in paper.authors">
-                                      <span ng-show="!($last)">
-                                      {{author}},
-                                      </span>
-                                  </span>
-                                  <span ng-repeat="author in paper.authors">
-                                      <span ng-show="$last">
-                                      {{author}}
-                                      </span>
-                                  </span>
-                                  <span ng-show="!paper.authors.length">No Author</span>
-                                  <span class="publisher">
-                                      {{paper.publisher}} , {{paper.published}}
-                                      <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-sample/src/icon/circle_.svg">
-                                  </span>
-                                </small>
-                            </div>
-                            <div class="abstract">
-                                {{paper.abstract}}
-                                &nbsp;
-                            </div>
-                                <div>
-                                    {{excerpt}}
+                                <div class="author">
+                                    <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-sample/src/icon/people.svg">
+                                    <small>
+                                        <span ng-repeat="author in paper.authors">
+                                          <span ng-show="!($last)">
+                                          {{author}},
+                                          </span>
+                                        </span>
+                                        <span ng-repeat="author in paper.authors">
+                                          <span ng-show="$last">
+                                          {{author}}
+                                          </span>
+                                        </span>
+                                        <span ng-show="!paper.authors.length">No Author</span>
+                                        <span class="publisher">
+                                            <span ng-show="paper.publisher">
+                                                {{paper.publisher}},&nbsp
+                                            </span>
+                                            {{paper.published}}
+                                            <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-sample/src/icon/circle_.svg">
+                                        </span>
+                                    </small>
+                                </div>
+                                <div ng-class="{abstract: paper.abstract}" ng-show="!(paper.full)">
+                                    {{paper.abstract}}
+                                </div>
+                                <div class = "fullView-hide" ng-show="paper.full">
+                                    {{paper.abstract}}
+                                    <div ng-show = "paper.excerpt">
+                                        Eexcerpt: {{paper.excerpt}}
+                                    </div>
+                                    <div ng-show = "!(paper.editors.length === 0)">
+                                        Editors: {{paper.editors}}
+                                    </div>
+                                    <div ng-show = "paper.subtitle">
+                                        Subtitle: {{paper.subtitle}}
+                                    </div>
+                                    <div ng-show = "paper.accessed">
+                                        Accessed: {{paper.accessed}}
+                                    </div>
+                                    <div ng-show = "paper.volume">
+                                        Volume: {{paper.volume}}
+                                    </div>
+                                    <div ng-show = "(!(paper.pages == 'None - None') && (paper.pages))">
+                                        Pages: {{paper.pages}}
+                                    </div>
+                                    <div ng-show = "paper.series">
+                                        Series: {{paper.series}}
+                                    </div>
+                                    <div ng-show = "paper.edition">
+                                        Edition: {{paper.edition}}
+                                    </div>
+                                    &nbsp;
                                 </div>
                             <br>
 
@@ -130,17 +157,18 @@
                                   </span>
                             </strong>
                             </div>
-                            <span class="glyphicon glyphicon-align-center more" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-align-center more" ng-click="onFullview($index)" aria-hidden="true"></span>
                         </div>
                         <div class="col-md-1">
-                            <img class="centerImage" src="/wordpress/wp-content/themes/genesis-sample/src/icon/html.svg" alt="pdf" style="width:100px; height: 100px;" >
+                            <img class="centerImage" ng-show="paper.filetype == 'html'" src="/wordpress/wp-content/themes/genesis-sample/src/icon/html.svg" alt="pdf" style="width:100px; height: 100px;" >
+                            <img class="centerImage" ng-show="paper.filetype == 'pdf'" src="/wordpress/wp-content/themes/genesis-sample/src/icon/pdf.svg" alt="pdf" style="width:100px; height: 100px;" >
                         </div>
                     </div>
                     <!--more-->
                 </li>
             </ul>
             <div align="center">
-                <uib-pagination  boundary-links="true" total-items="totalItems" ng-model="currentPage" force-ellipses="true" max-size="maxSize" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                <uib-pagination  boundary-links="false" total-items="totalItems" ng-model="currentPage" force-ellipses="false" max-size="maxSize" ng-change="pageChanged()" class="pagination-sm" previous-text="< Previous" next-text="Next >"></uib-pagination>
             </div>
         </div>
     </div>

@@ -128,6 +128,10 @@ form {
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
+	display: -moz-box;
+	-moz-line-clamp: 3;
+	-moz-box-orient: vertical;
+	height: 90px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
@@ -149,13 +153,23 @@ div.vertical-line{
 	/*overflow: scroll*/
 }
 
+.dfilter{
+	width: 185px;
+}
+
+.clicked a{
+	color: #37929b;
+	background-color: inherit;
+}
 
 .nav-sidebar li  a:hover {
 	color: #37929b;
 	background-color: inherit;
 }
-.nav-sidebar li a {
+a{
 	color: #000000;
+}
+.nav-sidebar li a {
 	text-decoration: none;
 	padding: 7px 10px;
 
@@ -175,8 +189,6 @@ div.vertical-line{
 	margin: 0 0 8px;
 	padding: 0 0 0 10px;
 }
-
-
 
 .btn-default{
 	border-color: #00959e;
@@ -212,4 +224,48 @@ div.vertical-line{
 .more:hover{
 	color: #009953;
 	cursor: pointer;
+}
+
+.fullView-hide {
+	transition: all linear 0.5s;
+}
+
+.fullView-hide.ng-hide {
+	opacity: 0;
+}
+
+.pagination-sm > li > a {
+	font-size: 18px;
+}
+
+.pagination > li > a {
+	color: #37929b;
+	border: none;
+	border-color: inherit;
+	background-color: transparent;
+}
+.pagination > .active > a, .pagination > li > a:hover {
+	color: #20799b;
+	font-weight: bold;
+	border: none;
+	border-color: inherit;
+	background-color: transparent;
+}
+.pagination > .disabled > a {
+	color: #777777;
+	border: none;
+	border-color: inherit;
+	background-color: transparent;
+}
+.pagination > li:first-child > a, .pagination > li:first-child > span,
+.pagination > li:last-child > a, .pagination > li:last-child > span,
+.pagination > li > .pagination-prev > a, .pagination > li > .pagination-next > a {
+	background-color: #ffffff;
+	-webkit-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+	-moz-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+	box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+
+	border-radius: 6px 6px 6px 6px;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 10px 6px 6px 6px;
 }

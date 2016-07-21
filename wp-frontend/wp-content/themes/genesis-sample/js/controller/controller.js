@@ -12,22 +12,15 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.sugestlen = 10;
         $scope.maxSize = 5;
         $scope.papers = JSON.parse(localStorage.getItem('papers'));
+        $scope.filter = '';
         $scope.setPubTime = [];
-        $scope.dataPubTime = [
-            {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}
-        ];
         $scope.setCat = [];
-        $scope.dataCat = [
-            {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}
-        ];
         $scope.setKey = [];
-        $scope.dataKey = [
-            {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}
-        ];
         $scope.setPubType = [];
-        $scope.dataPubType = [
-            {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}
-        ];
+        $scope.dataPubTime = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
+        $scope.dataCat = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
+        $scope.dataKey = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
+        $scope.dataPubType = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
         $scope.fBtnPubTime = {
             buttonDefaultText: "Publication Time",
             selectionCount:"Publication Time",
@@ -83,9 +76,31 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         db.getPapersList($scope.currentPage, $scope.len).then(function (response){
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
-            localStorage.setItem('totalItems', $scope.totalItems);
+            if (response.data.results) {
+                getfiletype();
+                localStorage.setItem('papers', JSON.stringify($scope.papers));
+                localStorage.setItem('totalItems', $scope.totalItems);
+            };
         });
     };
+
+    function getfiletype(){
+        for (i=0; i<$scope.papers.length; i++){
+            if ($scope.papers[i].url.slice(-3) == "pdf"){
+                $scope.papers[i].filetype = "pdf";
+            }
+            else $scope.papers[i].filetype = "html";
+            $scope.papers[i].full = false;
+        }
+    };
+
+    function onfilter(){
+        $scope.dataPubTime =$scope.filter;
+        $scope.dataCat = $scope.filter;
+        $scope.dataKey = $scope.filter;
+        $scope.dataPubType = $scope.filter;
+    };
+
     $scope.pageChanged = function() {
         getPapers();
     };
@@ -102,19 +117,23 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             db.getPapersSearch(searchitem, 1, $scope.len).then(function (response){
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
+                //angular.copy(response.data.fliter, $scope.filter);
+                //onfilter();
                 if (response.data.results) {
+                    getfiletype();
                     localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
-                }
+                };
             });
         } else {
             db.getPapersList($scope.currentPage, $scope.len).then(function (response){
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
                 if (response.data.results) {
+                    getfiletype();
                     localStorage.setItem('papers',  JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
-                }
+                };
             });
         }
     };
@@ -123,6 +142,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
             if (response.data.results) {
+                getfiletype();
                 localStorage.setItem('papers',  JSON.stringify($scope.papers));
                 localStorage.setItem('totalItems', $scope.totalItems);
             }
@@ -134,24 +154,9 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.papers = $scope.origpapers.filter(function (item, pos) {return item.categories.indexOf(cat) >=0 });
     };
 
-    function build_filter(){
-        for (i=0; i< $scope.papers.length; i++) {
-            if ($scope.papers[i].categories) {
-                $scope.filter_frame.categories = $scope.filter_frame.categories.concat($scope.papers[i].categories);
-            }
-            if (($scope.filter_frame.publication_type.indexOf($scope.papers[i].resource_type))<0) {
-                $scope.filter_frame.publication_type.push($scope.papers[i].resource_type);
-            };
-            if (($scope.filter_frame.years.indexOf($scope.papers[i].published))<0) {
-                $scope.filter_frame.years.push($scope.papers[i].published);
-            };
-        };
-        var cat = $scope.filter_frame.categories;
-        var res = cat.filter(function (item, pos) {return cat.indexOf(item) == pos});
-        $scope.filter_frame.categories = res;
-        $scope.filter_frame.categories.sort();
-        $scope.filter_frame.publication_type.sort();
-        $scope.filter_frame.years.sort();
-    };
+    $scope.onFullview = function(index) {
+        if ($scope.papers[index].full) $scope.papers[index].full = false;
+        else $scope.papers[index].full = true;
+    }
 
 });
