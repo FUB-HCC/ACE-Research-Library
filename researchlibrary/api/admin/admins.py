@@ -59,8 +59,13 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = [UsageCountListFilter]
     search_fields = ['name']
 
+    def get_queryset(self, request):
+        return Category.objects.annotate(cat_count=Count('resource'))
+
     def usage_count(self, obj):
         return obj.resource_set.count()
+    usage_count.short_description = 'Usage Count'
+    usage_count.admin_order_field = 'cat_count'
 
 
 @admin.register(Keyword)
