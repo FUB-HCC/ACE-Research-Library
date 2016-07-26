@@ -7,8 +7,6 @@
 	Template: genesis
 */
 
-@import url("../genesis/style.css");
-
 .body{
 	font-family: Myriad Pro;
 }
@@ -59,7 +57,7 @@ button.search {
 	-moz-border-radius: 6px 6px 6px 6px;
 	-webkit-border-radius: 10px 6px 6px 6px;
 
-	background: url('../../genesis-sample/src/search.png');
+	background: url('img/search.png');
 	background-color: white;
 	background-position: center;
 	background-repeat: no-repeat;

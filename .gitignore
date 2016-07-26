@@ -25,3 +25,4 @@ local/
 /.coverage
 __pycache__
 /*.sock
+/wp-frontend/wp-content/themes/genesis-sample/
