@@ -32,7 +32,6 @@ class SearchViewSet(viewsets.GenericViewSet):
     def list(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
         listamount = 10
-
         if q:
             sqs = SearchQuerySet().filter(content__contains=Raw(Clean(q))).models(Resource).highlight()
             response_catlist = self.getCommonValueList(sqs, 'categories', listamount)
@@ -46,6 +45,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             response_rstlist = self.getCommonValueList(sqs, 'resource_type', listamount)
             response_publist = self.getCommonValueList(sqs, 'published', listamount)
 
+        #Note to future self: for filtering use sqs = sqs.filter_or(category__in=catlist)
         page = self.paginate_queryset(sqs)
         serializer = SearchSerializer(page, many=True, context={'request': request})
         ret = self.get_paginated_response(serializer.data)
@@ -95,9 +95,4 @@ class SuggestViewSet(viewsets.GenericViewSet):
         
         return JsonResponse({"results" : results})
 
-
-def tmp_search(request):
-    args = {}
-    args.update(csrf(request))
-    return render_to_response('tmp_search.html', args)
 

@@ -32,7 +32,6 @@ urlpatterns = [
     url(r'^api/v1/', include(router.urls)),
     url(r'^$', api_views.status, name='status_view'),
     url(r'^admin/', admin.site.urls),
-    url(r'^tmp_search/$', api_views.tmp_search),
 ]
 
 
