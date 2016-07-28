@@ -83,11 +83,11 @@ class SearchViewSet(viewsets.GenericViewSet):
         return sorted(ret)[:amount]
 
     def applyFilters(self, queryset, catfilters, kywfilters, pubfilters, rstfilters):
-        queryset = queryset.filter(categories__in=catfilters)
-        queryset = queryset.filter(keywords__in=kywfilters)
-        queryset = queryset.filter(resource_type__in=rstfilters)
         pubfilters = list(map(int, pubfilters))
-        queryset = queryset.filter(published__year__in=pubfilters)
+        if catfilters: queryset = queryset.filter(categories__in=catfilters)
+        if kywfilters: queryset = queryset.filter(keywords__in=kywfilters)
+        if rstfilters: queryset = queryset.filter(resource_type__in=rstfilters)
+        if pubfilters: queryset = queryset.filter(published__year__in=pubfilters)
         return queryset
 
 
