@@ -32,20 +32,27 @@ class SearchViewSet(viewsets.GenericViewSet):
     def list(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
         listamount = 10
+        catfilters = request.GET.getlist('catfilter')
+        kywfilters = request.GET.getlist('kywfilter')
+        rstfilters = request.GET.getlist('rstfilter')
+        pubfilters = request.GET.getlist('pubfilter')
+
         if q:
             sqs = SearchQuerySet().filter(content__contains=Raw(Clean(q))).models(Resource).highlight()
+            sqs = self.applyFilters(sqs, catfilters, kywfilters, pubfilters, rstfilters)
             response_catlist = self.getCommonValueList(sqs, 'categories', listamount)
             response_kywlist = self.getCommonValueList(sqs, 'keywords', listamount)
             response_rstlist = self.getCommonValueList(sqs, 'resource_type', listamount)
             response_publist = self.getCommonValueList(sqs, 'published', listamount)
         else:
-            sqs = Resource.objects.all() #SearchQuerySet.models(Resource).all() is far slower than this
-            response_catlist = [c.name for c in Category.objects.all()[:listamount]]
-            response_kywlist = [k.name for k in Keyword.objects.all()[:listamount]]
+            #SearchQuerySet.models(Resource).all() is far slower than this
+            sqs = Resource.objects.all()
+            sqs = self.applyFilters(sqs, catfilters, kywfilters, pubfilters, rstfilters)
+            response_catlist = [c.name for c in Category.objects.all().order_by('name')[:listamount]]
+            response_kywlist = [k.name for k in Keyword.objects.all().order_by('name')[:listamount]]
             response_rstlist = self.getCommonValueList(sqs, 'resource_type', listamount)
             response_publist = self.getCommonValueList(sqs, 'published', listamount)
 
-        #Note to future self: for filtering use sqs = sqs.filter_or(category__in=catlist)
         page = self.paginate_queryset(sqs)
         serializer = SearchSerializer(page, many=True, context={'request': request})
         ret = self.get_paginated_response(serializer.data)
@@ -54,6 +61,7 @@ class SearchViewSet(viewsets.GenericViewSet):
         ret.data['keywords_list'] = response_kywlist
         ret.data['resource_type_list'] = response_rstlist
         ret.data['published_list'] = response_publist
+
         return ret
 
     def getCommonValueList(self, queryset, field, amount):
@@ -61,17 +69,27 @@ class SearchViewSet(viewsets.GenericViewSet):
             return []
         else:
             val_sqs = queryset.values_list(field, flat=True)
+            ret = []
             if field=='published':
                 years = []
                 for d in val_sqs:
                     if d.year not in years: years.append(d.year)
                     if len(years)>=amount: break
-                return sorted(years)
+                ret = years
             elif field=='categories' or field=='keywords':
-                return list(chain.from_iterable(val_sqs))[:amount]
+                ret = list(chain.from_iterable(val_sqs))
             elif field=='resource_type':
-                return list(map(str, val_sqs[:amount]))
-        return []
+                ret = list(map(str, val_sqs[:amount]))
+        return sorted(ret)[:amount]
+
+    def applyFilters(self, queryset, catfilters, kywfilters, pubfilters, rstfilters):
+        queryset = queryset.filter(categories__in=catfilters)
+        queryset = queryset.filter(keywords__in=kywfilters)
+        queryset = queryset.filter(resource_type__in=rstfilters)
+        pubfilters = list(map(int, pubfilters))
+        queryset = queryset.filter(published__year__in=pubfilters)
+        return queryset
+
 
 
 class SuggestViewSet(viewsets.GenericViewSet):
