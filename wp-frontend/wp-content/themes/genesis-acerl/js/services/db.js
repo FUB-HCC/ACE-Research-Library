@@ -12,6 +12,10 @@ researchLibrary.factory('db', ['$rootScope', '$http', 'config', '$q', function($
             var queryUrl = config.url + 'search/?' + 'page=' + page+'&len='+len + '&q=' + q;
             return $http.get(queryUrl);
         },
+        getPapersSearchOrder: function (q, page, len, order) {
+            var queryUrl = config.url + 'search/?' + 'page=' + page+'&len='+len + '&q=' + q + '&order=' + order;
+            return $http.get(queryUrl);
+        },
         getPapersSuggest: function (q, len) {
             var queryUrl = config.url + 'suggest/?' +'len='+len + '&q=' + q;
             return $http.get(queryUrl);

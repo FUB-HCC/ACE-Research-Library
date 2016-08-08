@@ -2,7 +2,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
 
     init();
 
-    function init() {
+    function init(){
         $scope.sidebar_hide = true;
         $scope.aclist = [];
         $scope.currentPage = 1;
@@ -23,46 +23,42 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.dataPubType = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
         $scope.fBtnPubTime = {
             buttonDefaultText: "Publication Time",
-            selectionCount: "Publication Time",
-            dynamicButtonTextSuffix: "Publication Time"
+            selectionCount:"Publication Time",
+            dynamicButtonTextSuffix:"Publication Time"
         };
         $scope.fBtnCat = {
             buttonDefaultText: "Categories",
-            selectionCount: "Categories",
-            dynamicButtonTextSuffix: "Categories"
+            selectionCount:"Categories",
+            dynamicButtonTextSuffix:"Categories"
         };
         $scope.fBtnKey = {
             buttonDefaultText: "Keywords",
-            selectionCount: "Keywords",
-            dynamicButtonTextSuffix: "Keywords"
+            selectionCount:"Keywords",
+            dynamicButtonTextSuffix:"Keywords"
         };
         $scope.fBtnPubType = {
             buttonDefaultText: "Publication Type",
-            selectionCount: "Publication Type",
-            dynamicButtonTextSuffix: "Publication Type"
+            selectionCount:"Publication Type",
+            dynamicButtonTextSuffix:"Publication Type"
         };
         $scope.fSettingPubTime = {
-            showCheckAll: false,
-            showUncheckAll: false,
-            imageURL: '../wp-content/themes/genesis-acerl/img/icon/clock.svg'
+                showCheckAll : false, showUncheckAll : false,
+                imageURL: '/wordpress/wp-content/themes/genesis-sample/src/icon/clock.svg'
         };
         $scope.fSettingCat = {
-            showCheckAll: false,
-            showUncheckAll: false,
-            imageURL: '../wp-content/themes/genesis-acerl/img/icon/category.svg'
+            showCheckAll : false, showUncheckAll : false,
+            imageURL: '/wordpress/wp-content/themes/genesis-sample/src/icon/category.svg'
         };
         $scope.fSettingKey = {
-            showCheckAll: false,
-            showUncheckAll: false,
-            imageURL: '../wp-content/themes/genesis-acerl/img/icon/search_w_key.svg'
+            showCheckAll : false, showUncheckAll : false,
+            imageURL: '/wordpress/wp-content/themes/genesis-sample/src/icon/search_w_key.svg'
         };
         $scope.fSettingPubType = {
-            showCheckAll: false,
-            showUncheckAll: false,
-            imageURL: '../wp-content/themes/genesis-acerl/img/icon/copy.svg'
+            showCheckAll : false, showUncheckAll : false,
+            imageURL: '/wordpress/wp-content/themes/genesis-sample/src/icon/copy.svg'
         }
-    };
 
+    };
     function prototype_filter_frame() {
         filter_frame = {
             years: [],
@@ -105,6 +101,18 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.dataPubType = $scope.filter;
     };
 
+    $scope.sort = function(sortby){
+        db.getPapersSearchOrder(searchitem, 1, $scope.len, sortby).then(function (response){
+            $scope.totalItems = response.data.count;
+            angular.copy(response.data.results, $scope.papers);
+            if (response.data.results) {
+                getfiletype();
+                localStorage.setItem('papers',  JSON.stringify($scope.papers));
+                localStorage.setItem('totalItems', $scope.totalItems);
+            };
+        });
+    };
+
     $scope.pageChanged = function() {
         getPapers();
     };
@@ -141,7 +149,6 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             });
         }
     };
-
     $scope.onSelect = function ($item, $model, $label) {
         db.getPapersSearch($item.value, 1, $scope.len).then(function (response){
             $scope.totalItems = response.data.count;
@@ -153,13 +160,10 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             }
         });
     };
-
     $scope.onFilter = function(index){
         var cat = $scope.filter_frame.categories[index];
         if (!$scope.origpapers) $scope.origpapers = $scope.papers;
-        $scope.papers = $scope.origpapers.filter(function (item, pos) {
-            return item.categories.indexOf(cat) >=0
-        });
+        $scope.papers = $scope.origpapers.filter(function (item, pos) {return item.categories.indexOf(cat) >=0 });
     };
 
     $scope.onFullview = function(index) {
