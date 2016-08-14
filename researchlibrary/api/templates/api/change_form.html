@@ -1,8 +1,5 @@
 {% extends "admin/change_form.html" %}
-{% load apitags %}
-
-{% load staticfiles %}
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+{% load apitags staticfiles %}
 
 {% block extrahead %}
     {{ block.super }}
@@ -35,29 +32,47 @@
             border: 1px solid #ba2121;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript">
-        function register(model) {
-            return function(event) {
-                console.log(event);
-                if (event.params.data.id == -1) {
-                    $.ajax({
+        function register(event) {
+            var form = $(this);
+            if (window.tags_registered)
+                return true;
+            event.preventDefault();
+            var promises = [];
+            var selects = [$('#id_authors'), $('#id_editors'), $('#id_keywords')];
+            $(selects).each(function (index, select) {
+                console.log('Outer loop:', select);
+                var select = $(select);
+                var model = select.data('model');
+                var options = select.find('option[data-select2-tag="true"]');
+                options.each(function (index, option) {
+                    console.log('Inner loop:', option);
+                    option = $(option);
+                    promise = $.ajax({
                         type: 'POST',
                         url: '/admin/api/resource/create_' + model + '/',
-                        data: $.param({'name': event.params.data.text}),
+                        data: $.param({'name': option.attr('value')}),
                         dataType: 'json',
                         success: function(data) {
-                            $('option:contains("' + data.text + '")').filter(function() {
-                                return $(this).text() === data.text;
-                            }).attr('value', data.id);
+                            // TODO: Specify field in returned data
+                            var option = $('option[value="' + data.text + '"]');
+                            console.log('Success pre:', option[0]);
+                            option.attr('value', data.id);
+                            console.log('Success post:', option[0]);
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            $('option[value="-1"]').remove();
+                            option.remove();
                         }
                     });
-                    // Registering the event handler again because it somehow gets lost.
-                    $(event.target).on('select2:select', register(model));
-                }
-            }
+                    promises.push(promise);
+                });
+            });
+            console.log('Promises:', promises);
+            $.when.apply($, promises).done(function (data, textStatus, jqXHR) {
+                console.log('Oh hai!');
+                form[0].submit();
+            });
         }
     </script>
 {% endblock %}
@@ -65,6 +80,7 @@
 {% block admin_change_form_document_ready %}
     {{ block.super }}
     <script type="text/javascript">
+        $('#resource_form').submit(register);
         var keywords = {{ keywords|json }};
         var output = '';
         for (i=0; i<keywords.length; ++i) {

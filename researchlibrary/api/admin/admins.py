@@ -2,7 +2,6 @@ import requests
 from django.contrib import admin
 from django.contrib.admin.utils import unquote
 from django.db.models import Count
-from django.db.models.functions import Lower
 from django.forms import ModelForm
 from django.http import JsonResponse
 from django.core.urlresolvers import reverse
@@ -221,7 +220,8 @@ class ResourceAdmin(admin.ModelAdmin):
 
         TODO: Don’t circumvent all the security stuff.
         """
-        person = Person.objects.create(name=request.POST['name'])
+        name = request.POST['name'].strip()
+        person, created = Person.objects.get_or_create(name=name)
         return JsonResponse({'id': person.pk, 'text': person.name})
 
     @csrf_exempt
@@ -234,7 +234,8 @@ class ResourceAdmin(admin.ModelAdmin):
 
         TODO: Don’t circumvent all the security stuff.
         """
-        keyword = Keyword.objects.create(name=request.POST['name'])
+        name = request.POST['name'].strip()
+        keyword, created = Keyword.objects.get_or_create(name=name)
         return JsonResponse({'id': keyword.pk, 'text': keyword.name})
 
     def get_form(self, request, obj=None, **kwargs):

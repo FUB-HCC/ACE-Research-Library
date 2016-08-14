@@ -37,6 +37,7 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
         #  'data-field_id': 'MTQwNTg5NTg3NzM3NTEy:1bD5p3:suZhZBqbvSzNpEMGve-KGjfmffw',
         #  'data-allow-clear': 'false'}
         attrs['data-token-separators'] = r'[","]'
+        attrs['data-model'] = self.model._meta.model_name
         del attrs['data-ajax--url']
         del attrs['data-ajax--type']
         del attrs['data-ajax--cache']
@@ -48,23 +49,17 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
         output += """
             <p class="help">Complete tags by hitting enter or comma.</p>
             <script type="text/javascript">
-                var select = $('#%s');
-                select.select2({
-                    createTag: function(params) {
-                        return {id: -1, text: params.term, tag: true}
-                    },
+                $('#%s').select2({
                     tags: true,
                     // selectOnClose: true,  // Too much recursion error
                     data: %s
                 });
-                select.on('select2:select', register('%s'));
             </script>\n
         """ % (
             attrs['id'],
             json.dumps([
                 {'id': obj.pk, 'text': getattr(obj, self.field)}
-                for obj in self.model.objects.all()]),
-            self.model._meta.model_name)
+                for obj in self.model.objects.all()]))
         return mark_safe(output)
 
     @property
@@ -77,6 +72,7 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
         return Media(
             js=(settings.SELECT2_JS,),
             css={'screen': (settings.SELECT2_CSS,)})
+
 
 class PersonModelSelect2TagWidget(ModelSelect2TagWidgetBase):
     model = Person

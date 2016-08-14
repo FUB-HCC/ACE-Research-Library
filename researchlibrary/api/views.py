@@ -1,15 +1,10 @@
-import re
 from django.http import JsonResponse
-from haystack.forms import SearchForm
 from haystack.inputs import Clean, Raw
 from rest_framework import viewsets
 from ..version import __version__
-from .models import Resource, Person, Category, Keyword
+from .models import Resource, Category, Keyword
 from .serializers import ResourceSerializer, SearchSerializer
-from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
 from haystack.query import SearchQuerySet
-from collections import defaultdict
 from itertools import chain
 
 
@@ -97,7 +92,7 @@ class SuggestViewSet(viewsets.GenericViewSet):
     def list(self, request, *args, **kwargs):
         search_text = (request.GET.get('q', '')).strip()
         results = SearchQuerySet().models(Resource)
-        
+
         if search_text:
             sq1 = [{"value":result.title, "field":"title"}
                 for result in SearchQuerySet().autocomplete(title_auto=search_text)]
@@ -110,7 +105,5 @@ class SuggestViewSet(viewsets.GenericViewSet):
             results = (sq1 + sq2 + sq3 + sq4)[:10] #Limit to 10 suggestions
         else:
             results = []
-        
+
         return JsonResponse({"results" : results})
-
-
