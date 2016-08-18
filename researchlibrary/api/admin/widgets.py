@@ -47,13 +47,12 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
         output = super().render(name, value, attrs, choices)
         # Let’s think of something new if and when the page reaches 1+ MiB.
         output += """
-            <p class="help">Complete tags by hitting enter or comma.</p>
+            <p class="help">Complete entries by hitting enter or comma.</p>
             <script type="text/javascript">
-                $('#%s').select2({
-                    tags: true,
-                    // selectOnClose: true,  // Too much recursion error
-                    data: %s
-                });
+                var select = $('#%s');
+                select.data('entries', %s);
+                initSelect2(select);
+                select.on('select2:select', register);
             </script>\n
         """ % (
             attrs['id'],

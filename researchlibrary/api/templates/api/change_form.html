@@ -34,45 +34,34 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript">
+        function initSelect2(select) {
+            select.find('option[data-select2-tag="true"]').remove();
+            select.select2({
+                tags: true,
+                // selectOnClose: true,  // Too much recursion error
+                data: select.data('entries')
+            });
+        }
         function register(event) {
-            var form = $(this);
-            if (window.tags_registered)
-                return true;
-            event.preventDefault();
-            var promises = [];
-            var selects = [$('#id_authors'), $('#id_editors'), $('#id_keywords')];
-            $(selects).each(function (index, select) {
-                console.log('Outer loop:', select);
-                var select = $(select);
-                var model = select.data('model');
-                var options = select.find('option[data-select2-tag="true"]');
-                options.each(function (index, option) {
-                    console.log('Inner loop:', option);
-                    option = $(option);
-                    promise = $.ajax({
-                        type: 'POST',
-                        url: '/admin/api/resource/create_' + model + '/',
-                        data: $.param({'name': option.attr('value')}),
-                        dataType: 'json',
-                        success: function(data) {
-                            // TODO: Specify field in returned data
-                            var option = $('option[value="' + data.text + '"]');
-                            console.log('Success pre:', option[0]);
-                            option.attr('value', data.id);
-                            console.log('Success post:', option[0]);
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            option.remove();
-                        }
-                    });
-                    promises.push(promise);
+            if (typeof variable !== event.params &&
+                    event.params.data.text == event.params.data.id) {
+                var model = $(event.target).data('model');
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/api/resource/create_' + model + '/',
+                    data: $.param({'name': event.params.data.text}),
+                    dataType: 'json',
+                    success: function(data) {
+                        var select = $(event.target);
+                        var entries = select.data('entries');
+                        data.selected = true;
+                        entries.push(data);
+                        select.data('entries', entries);
+                        initSelect2(select);
+                        select.parent().find('input.select2-search__field').focus();
+                    }
                 });
-            });
-            console.log('Promises:', promises);
-            $.when.apply($, promises).done(function (data, textStatus, jqXHR) {
-                console.log('Oh hai!');
-                form[0].submit();
-            });
+            }
         }
     </script>
 {% endblock %}
