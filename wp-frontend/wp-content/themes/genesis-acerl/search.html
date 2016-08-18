@@ -9,7 +9,7 @@
                        placeholder="Search in Library"
                        uib-typeahead="paper.value for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8"
                        typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item,$model,$label)"
-                       popover-placement="left" uib-popover="For search min 3 letters..."  popover-trigger="focus" autocomplete="off">
+                       popover-placement="left" uib-popover="The search needs at least 3 letters"  popover-trigger="focus" autocomplete="off">
             </div>
         </div>
         <button class="btn btn-sm btn-default search" type="submit" ng-click="search(searchitem)" style="width:65px; height: 42px;"></button>
