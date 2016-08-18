@@ -68,15 +68,12 @@ class SearchViewSet(viewsets.GenericViewSet):
             val_sqs = queryset.values_list(field, flat=True)
             ret = []
             if field=='published':
-                years = []
-                for d in val_sqs:
-                    if d.year not in years: years.append(d.year)
-                    if len(years)>=amount: break
-                ret = years
+                ret = [d.year for d in val_sqs]
             elif field=='categories' or field=='keywords':
-                ret = list(chain.from_iterable(val_sqs))
+                ret = chain.from_iterable(val_sqs)
             elif field=='resource_type':
-                ret = list(map(str, val_sqs[:amount]))
+                ret = map(str, val_sqs[:amount])
+            ret = list(set(ret)) #Remove duplicates
         return sorted(ret)[:amount]
 
     def applyFilters(self, queryset, catfilters, kywfilters, pubfilters, rstfilters):
