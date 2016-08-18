@@ -31,6 +31,7 @@ class SearchViewSet(viewsets.GenericViewSet):
         kywfilters = request.GET.getlist('kywfilter')
         rstfilters = request.GET.getlist('rstfilter')
         pubfilters = request.GET.getlist('pubfilter')
+        sorting = request.GET.get('sort', '')
 
         if q:
             sqs = SearchQuerySet().filter(content__contains=Raw(Clean(q))).models(Resource).highlight()
@@ -48,6 +49,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             response_rstlist = self.getCommonValueList(sqs, 'resource_type', listamount)
             response_publist = self.getCommonValueList(sqs, 'published', listamount)
 
+        sqs = self.applySorting(sqs, sorting)
         page = self.paginate_queryset(sqs)
         serializer = SearchSerializer(page, many=True, context={'request': request})
         ret = self.get_paginated_response(serializer.data)
@@ -84,6 +86,13 @@ class SearchViewSet(viewsets.GenericViewSet):
         if rstfilters: queryset = queryset.filter(resource_type__in=rstfilters)
         if pubfilters: queryset = queryset.filter(published__year__in=pubfilters)
         return queryset
+
+    def applySorting(self, queryset, sorting):
+        return {
+            'relevance' : queryset.order_by(),
+            'date' : queryset.order_by('published'),
+            'pubtype' : queryset.order_by('resource_type'),
+        }.get(sorting, queryset.order_by())
 
 
 
