@@ -1,11 +1,8 @@
-import datetime
 import logging
-import re
 import gspread
 from dateutil.parser import parse as parse_date
 from oauth2client.service_account import ServiceAccountCredentials
 from django.core import management
-from django.db.models import Q
 from ...models import Person, Resource, Category, Keyword
 from ... import models_choices
 

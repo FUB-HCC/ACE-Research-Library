@@ -43,25 +43,31 @@
             });
         }
         function register(event) {
-            if (typeof variable !== event.params &&
+            if (typeof event.params !== 'undefined' &&
                     event.params.data.text == event.params.data.id) {
-                var model = $(event.target).data('model');
-                $.ajax({
-                    type: 'POST',
-                    url: '/admin/api/resource/create_' + model + '/',
-                    data: $.param({'name': event.params.data.text}),
-                    dataType: 'json',
-                    success: function(data) {
-                        var select = $(event.target);
-                        var entries = select.data('entries');
-                        data.selected = true;
-                        entries.push(data);
-                        select.data('entries', entries);
-                        initSelect2(select);
-                        select.parent().find('input.select2-search__field').focus();
-                    }
+                addOption(event.target, event.params.data.text, function (select) {
+                    $(event.target).parent().find('input.select2-search__field').focus();
                 });
             }
+        }
+        function addOption(select, term, success) {
+            var select = $(select);
+            var model = select.data('model');
+            $.ajax({
+                type: 'POST',
+                url: '/admin/api/resource/create_' + model + '/',
+                data: $.param({'name': term}),
+                dataType: 'json',
+                success: function(data) {
+                    data.selected = true;
+                    var entries = select.data('entries');
+                    entries.push(data);
+                    select.data('entries', entries);
+                    initSelect2(select);
+                    if (typeof success !== 'undefined')
+                        success(select);
+                }
+            });
         }
     </script>
 {% endblock %}
@@ -109,75 +115,45 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <script type="text/javascript">
-    $( "#id_title" ).autocomplete({
-        source: function (request, response) {
-            var username = 'tarix2006';
-            var password = 'f756e95e8b0885843fb55984abbbfb8e';
-            $.ajax({
-                type: "GET",
-                url: "http://bibsonomy.claviger.net/api/posts?search=" + request.term + "&resourcetype=bibtex",
-                crossDomain: true,
-                xhrFields: {
-                    withCredentials: true
-                },
-                headers: {
-                    "Authorization": "Basic " + btoa(username + ":" + password)
-                },
-                success: function (data) {
-                    var $xml = $(data);
-                    var $posts = $xml.find("bibtex");
-                    var postarray = [];
-                    $posts.each(function () {
-                        var post = {
-                            value: $(this).attr("title"),
-                            isbn: $(this).attr("isbn"),
-                            author: $(this).attr("author"),
-                            bibtexAbstract: $(this).attr("bibtexAbstract"),
-                            entrytype: $(this).attr("entrytype"),
-                            year: $(this).attr("year"),
-                            link: $(this).attr("url"),
-                            href: $(this).attr("href"),
-                            address: $(this).attr("address"),
-                            misc: $(this).attr("misc"),
-                            journal: $(this).attr("journal"),
-                            volume: $(this).attr("journal")
-                        };
-                        var link ="";
-                        if ((post.misc.indexOf("ee") >= 0) ||
-                                (post.misc.indexOf("http") >= 0) ||
-                                        (post.misc.indexOf("https") >= 0))
-                                {
-                                    var res = post.misc.split(/[\{\}]/);
-                                    res.forEach(function(item,i,array){
-                                        if (item.indexOf("ee =")>=0){
-                                            link = array[i+1];
-                                        }
-                                    });
-                                }
-                        if (!link || 0 === link.length) post.link = link;
-                        postarray.push(post);
-                    });
-                    response(postarray);
-                },
-                error: function (error, status, text) {
-                    console.log(error);
-                    console.log(status);
-                    console.log(text);
-                }
-            });
-        }
-    },
-    {
-        select : function(event, ui){
-            $( "#id_authors .select2-search__field" ).val( ui.item.author );
-            $( "#id_published" ).val( ui.item.year );
-            $( "#id_url" ).val( ui.item.link );
-            $( "#id_fulltext_url" ).val ( ui.item.href );
-            $( "#id_abstract" ).val( ui.item.bibtexAbstract );
-            $( "#id_journal" ).val( ui.item.journal );
-            $( "#id_volume" ).val( ui.item.volume );
-        }
-    }
-    );
+        $('#id_title').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://bibsonomy.claviger.net/api/posts?search=' + request.term + '&resourcetype=bibtex&format=json',
+                    crossDomain: true,
+                    dataType: 'json',
+                    success: function (data) {
+                        var posts = data.posts.post;
+                        $(posts).each(function (index, item) {
+                            item.value = item.bibtex.title;
+                            item.bibtex.url = item.bibtex.url ? item.bibtex.url : item.bibtex.href;
+                        });
+                        response(posts);
+                    },
+                    error: function (error, status, text) {
+                        console.log(status, error, text);
+                    }
+                });
+            }}, {
+            select: function(event, ui) {
+                $('#id_published').val(ui.item.bibtex.year + '-01-01');
+                $('#id_url').val(ui.item.bibtex.url);
+                $('#id_fulltext_url').val(ui.item.bibtex.url);
+                $('#id_abstract').val(ui.item.bibtex.bibtexAbstract);
+                $('#id_journal').val(ui.item.bibtex.journal);
+                $('#id_volume').val(ui.item.bibtex.volume);
+                var authors = ui.item.bibtex.author.split(' and ');
+                console.log(authors);
+                $(authors).each(function (index, author) {
+                    console.log(author);
+                    if (author.indexOf(', ') > -1) {
+                        var names = author.split(', ');
+                        author = names[1] + ' ' + names[0];
+                    }
+                    console.log(author);
+                    addOption($('#id_authors'), author);
+                });
+            }
+        });
     </script>
 {% endblock %}
