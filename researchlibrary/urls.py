@@ -16,21 +16,15 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.static import serve
-from .api import views as api_views
-from rest_framework import routers
+from django.views.generic import RedirectView
 from . import settings
 
 admin.site.site_header = 'Research Library Administration'
 
-router = routers.DefaultRouter()
-router.register(r'list', api_views.ResourceViewSet, base_name='list')
-router.register(r'search', api_views.SearchViewSet, base_name='search')
-router.register(r'suggest', api_views.SuggestViewSet, base_name='suggest')
-
 
 urlpatterns = [
-    url(r'^api/v1/', include(router.urls)),
-    url(r'^$', api_views.status, name='status_view'),
+    url(r'^$', RedirectView.as_view(pattern_name='admin:index')),
+    url(r'^api/', include('researchlibrary.api.urls')),
     url(r'^admin/', admin.site.urls),
 ]
 

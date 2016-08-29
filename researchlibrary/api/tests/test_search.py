@@ -41,7 +41,6 @@ class SearchTests(TestCase):
 
     def test_status(self):
         response = self.client.get(self.endpoint_url + '?q=mock')
-        self.assertEqual(response.json()['status'], 200)
         self.assertEqual(response.status_code, 200)
 
     def test_mock_count(self):

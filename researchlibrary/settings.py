@@ -54,10 +54,7 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
     'DEFAULT_PAGINATION_CLASS': 'researchlibrary.api.pagination.ResourcePagination',
-    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
-    'PAGE_SIZE': 10,
 }
 
 MIDDLEWARE_CLASSES = [

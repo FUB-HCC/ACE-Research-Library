@@ -1,5 +1,6 @@
 import datetime
 from django.test import TestCase
+from django.test.client import Client
 from django.core.management import call_command
 from ..models import Person, Resource
 
@@ -29,7 +30,6 @@ class ListTests(TestCase):
 
     def test_status(self):
         response = self.client.get(self.endpoint_url)
-        self.assertEqual(response.json()['status'], 200)
         self.assertEqual(response.status_code, 200)
 
     def test_count(self):

@@ -3,7 +3,7 @@ from ...version import __version__
 
 
 class StatusTests(TestCase):
-    endpoint_url = '/'
+    endpoint_url = '/api/'
 
     def test_version(self):
         response = self.client.get(self.endpoint_url)
