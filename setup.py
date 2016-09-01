@@ -49,6 +49,8 @@ setup(
     ],
     zip_safe=False,
     entry_points={
-        'console_scripts': []
+        'console_scripts': [
+            'server = researchlibrary.wsgi:run',
+        ]
     }
 )

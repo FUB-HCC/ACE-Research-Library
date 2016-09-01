@@ -31,7 +31,9 @@ Forthcoming.
 
 ## Starting the Server
 
-    bin/circusd circus.conf --daemon
+This project uses [daemonocle](https://pypi.python.org/pypi/daemonocle). Start the server with:
+
+    bin/server start
 
 ## Tests
 
