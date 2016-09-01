@@ -6,6 +6,7 @@ from .models import Resource, Category, Keyword
 from .serializers import ResourceSerializer, SearchSerializer
 from haystack.query import SearchQuerySet
 from itertools import chain
+import datetime
 
 
 def status(request):
@@ -35,6 +36,7 @@ class SearchViewSet(viewsets.GenericViewSet):
     the Acerl API that is responsible for handling search
     requests.
     """
+    queryset = Resource.objects.all()
 
     def list(self, request, *args, **kwargs):
         query = request.GET.get('q', '')
@@ -43,13 +45,15 @@ class SearchViewSet(viewsets.GenericViewSet):
         kywfilters = request.GET.getlist('kywfilter')
         rstfilters = request.GET.getlist('rstfilter')
         pubfilters = request.GET.getlist('pubfilter')
+        minyearfilter = request.GET.get('minyear', 1000)
+        maxyearfilter = request.GET.get('maxyear', datetime.MAXYEAR)
         sorting = request.GET.get('sort', '')
 
         if query:
             sqs = SearchQuerySet() \
                 .filter(content__contains=Raw(Clean(query))) \
                 .models(Resource).highlight()
-            sqs = self.applyFilters(sqs, catfilters, kywfilters, pubfilters, rstfilters)
+            sqs = self.applyFilters(sqs, catfilters, kywfilters, pubfilters, rstfilters, minyearfilter, maxyearfilter)
             response_catlist = self.getCommonValueList(sqs, 'categories', listamount)
             response_kywlist = self.getCommonValueList(sqs, 'keywords', listamount)
             response_rstlist = self.getCommonValueList(sqs, 'resource_type', listamount)
@@ -57,7 +61,7 @@ class SearchViewSet(viewsets.GenericViewSet):
         else:
             #SearchQuerySet.models(Resource).all() is far slower than this
             sqs = Resource.objects.all()
-            sqs = self.applyFilters(sqs, catfilters, kywfilters, pubfilters, rstfilters)
+            sqs = self.applyFilters(sqs, catfilters, kywfilters, pubfilters, rstfilters, minyearfilter, maxyearfilter)
             response_catlist = [
                 category.name for category
                 in Category.objects.all().order_by('name')[:listamount]]
@@ -94,7 +98,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             ret = list(set(ret)) #Remove duplicates
         return sorted(ret)[:amount]
 
-    def applyFilters(self, queryset, catfilters, kywfilters, pubfilters, rstfilters):
+    def applyFilters(self, queryset, catfilters, kywfilters, pubfilters, rstfilters, minyearfilter, maxyearfilter):
         pubfilters = list(map(int, pubfilters))
         if catfilters:
             queryset = queryset.filter(categories__in=catfilters)
@@ -104,6 +108,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             queryset = queryset.filter(resource_type__in=rstfilters)
         if pubfilters:
             queryset = queryset.filter(published__year__in=pubfilters)
+        queryset = queryset.filter(published__year__range=[minyearfilter, maxyearfilter])
         return queryset
 
     def applySorting(self, queryset, sorting):
