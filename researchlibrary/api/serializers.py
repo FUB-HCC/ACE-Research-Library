@@ -38,3 +38,9 @@ class SearchSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('authors', 'editors',  'title', 'subtitle', 'abstract', 'publisher', 'journal',
                   'published', 'volume', 'number', 'pages', 'series', 'edition', 'url',
                   'resource_type', 'categories', 'excerpt')
+
+
+class SuggestSerializer(serializers.Serializer):
+
+    field = serializers.CharField()
+    value = serializers.CharField()

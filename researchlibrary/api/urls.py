@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.views.generic import RedirectView
 from . import views
 from rest_framework import routers
 
@@ -10,6 +11,6 @@ router.register(r'suggest', views.SuggestViewSet, base_name='suggest')
 
 
 urlpatterns = [
+    url(r'^$', RedirectView.as_view(pattern_name='api-root')),
     url(r'^v1/', include(router.urls)),
-    url(r'^$', views.status, name='status_view'),
 ]
