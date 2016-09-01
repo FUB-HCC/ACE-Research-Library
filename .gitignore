@@ -26,3 +26,4 @@ local/
 __pycache__
 /*.sock
 /wp-frontend/wp-content/themes/genesis-sample/
+docs/Makefile
