@@ -1,4 +1,9 @@
-from django.http import JsonResponse
+"""Acerl API views.
+
+The Acerl API is self-documenting. Call the API base URL in a
+web browser for an overview of the available endpoints.
+"""
+
 from haystack.inputs import Clean, Raw
 from rest_framework import viewsets
 from .models import Resource, Category, Keyword
@@ -10,9 +15,8 @@ import datetime
 
 class ResourceViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    A component of the Rest Framework description of
-    the Acerl API. This is only used by the /list
-    endpoint.
+    The view of the /list endpoint of the API. For the API documentation
+    call the endpoint in a browser.
     """
 
     queryset = Resource.objects.all()
@@ -21,15 +25,17 @@ class ResourceViewSet(viewsets.ReadOnlyModelViewSet):
 
 class SearchViewSet(viewsets.GenericViewSet):
     """
-    The component of the Rest Framework description of
-    the Acerl API that is responsible for handling search
-    requests.
+    The view of the /search endpoint of the API. For the API documentation
+    call the endpoint in a browser.
     """
-    queryset = Resource.objects.all()
 
     queryset = SearchQuerySet()
 
     def list(self, request, *args, **kwargs):
+        """
+        Return a paginated list of search hits filtered according to
+        user-selected criteria.
+        """
         query = request.GET.get('q', '')
         listamount = 10
         catfilters = request.GET.getlist('catfilter')
@@ -109,10 +115,19 @@ class SearchViewSet(viewsets.GenericViewSet):
 
 
 class SuggestViewSet(viewsets.GenericViewSet):
+    """
+    The view of the /suggest endpoint of the API. For the API documentation
+    call the endpoint in a browser.
+    """
 
     queryset = SearchQuerySet()
 
     def list(self, request, *args, **kwargs):
+        """
+        Return a list of type-ahead suggestions based on what the user has
+        already typed and four search fields, title, subtitle, author name,
+        and keywords.
+        """
         search_text = (request.GET.get('q', '')).strip()
         if search_text:
             sq1 = [{'value': result.title, 'field': 'title'} for result

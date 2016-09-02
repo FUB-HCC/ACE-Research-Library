@@ -1,9 +1,18 @@
+"""Acerl API serializers.
+
+The Acerl API returns JSON data. The serializers define rules
+for the conversion of query sets and search results to JSON.
+"""
+
 import datetime
 from .models import Resource
 from rest_framework import serializers
 
 
 class ResourceSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializer for the Resource model.
+    """
 
     authors = serializers.StringRelatedField(many=True)
     editors = serializers.StringRelatedField(many=True)
@@ -15,6 +24,9 @@ class ResourceSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SearchSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializer for search results.
+    """
 
     authors = serializers.StringRelatedField(many=True)
     editors = serializers.StringRelatedField(many=True)
@@ -41,6 +53,9 @@ class SearchSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SuggestSerializer(serializers.Serializer):
+    """
+    Serializer for suggestions.
+    """
 
     field = serializers.CharField()
     value = serializers.CharField()

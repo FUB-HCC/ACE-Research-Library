@@ -1,3 +1,10 @@
+"""Google import job
+
+ACE has been maintaining the library in a Google Spreadsheet.
+This job imports an enhanced version of this spreadsheet to the
+database.
+"""
+
 import logging
 import gspread
 from dateutil.parser import parse as parse_date

@@ -12,9 +12,13 @@ Contents
 .. toctree::
     :maxdepth: 2
 
-    api.management.commands
-    api.models
     api.views
+    api.urls
+    api.models
+    api.pagination
+    api.search_indexes
+    api.serializers
+    api.management.commands
 
 Indices and Tables
 ------------------

@@ -1,3 +1,13 @@
+"""Fulltext import job.
+
+The fulltext import job can be run periodically to
+obtain the full text of resources that have only
+title or abstract listed. The field `fulltext_url`
+is used if present to scrape the text off a website.
+This text is never publically displayed and only serves
+the purpose of augmenting the search index.
+"""
+
 import logging
 import requests
 from django.core import management

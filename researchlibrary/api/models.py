@@ -1,11 +1,17 @@
-import datetime
+"""Acerl API model definitions"""
 
+import datetime
 from django.db import models
 from django.core.exceptions import ValidationError
 from .models_choices import SOURCETYPE_CHOICES, RESOURCE_TYPE_CHOICES
 
 
 class Person(models.Model):
+    """
+    The person model serves a dual purpose as author and editor.
+    The only property of persons are their names, so they can be
+    created on the fly when resources are added.
+    """
     name = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
@@ -19,6 +25,9 @@ class Person(models.Model):
 
 
 class Category(models.Model):
+    """
+    The category of a resource.
+    """
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -29,6 +38,9 @@ class Category(models.Model):
 
 
 class Keyword(models.Model):
+    """
+    The keywords associated with a resource.
+    """
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -36,6 +48,14 @@ class Keyword(models.Model):
 
 
 class Resource(models.Model):
+    """
+    The resource represents a paper, book, blog post, video, or any
+    of many other things. The fields are inspired by the Bibtex format.
+
+    Note that we prohibit the deletion of authors and editors so long as
+    they are bound to any resources.
+    """
+
     # Mandatory fields
     authors = models.ManyToManyField(Person, related_name='resources_authored')
     title = models.CharField(max_length=300, unique=True)

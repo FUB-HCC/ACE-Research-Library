@@ -1,3 +1,10 @@
+"""Acerl API search indices.
+
+The Acerl API allows indexed searches over the content of resources
+(e.g. papers, books, blog posts) as well as several meta data. This
+module defines the indices.
+"""
+
 from haystack import indexes
 from .models import Resource, Person, Keyword, Category
 
@@ -84,4 +91,3 @@ class CategoryIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
-

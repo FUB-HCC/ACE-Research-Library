@@ -1,3 +1,9 @@
+"""Acerl API endpoints.
+
+The Acerl API is self-documenting. Call the API base URL in a
+web browser for an overview of the available endpoints.
+"""
+
 from django.conf.urls import url, include
 from django.views.generic import RedirectView
 from . import views
