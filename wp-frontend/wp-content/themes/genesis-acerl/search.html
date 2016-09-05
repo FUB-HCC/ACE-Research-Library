@@ -1,18 +1,18 @@
-<div class="container center" id="sigin" ng-controller="searchCtrl">
-
-    <img src="../wp-content/themes/genesis-acerl/img/logo.png" alt="Logo" style="width:390px;">
-    <form class="form-inline" name="Search" ng-submit="search(searchitem)">
-        <div class="form-group">
+<div class="col-xs-4 col-xs-offset-4 vertical-center" ng-controller="searchCtrl">
+    <div>
+        <img src="../wp-content/themes/genesis-acerl/img/logo.png" alt="Logo" class="ace-logo large">
+        <form class="form-inline" name="Search" ng-submit="search(searchitem)">
             <div class="input-group">
                 <label class="sr-only" for="search">Search</label>
-                <input type="text" class="form-control search" id="search" style="width:325px; height: 42px;"  ng-model="searchitem"
-                       placeholder="Search the library"
+                <input type="text" class="form-control search" id="search" style="width:325px;"
+                       ng-model="searchitem" placeholder="Search the library"
                        uib-typeahead="paper.value for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8"
                        typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item,$model,$label)"
                        popover-placement="left" uib-popover="The search needs at least 3 letters"  popover-trigger="focus" autocomplete="off">
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-default search" type="submit" ng-click="search(searchitem)"></button>
+                </span>
             </div>
-        </div>
-        <button class="btn btn-sm btn-default search" type="submit" ng-click="search(searchitem)" style="width:65px; height: 42px;"></button>
-    </form>
-
+        </form>
+    </div>
 </div>
