@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-2 topheader">
             <div>
-            <img src="/wordpress/wp-content/themes/genesis-acerl/img/logo.png" alt="Logo" style="width:175px; height: 40px;">
+            <img src="../wp-content/themes/genesis-acerl/img/logo.png" alt="Logo" style="width:175px; height: 40px;">
             </div>
         </div>
         <div class="col-md-10 topheader">
@@ -54,28 +54,28 @@
             <ul class="nav nav-sidebar">
                 <li class="active">
                     <a href="" ng-click="sort('rel')">
-                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/target.svg">
+                        <img class="imgfilter" src="../wp-content/themes/genesis-acerl/img/icon/target.svg">
                         &nbsp
                         Relevance
                         <span class="sr-only">(current)</span></a>
                 </li> <!-- class="active" kann-->
                 <li>
                     <a href="" ng-click="sort('time')">
-                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/calendar.svg">
+                        <img class="imgfilter" src="../wp-content/themes/genesis-acerl/img/icon/calendar.svg">
                         &nbsp
                         Publication Time
                         <span class="sr-only">(current)</span></a>
                 </li> <!-- class="active" kann-->
                 <li>
                     <a href="" ng-click="sort('cat')">
-                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/category.svg">
+                        <img class="imgfilter" src="../wp-content/themes/genesis-acerl/img/icon/category.svg">
                         &nbsp
                         Categories
                         <span class="sr-only">(current)</span></a>
                 </li> <!-- class="active" kann-->
                 <li>
                     <a href="" ng-click="sort('key')">
-                        <img class="imgfilter" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/search_w_key.svg">
+                        <img class="imgfilter" src="../wp-content/themes/genesis-acerl/img/icon/search_w_key.svg">
                         &nbsp
                         Keywords
                         <span class="sr-only">(current)</span></a>
@@ -90,7 +90,7 @@
                             <h4 class="lib-link-name"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
                             <div class="vertical-line">
                                 <div class="author">
-                                    <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/people.svg">
+                                    <img class="imgauthor" src="../wp-content/themes/genesis-acerl/img/icon/people.svg">
                                     <small>
                                         <span ng-repeat="author in paper.authors">
                                           <span ng-show="!($last)">
@@ -108,7 +108,7 @@
                                                 {{paper.publisher}},&nbsp
                                             </span>
                                             {{paper.published}}
-                                            <img class="imgauthor" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/circle_.svg">
+                                            <img class="imgauthor" src="../wp-content/themes/genesis-acerl/img/icon/circle_.svg">
                                         </span>
                                     </small>
                                 </div>
@@ -154,8 +154,8 @@
                             <span class="glyphicon glyphicon-menu-up more" ng-show="paper.full" ng-click="onFullview($index)" aria-hidden="true"></span>
                         </div>
                         <div class="col-md-1">
-                            <img class="centerImage" ng-show="paper.filetype == 'html'" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/html.svg" alt="pdf" style="width:100px; height: 100px;" >
-                            <img class="centerImage" ng-show="paper.filetype == 'pdf'" src="/wordpress/wp-content/themes/genesis-acerl/img/icon/pdf.svg" alt="pdf" style="width:100px; height: 100px;" >
+                            <img class="centerImage" ng-show="paper.filetype == 'html'" src="../wp-content/themes/genesis-acerl/img/icon/html.svg" alt="pdf" style="width:100px; height: 100px;" >
+                            <img class="centerImage" ng-show="paper.filetype == 'pdf'" src="../wp-content/themes/genesis-acerl/img/icon/pdf.svg" alt="pdf" style="width:100px; height: 100px;" >
                         </div>
                     </div>
                     <!--more-->

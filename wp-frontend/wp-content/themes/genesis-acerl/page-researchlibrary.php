@@ -4,8 +4,8 @@
     <link rel="stylesheet" href="<?= get_stylesheet_directory_uri() ?>/../genesis/style.css">
     <link rel="stylesheet" href="<?= get_stylesheet_directory_uri() ?>/style.css">
 
-    <script type='text/javascript' src='http://acerl.claviger.net/wordpress/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
-    <script type='text/javascript' src='http://acerl.claviger.net/wordpress/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+    <script type='text/javascript' src='../wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+    <script type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
 
     <script src="https://cdn.jsdelivr.net/lodash/3.10.0/lodash.min.js"></script>
 

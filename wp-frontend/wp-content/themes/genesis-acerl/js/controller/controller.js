@@ -43,19 +43,19 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         };
         $scope.fSettingPubTime = {
                 showCheckAll : false, showUncheckAll : false,
-                imageURL: '/wordpress/wp-content/themes/genesis-acerl/img/icon/clock.svg'
+                imageURL: '../wp-content/themes/genesis-acerl/img/icon/clock.svg'
         };
         $scope.fSettingCat = {
             showCheckAll : false, showUncheckAll : false,
-            imageURL: '/wordpress/wp-content/themes/genesis-acerl/img/icon/category.svg'
+            imageURL: '../wp-content/themes/genesis-acerl/img/icon/category.svg'
         };
         $scope.fSettingKey = {
             showCheckAll : false, showUncheckAll : false,
-            imageURL: '/wordpress/wp-content/themes/genesis-acerl/img/icon/search_w_key.svg'
+            imageURL: '../wp-content/themes/genesis-acerl/img/icon/search_w_key.svg'
         };
         $scope.fSettingPubType = {
             showCheckAll : false, showUncheckAll : false,
-            imageURL: '/wordpress/wp-content/themes/genesis-acerl/img/icon/copy.svg'
+            imageURL: '../wp-content/themes/genesis-acerl/img/icon/copy.svg'
         }
 
     };
