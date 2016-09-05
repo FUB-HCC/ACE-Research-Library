@@ -6,17 +6,17 @@
             </div>
         </div>
         <div class="col-md-10 topheader">
-            <form class="form-inline" name="Search" ng-submit="search(searchitem)">
-                <div class="form-group">
-                    <div class="input-group">
-                        <label class="sr-only" for="search">Search</label>
-                        <input type="text" class="form-control search" id="search" style="width:290px; height: 42px;"  ng-model="searchitem"
-                               placeholder="Search in Library"  autocomplete="off"
-                               uib-typeahead="paper.value for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8"
-                               typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item,$model,$label)">
-                    </div>
+            <form class="form-horizontal" name="Search" ng-submit="search(searchitem)">
+                <div class="input-group">
+                    <label class="sr-only" for="search">Search</label>
+                    <input type="text" class="form-control search" id="search" ng-model="searchitem"
+                           placeholder="Search the library"  autocomplete="off"
+                           uib-typeahead="paper.value for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8"
+                           typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item,$model,$label)">
+                    <span class="input-group-btn">
+                        <button class="btn btn-sm btn-default search" type="submit" ng-click="search(searchitem)"></button>
+                    </span>
                 </div>
-                <button class="btn btn-sm btn-default search" type="submit" ng-click="search(searchitem)" style="width:65px; height: 42px;"></button>
             </form>
         </div>
     </div>

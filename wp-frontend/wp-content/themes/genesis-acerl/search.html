@@ -6,7 +6,7 @@
             <div class="input-group">
                 <label class="sr-only" for="search">Search</label>
                 <input type="text" class="form-control search" id="search" style="width:325px; height: 42px;"  ng-model="searchitem"
-                       placeholder="Search in Library"
+                       placeholder="Search the library"
                        uib-typeahead="paper.value for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8"
                        typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item,$model,$label)"
                        popover-placement="left" uib-popover="The search needs at least 3 letters"  popover-trigger="focus" autocomplete="off">

@@ -10,13 +10,6 @@
 .body{
 	font-family: Myriad Pro;
 }
-.input-search{
-	width: 1000px;
-	height: 42px;
-}
-.body-lib{
-	/*padding-top: 5px;*/
-}
 
 .typeahead-demo .custom-popup-wrapper {
 	position: absolute;
@@ -47,6 +40,8 @@ input.search {
 	-webkit-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
 	-moz-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
 	box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
+
+	height: 42px;
 }
 button.search {
 	-webkit-box-shadow: 2px 2px 2px 0px rgba(170,170,170,1);
@@ -56,6 +51,9 @@ button.search {
 	border-radius: 6px 6px 6px 6px;
 	-moz-border-radius: 6px 6px 6px 6px;
 	-webkit-border-radius: 10px 6px 6px 6px;
+
+	width:65px;
+	height: 42px;
 
 	background: url('img/search.png');
 	background-color: white;
@@ -80,8 +78,8 @@ h4, h4 > a{
 	text-decoration: none;
 	font-weight: bold;
 }
-.blocks {
 
+.blocks {
 	padding-top: 16px;
 	padding-right: 10px;
 	padding-bottom: 15px;
