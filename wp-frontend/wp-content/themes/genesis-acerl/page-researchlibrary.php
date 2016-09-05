@@ -18,7 +18,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
 
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap.min.js?ver=4.5.3'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
 
     <script src="https://rawgit.com/dotansimha/angularjs-dropdown-multiselect/master/src/angularjs-dropdown-multiselect.js"></script>
 
@@ -33,9 +33,9 @@
 </head>
 <body>
 
-  <div id="all">
-	  <div ng-view></div>
-  </div>
+    <div id="all">
+        <div ng-view></div>
+    </div>
 
   </body>
 </html>
