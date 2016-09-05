@@ -182,3 +182,5 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     }
 
 });
+
+researchLibrary.filter('safe', function($sce) { return $sce.trustAsHtml; });

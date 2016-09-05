@@ -96,15 +96,17 @@
                                         </span>
                                     </small>
                                 </div>
-                                <div ng-class="{abstract: paper.abstract}" ng-show="!(paper.full)">
-                                    {{paper.abstract}}
+                                <div ng-class="{excerpt: paper.excerpt}" ng-show="!(paper.full)"
+                                     ng-bind-html="paper.excerpt | safe">
                                 </div>
-                                <div class = "fullView-hide" ng-show="paper.full">
-                                    {{paper.abstract}}
-                                    <div ng-show = "paper.excerpt">
-                                        Eexcerpt: {{paper.excerpt}}
+                                <div class="fullView-hide" ng-show="paper.full">
+                                    <div ng-show="paper.excerpt"
+                                         ng-bind-html="paper.excerpt | safe">
                                     </div>
-                                    <div ng-show = "!(paper.editors.length === 0)">
+                                    <div ng-show="paper.abstract">
+                                        Abstract: {{paper.abstract}}
+                                    </div>
+                                    <div ng-show="!(paper.editors.length === 0)">
                                         Editors: {{paper.editors}}
                                     </div>
                                     <div ng-show = "paper.subtitle">
