@@ -89,7 +89,7 @@
                                         <span ng-show="!paper.authors.length">No Author</span>
                                         <span class="publisher">
                                             <span ng-show="paper.publisher">
-                                                {{paper.publisher}},&nbsp
+                                                {{paper.publisher}},
                                             </span>
                                             {{paper.published}}
                                             <img class="imgauthor" src="../wp-content/themes/genesis-acerl/img/icon/circle.svg">
@@ -109,22 +109,22 @@
                                     <div ng-show="!(paper.editors.length === 0)">
                                         Editors: {{paper.editors}}
                                     </div>
-                                    <div ng-show = "paper.subtitle">
+                                    <div ng-show="paper.subtitle">
                                         Subtitle: {{paper.subtitle}}
                                     </div>
-                                    <div ng-show = "paper.accessed">
+                                    <div ng-show="paper.accessed">
                                         Accessed: {{paper.accessed}}
                                     </div>
-                                    <div ng-show = "paper.volume">
+                                    <div ng-show="paper.volume">
                                         Volume: {{paper.volume}}
                                     </div>
-                                    <div ng-show = "(!(paper.pages == 'None - None') && (paper.pages))">
+                                    <div ng-show="(!(paper.pages == 'None - None') && (paper.pages))">
                                         Pages: {{paper.pages}}
                                     </div>
-                                    <div ng-show = "paper.series">
+                                    <div ng-show="paper.series">
                                         Series: {{paper.series}}
                                     </div>
-                                    <div ng-show = "paper.edition">
+                                    <div ng-show="paper.edition">
                                         Edition: {{paper.edition}}
                                     </div>
                                     &nbsp;
@@ -136,12 +136,18 @@
                                   </span>
                             </strong>
                             </div>
-                            <span class="glyphicon glyphicon-menu-down more" ng-show="!(paper.full)" ng-click="onFullview($index)" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-menu-up more" ng-show="paper.full" ng-click="onFullview($index)" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-menu-down more" ng-show="!(paper.full)"
+                                  ng-click="onFullview($index)" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-menu-up more" ng-show="paper.full"
+                                  ng-click="onFullview($index)" aria-hidden="true"></span>
                         </div>
                         <div class="col-md-1">
-                            <img class="centerImage" ng-show="paper.filetype == 'html'" src="../wp-content/themes/genesis-acerl/img/icon/html.svg" alt="pdf" style="width:100px; height: 100px;" >
-                            <img class="centerImage" ng-show="paper.filetype == 'pdf'" src="../wp-content/themes/genesis-acerl/img/icon/pdf.svg" alt="pdf" style="width:100px; height: 100px;" >
+                            <img class="centerImage" ng-show="paper.filetype == 'html'"
+                                 src="../wp-content/themes/genesis-acerl/img/icon/html.svg"
+                                 alt="pdf" style="width:100px; height: 100px;" >
+                            <img class="centerImage" ng-show="paper.filetype == 'pdf'"
+                                 src="../wp-content/themes/genesis-acerl/img/icon/pdf.svg"
+                                 alt="pdf" style="width:100px; height: 100px;" >
                         </div>
                     </div>
                     <!--more-->

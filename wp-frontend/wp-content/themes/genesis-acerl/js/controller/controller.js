@@ -93,24 +93,25 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     };
 
     function getfiletype(){
-        for (i=0; i<$scope.papers.length; i++){
-            if ($scope.papers[i].url.slice(-3) == 'pdf'){
+        for (i=0; i<$scope.papers.length; i++) {
+            if ($scope.papers[i].url.slice(-3) == 'pdf') {
                 $scope.papers[i].filetype = 'pdf';
+            } else {
+                $scope.papers[i].filetype = 'html';
             }
-            else $scope.papers[i].filetype = 'html';
             $scope.papers[i].full = false;
         }
     };
 
     function onfilter(){
-        $scope.dataPubTime =$scope.filter;
+        $scope.dataPubTime = $scope.filter;
         $scope.dataCat = $scope.filter;
         $scope.dataKey = $scope.filter;
         $scope.dataPubType = $scope.filter;
     };
 
     $scope.sort = function(sortby){
-        db.getPapersSearchOrder(searchitem, 1, $scope.len, sortby).then(function (response){
+        db.getPapersSearchOrder(searchitem, 1, $scope.len, sortby).then(function(response) {
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
             if (response.data.results) {
@@ -126,7 +127,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     };
 
     $scope.getPapersSuggest = function(q) {
-        db.getPapersSuggest(q, $scope.sugestlen).then(function (response){
+        db.getPapersSuggest(q, $scope.sugestlen).then(function(response) {
             $scope.suggestlist = response.data.results;
         });
         return $scope.suggestlist;
@@ -134,7 +135,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
 
     $scope.search = function (searchitem) {
         if (searchitem) {
-            db.getPapersSearch(searchitem, 1, $scope.len).then(function (response){
+            db.getPapersSearch(searchitem, 1, $scope.len).then(function(response) {
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
                 //angular.copy(response.data.fliter, $scope.filter);
@@ -146,24 +147,24 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                 };
             });
         } else {
-            db.getPapersList($scope.currentPage, $scope.len).then(function (response){
+            db.getPapersList($scope.currentPage, $scope.len).then(function(response) {
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
                 if (response.data.results) {
                     getfiletype();
-                    localStorage.setItem('papers',  JSON.stringify($scope.papers));
+                    localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
                 };
             });
         }
     };
     $scope.onSelect = function ($item, $model, $label) {
-        db.getPapersSearch($item.value, 1, $scope.len).then(function (response){
+        db.getPapersSearch($item.value, 1, $scope.len).then(function(response) {
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
             if (response.data.results) {
                 getfiletype();
-                localStorage.setItem('papers',  JSON.stringify($scope.papers));
+                localStorage.setItem('papers', JSON.stringify($scope.papers));
                 localStorage.setItem('totalItems', $scope.totalItems);
             }
         });
@@ -171,8 +172,8 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     $scope.onFilter = function(index) {
         var cat = $scope.filter_frame.categories[index];
         if (!$scope.origpapers) $scope.origpapers = $scope.papers;
-        $scope.papers = $scope.origpapers.filter(function (item, pos) {
-            return item.categories.indexOf(cat) >=0;
+        $scope.papers = $scope.origpapers.filter(function(item, pos) {
+            return item.categories.indexOf(cat) >= 0;
         });
     };
 
