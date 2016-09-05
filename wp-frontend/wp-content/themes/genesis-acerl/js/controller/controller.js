@@ -17,44 +17,52 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.setCat = [];
         $scope.setKey = [];
         $scope.setPubType = [];
-        $scope.dataPubTime = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
-        $scope.dataCat = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
-        $scope.dataKey = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
-        $scope.dataPubType = [{id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Danny"}];
+        $scope.dataPubTime = [{id: 1, label: 'David'}, {id: 2, label: 'Jhon'}, {id: 3, label: 'Danny'}];
+        $scope.dataCat = [{id: 1, label: 'David'}, {id: 2, label: 'Jhon'}, {id: 3, label: 'Danny'}];
+        $scope.dataKey = [{id: 1, label: 'David'}, {id: 2, label: 'Jhon'}, {id: 3, label: 'Danny'}];
+        $scope.dataPubType = [{id: 1, label: 'David'}, {id: 2, label: 'Jhon'}, {id: 3, label: 'Danny'}];
         $scope.fBtnPubTime = {
-            buttonDefaultText: "Publication Time",
-            selectionCount:"Publication Time",
-            dynamicButtonTextSuffix:"Publication Time"
+            buttonDefaultText: 'Publication Time',
+            selectionCount:'Publication Time',
+            dynamicButtonTextSuffix:'Publication Time'
         };
         $scope.fBtnCat = {
-            buttonDefaultText: "Categories",
-            selectionCount:"Categories",
-            dynamicButtonTextSuffix:"Categories"
+            buttonDefaultText: 'Categories',
+            selectionCount:'Categories',
+            dynamicButtonTextSuffix:'Categories'
         };
         $scope.fBtnKey = {
-            buttonDefaultText: "Keywords",
-            selectionCount:"Keywords",
-            dynamicButtonTextSuffix:"Keywords"
+            buttonDefaultText: 'Keywords',
+            selectionCount:'Keywords',
+            dynamicButtonTextSuffix:'Keywords'
         };
         $scope.fBtnPubType = {
-            buttonDefaultText: "Publication Type",
-            selectionCount:"Publication Type",
-            dynamicButtonTextSuffix:"Publication Type"
+            buttonDefaultText: 'Publication Type',
+            selectionCount:'Publication Type',
+            dynamicButtonTextSuffix:'Publication Type'
         };
         $scope.fSettingPubTime = {
-                showCheckAll : false, showUncheckAll : false,
-                imageURL: '../wp-content/themes/genesis-acerl/img/icon/clock.svg'
+            buttonClasses: 'btn btn-default btn-block',
+            showCheckAll: false,
+            showUncheckAll: false,
+            imageURL: '../wp-content/themes/genesis-acerl/img/icon/clock.svg'
         };
         $scope.fSettingCat = {
-            showCheckAll : false, showUncheckAll : false,
+            buttonClasses: 'btn btn-default btn-block',
+            showCheckAll: false,
+            showUncheckAll: false,
             imageURL: '../wp-content/themes/genesis-acerl/img/icon/category.svg'
         };
         $scope.fSettingKey = {
-            showCheckAll : false, showUncheckAll : false,
+            buttonClasses: 'btn btn-default btn-block',
+            showCheckAll: false,
+            showUncheckAll: false,
             imageURL: '../wp-content/themes/genesis-acerl/img/icon/search_w_key.svg'
         };
         $scope.fSettingPubType = {
-            showCheckAll : false, showUncheckAll : false,
+            buttonClasses: 'btn btn-default btn-block',
+            showCheckAll: false,
+            showUncheckAll: false,
             imageURL: '../wp-content/themes/genesis-acerl/img/icon/copy.svg'
         }
 
@@ -86,10 +94,10 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
 
     function getfiletype(){
         for (i=0; i<$scope.papers.length; i++){
-            if ($scope.papers[i].url.slice(-3) == "pdf"){
-                $scope.papers[i].filetype = "pdf";
+            if ($scope.papers[i].url.slice(-3) == 'pdf'){
+                $scope.papers[i].filetype = 'pdf';
             }
-            else $scope.papers[i].filetype = "html";
+            else $scope.papers[i].filetype = 'html';
             $scope.papers[i].full = false;
         }
     };
@@ -160,10 +168,12 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             }
         });
     };
-    $scope.onFilter = function(index){
+    $scope.onFilter = function(index) {
         var cat = $scope.filter_frame.categories[index];
         if (!$scope.origpapers) $scope.origpapers = $scope.papers;
-        $scope.papers = $scope.origpapers.filter(function (item, pos) {return item.categories.indexOf(cat) >=0 });
+        $scope.papers = $scope.origpapers.filter(function (item, pos) {
+            return item.categories.indexOf(cat) >=0;
+        });
     };
 
     $scope.onFullview = function(index) {
