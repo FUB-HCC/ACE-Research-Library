@@ -18,6 +18,11 @@ img[src$=".gif"], img[src$=".png"] {
 .body{
     font-family: Myriad Pro;
 }
+#all{
+    margin: 0px auto;
+    max-width: 1200px;
+    padding-top: 40px;
+}
 
 .ace-logo {
     width: 190px;
@@ -180,7 +185,7 @@ div.vertical-line{
 }
 
 .dfilter{
-    width: 185px;
+    width: 100%;
 }
 
 .clicked a{
