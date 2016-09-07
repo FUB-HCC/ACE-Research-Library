@@ -36,11 +36,10 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
     };
 
     function clearfilter() {
-        $scope.papers=null;
-        $scope.dataPubTime=null;
-        $scope.dataCat=null;
-        $scope.dataKey=null;
-        $scope.dataPubType=null;
+        $scope.dataPubTime=[];
+        $scope.dataCat=[];
+        $scope.dataKey=[];
+        $scope.dataPubType=[];
     };
 
     function makearray(arr){
@@ -93,11 +92,17 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
                 clearfilter();
+                var filter = {
+                    dataPubTime: $scope.dataPubTime,
+                    dataCat: $scope.dataCat,
+                    dataKey: $scope.dataKey,
+                    dataPubType: $scope.dataPubType
+                };
                 if (response.data.results) {
                     getfiletype();
                     localStorage.setItem('papers',  JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
-                    localStorage.setItem('filter', '');
+                    localStorage.setItem('filter', JSON.stringify(filter));
                     $location.path('/searchfull');
                 }
             });
