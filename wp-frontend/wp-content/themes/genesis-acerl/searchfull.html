@@ -28,23 +28,23 @@
             <ul class="nav nav-sidebar">
                 <li ng-class="{clicked: setPubTime.length}">
                     <div ng-dropdown-multiselect="" options="dataPubTime" selected-model="setPubTime" checkboxes="true"
-                         translation-texts="fBtnPubTime" extra-settings="fSettingPubTime">
+                         translation-texts="fBtnPubTime" extra-settings="fSettingPubTime" events="eventsPubTime">
                     </div>
                     <span class="sr-only">(current)</span></a>
                 </li> <!-- class="active" kann-->
                 <li ng-class="{clicked: setCat.length}">
                     <div ng-dropdown-multiselect="" options="dataCat" selected-model="setCat" checkboxes="true"
-                         translation-texts="fBtnCat" extra-settings="fSettingCat"></div>
+                         translation-texts="fBtnCat" extra-settings="fSettingCat" events="eventsCat"></div>
                     <span class="sr-only">(current)</span></a>
                 </li>
                 <li ng-class="{clicked: setKey.length}">
                     <div ng-dropdown-multiselect="" options="dataKey" selected-model="setKey" checkboxes="true"
-                         translation-texts="fBtnKey" extra-settings="fSettingKey"></div>
+                         translation-texts="fBtnKey" extra-settings="fSettingKey" events="eventsKey"></div>
                     <span class="sr-only">(current)</span></a>
                 </li>
                 <li ng-class="{clicked: setPubType.length}">
                     <div ng-dropdown-multiselect="" options="dataPubType" selected-model="setPubType" checkboxes="true"
-                         translation-texts="fBtnPubType" extra-settings="fSettingPubType"></div>
+                         translation-texts="fBtnPubType" extra-settings="fSettingPubType" events="eventsPubType"></div>
                     <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
@@ -54,13 +54,13 @@
             <h4>Sort by</h4>
             <ul class="nav nav-sidebar">
                 <li class="active">
-                    <a href="" ng-click="sort('rel')">
+                    <a href="" ng-click="sort('relevance')">
                         <img class="imgfilter" src="../wp-content/themes/genesis-acerl/img/icon/target.svg">
                         Relevance
                         <span class="sr-only">(current)</span></a>
                 </li> <!-- class="active" kann-->
                 <li>
-                    <a href="" ng-click="sort('time')">
+                    <a href="" ng-click="sort('date')">
                         <img class="imgfilter" src="../wp-content/themes/genesis-acerl/img/icon/calendar.svg">
                         Publication Time
                         <span class="sr-only">(current)</span></a>
