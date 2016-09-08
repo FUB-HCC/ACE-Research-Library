@@ -41,7 +41,6 @@ class SearchViewSet(viewsets.GenericViewSet):
         catfilters = request.GET.getlist('catfilter')
         kywfilters = request.GET.getlist('kywfilter')
         rstfilters = request.GET.getlist('rstfilter')
-        pubfilters = request.GET.getlist('pubfilter')
         minyearfilter = request.GET.get('minyear', 1000)
         maxyearfilter = request.GET.get('maxyear', datetime.MAXYEAR)
         sorting = request.GET.get('sort', '')
@@ -49,7 +48,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             sqs = self.queryset \
                 .filter(content__contains=Raw(Clean(query))) \
                 .models(Resource).highlight()
-            sqs = self.apply_filters(sqs, catfilters, kywfilters, pubfilters, rstfilters, minyearfilter, maxyearfilter)
+            sqs = self.apply_filters(sqs, catfilters, kywfilters, rstfilters, minyearfilter, maxyearfilter)
             response_catlist = self.get_common_value_list(sqs, 'categories', listamount)
             response_kywlist = self.get_common_value_list(sqs, 'keywords', listamount)
             response_rstlist = self.get_common_value_list(sqs, 'resource_type', listamount)
@@ -57,7 +56,7 @@ class SearchViewSet(viewsets.GenericViewSet):
         else:
             # SearchQuerySet.models(Resource).all() is far slower than this
             sqs = Resource.objects.all()
-            sqs = self.apply_filters(sqs, catfilters, kywfilters, pubfilters, rstfilters,
+            sqs = self.apply_filters(sqs, catfilters, kywfilters, rstfilters,
                                      minyearfilter, maxyearfilter)
             response_catlist = [
                 category.name for category
@@ -92,17 +91,14 @@ class SearchViewSet(viewsets.GenericViewSet):
             ret = list(set(ret)) # Remove duplicates
         return sorted(ret)[:amount]
 
-    def apply_filters(self, queryset, catfilters, kywfilters, pubfilters, rstfilters,
+    def apply_filters(self, queryset, catfilters, kywfilters, rstfilters,
                       minyearfilter, maxyearfilter):
-        pubfilters = list(map(int, pubfilters))
         if catfilters:
             queryset = queryset.filter(categories__in=catfilters)
         if kywfilters:
             queryset = queryset.filter(keywords__in=kywfilters)
         if rstfilters:
             queryset = queryset.filter(resource_type__in=rstfilters)
-        if pubfilters:
-            queryset = queryset.filter(published__year__in=pubfilters)
         queryset = queryset.filter(published__year__range=[minyearfilter, maxyearfilter])
         return queryset
 

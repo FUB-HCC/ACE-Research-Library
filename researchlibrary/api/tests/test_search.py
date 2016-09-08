@@ -12,7 +12,7 @@ settings.HAYSTACK_CONNECTIONS['default']['PATH'] = \
 
 class SearchTests(TestCase):
     """
-    Basic tests for the list endpoint.
+    Basic tests for the search endpoint.
 
     # TODO: Extend according to https://trello.com/c/fAUsohvO/2-interface-prototype
     """
@@ -27,7 +27,7 @@ class SearchTests(TestCase):
         Resource.objects.create(title='Mock Cow', published=datetime.date.today())
         Resource.objects.create(title='Mock Pig', published=datetime.date.today())
         Resource.objects.create(title='Mock Piglet', published=datetime.date.today())
-        Resource.objects.create(title='Mock Turkey', published=datetime.date.today())
+        Resource.objects.create(title='Mock Turkey', published=datetime.date(1994, 10, 19))
         author.resources_authored.add(*Resource.objects.all())
 
     @classmethod
@@ -60,6 +60,22 @@ class SearchTests(TestCase):
     def test_published(self):
         response = self.client.get(self.endpoint_url + '?q=mock')
         self.assertTrue(response.json()['results'][0]['published'])
+
+    def test_mindate_filter(self):
+        response = self.client.get(self.endpoint_url + '?q=mock&minyear=2010')
+        self.assertEqual(response.json()['count'], 5)
+
+    def test_maxdate_filter(self):
+        response = self.client.get(self.endpoint_url + '?q=mock&maxyear=2000')
+        self.assertEqual(response.json()['count'], 1)
+
+    def test_empty_query(self):
+        response = self.client.get(self.endpoint_url)
+        self.assertEqual(response.json()['count'], 6)
+
+    def test_sortby_date(self):
+        response = self.client.get(self.endpoint_url + '?q=mock&sort=date')
+        self.assertEqual(response.json()['results'][0]['published'], '1994-10-19')
 
     def test_text(self):
         response = self.client.get(self.endpoint_url + '?q=mock')
