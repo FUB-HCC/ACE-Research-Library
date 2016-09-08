@@ -135,6 +135,14 @@ h4, h4 > a{
     -moz-box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
     box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
 }
+
+.rzslider .rz-bar.rz-selection {
+    background: #9BD2D8;
+}
+.rzslider .rz-pointer{
+    background-color: #5EA9B1;
+}
+
 .body-lib {
     padding-left: 11px;
 }

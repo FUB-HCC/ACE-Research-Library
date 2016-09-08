@@ -14,11 +14,26 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.maxSize = 5;
         $scope.papers = JSON.parse(localStorage.getItem('papers'));
         $scope.filter = JSON.parse(localStorage.getItem('filter'));
-        $scope.sortby = 'date';
-        $scope.setPubTime = [];
-        $scope.setCat = [];
-        $scope.setKey = [];
-        $scope.setPubType = [];
+        $scope.sortby = 'relevance';
+        $scope.slider = {
+            min: 1001,
+            max: 2015,
+            options: {
+                floor: 1000,
+                ceil: 2016
+            }
+        };
+
+        $scope.setPubTime = JSON.parse(localStorage.getItem('setPubTime'));
+        $scope.setCat = JSON.parse(localStorage.getItem('setCat'));
+        $scope.setKey = JSON.parse(localStorage.getItem('setKey'));
+        $scope.setPubType = JSON.parse(localStorage.getItem('setPubType'));
+        if (!($scope.setPubTime)) $scope.setPubTime = [];
+        if (!($scope.setCat)) $scope.setCat = [];
+        if (!($scope.setKey)) $scope.setKey = [];
+        if (!($scope.setPubType)) $scope.setPubType = [];
+
+
         $scope.dataPubTime = $scope.filter.dataPubTime;
         $scope.dataCat = $scope.filter.dataCat;
         $scope.dataKey = $scope.filter.dataKey;
@@ -84,7 +99,11 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     $scope.setPage = function (pageNo) {
         $scope.currentPage = pageNo;
     };
-
+    
+    $scope.$on("slideEnded", function() {
+        console.log($scope.slider);
+    });
+    
     function getPapers(){
         db.getPapersList($scope.currentPage, $scope.len).then(function (response){
             $scope.totalItems = response.data.count;
@@ -237,7 +256,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                     getfiletype();
                     localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
-
+                    localStorage.setItem('setPubTime', $scope.setPubTime);
                 };
             });
         };
@@ -260,6 +279,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                     getfiletype();
                     localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
+                    localStorage.setItem('setCat', $scope.setCat);
                 };
             });
         };
@@ -282,6 +302,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                     getfiletype();
                     localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
+                    localStorage.setItem('setKey', $scope.setKey);
                 };
             });
         };
@@ -304,6 +325,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                     getfiletype();
                     localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
+                    localStorage.setItem('setPubType', $scope.setPubType);
                 };
             });
         };

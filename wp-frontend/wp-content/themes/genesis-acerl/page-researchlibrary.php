@@ -1,6 +1,7 @@
 <html ng-app="researchLibrary">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/5.5.0/rzslider.min.css">
     <link rel="stylesheet" href="<?= get_stylesheet_directory_uri() ?>/../genesis/style.css">
     <link rel="stylesheet" href="<?= get_stylesheet_directory_uri() ?>/style.css">
 
@@ -21,6 +22,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
 
     <script src="<?= get_stylesheet_directory_uri() ?>/src/angularjs-dropdown/angularjs-dropdown-multiselect.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/5.5.0/rzslider.min.js"></script>
 
     <!-- Angular Material Javascript using GitCDN to load directly from `bower-material/master` -->
     <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>

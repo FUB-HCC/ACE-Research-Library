@@ -32,6 +32,12 @@
                     </div>
                     <span class="sr-only">(current)</span></a>
                 </li> <!-- class="active" kann-->
+
+                <rzslider
+                        rz-slider-model="slider.min"
+                        rz-slider-high="slider.max"
+                        rz-slider-options="slider.options"></rzslider>
+
                 <li ng-class="{clicked: setCat.length}">
                     <div ng-dropdown-multiselect="" options="dataCat" selected-model="setCat" checkboxes="true"
                          translation-texts="fBtnCat" extra-settings="fSettingCat" events="eventsCat"></div>
