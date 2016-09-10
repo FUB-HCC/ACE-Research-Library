@@ -17,16 +17,27 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.setFilter = JSON.parse(localStorage.getItem('setFilter'));
         console.log($scope.setFilter);
         //wenn LocalcStorage leer ist, was dann?????
-
         $scope.sortby = 'relevance';
         $scope.slider = {
-            min: 1001,
-            max: 2015,
+            min: 1980,
+            max: 2016,
+            step: 1,
             options: {
-                floor: 1000,
+                floor: 1980,
                 ceil: 2016
             }
         };
+        if (($scope.setFilter.minyear) || ($scope.setFilter.minyear)) {
+            $scope.slider = {
+                min: $scope.setFilter.minyear,
+                max: $scope.setFilter.maxyear,
+                step: 1,
+                options: {
+                    floor: 1980,
+                    ceil: 2016
+                }
+            };
+        }
         $scope.fBtnPubTime = {
             buttonDefaultText: 'Publication Time',
             selectionCount:'Publication Time',
@@ -91,6 +102,9 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     //range-slider -> changed
     $scope.$on("slideEnded", function() {
         console.log($scope.slider);
+        $scope.setFilter.minyear = $scope.slider.min;
+        $scope.setFilter.maxyear = $scope.slider.max;
+        filterSelect($scope.slider, "yearrange")
     });
 
     function filter(PubTime, Cat, Key, PubType) {
@@ -98,19 +112,10 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         this.Cat = Cat;
         this.Key = Key;
         this.PubType = PubType;
+        this.minyear = 1000;
+        this.maxyear = 2016;
     }
 
-    function getPapers(){
-        db.getPapersList($scope.currentPage, $scope.len).then(function (response){
-            $scope.totalItems = response.data.count;
-            angular.copy(response.data.results, $scope.papers);
-            if (response.data.results) {
-                getfiletype();
-                localStorage.setItem('papers', JSON.stringify($scope.papers));
-                localStorage.setItem('totalItems', $scope.totalItems);
-            };
-        });
-    };
     function getList(renew){
         if (renew) {
             db.getPapersSearchOrder($scope.searchitem, 1, $scope.len, $scope.sortby).then(function (response) {
@@ -159,7 +164,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     };
 
     function clearFilter() {
-        $scope.filter = new filter([], [], [], []);;
+        $scope.filter = new filter([], [], [], []);
         localStorage.setItem('filter', JSON.stringify($scope.filter));
     };
 
@@ -185,56 +190,100 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                         makearray(dataKey), makearray(dataPubType));
         //delete selectitems for filter
         clearSetFilter();
-        $scope.dataPubTimeB  = $scope.filter.PubTime;
-        $scope.dataCatB = $scope.filter.Cat;
-        $scope.dataKeyB = $scope.filter.Key;
-        $scope.dataPubTypeB = $scope.filter.PubType;
         localStorage.setItem('filter', JSON.stringify($scope.filter));
     };
+
+    function renewFilterPubTime(data){
+        $scope.filter.PubTime = makearray(data);
+    };
+    function renewFilterCat(data){
+        $scope.filter.Cat = makearray(data);
+    };
+    function renewFilterKey(data){
+        $scope.filter.Key = makearray(data);
+    };
+    function renewFilterPubType(data){
+        $scope.filter.PubType = makearray(data);
+    };
+    function modifyFilterPubTime(data) {
+        var newarr = makearray(data);
+        $scope.setFilter.PubTime = newarr;
+        $scope.filter.PubTime = newarr;
+    }
+    function modifyFilterCat(data) {
+        var newarr = makearray(data);
+        $scope.setFilter.Cat = newarr;
+        $scope.filter.Cat = newarr;
+    }
+    function modifyFilterPubType(data) {
+        var newarr = makearray(data);
+        $scope.setFilter.PubType = newarr;
+        $scope.filter.PubType = newarr;
+    }
+    function modifyFilterKey(data) {
+        //var newarr = $scope.setFilter.Key;
+        var simplearr = [];
+        var newarr = [];
+        //SetFilter wieder nummerieren
+        for (i = 0; i<$scope.setFilter.Key.length; i++) {
+            var item = {
+                id: i,
+                label: $scope.filter.Key[$scope.setFilter.Key[i].id].label
+            }
+            newarr[i] = item;
+            simplearr.push(item.label);
+        }
+        $scope.setFilter.Key = angular.copy(newarr);
+
+        //formated array to array
+        j = i + 1;                              // it is ($scope.setFilter.length)
+        for (t = 0; j<10, t<data.length; t++) {
+            if (!(simplearr.indexOf(data[t])>=0)){
+                var item = {
+                    id: j,
+                    label: data[t]
+                };
+                newarr[j] = item;
+                j++;
+            }
+        }
+
+        $scope.filter.Key = newarr;
+    }
 
     function changefilter(dataPubTime, dataCat, dataKey, dataPubType, str) {
 
         if (!(str == 'PubTime')){
-            $scope.filter.PubTime = $scope.dataPubTimeB.filter(function(item){
-                for (i=0; i<dataPubTime.length; i++){
-                    if (dataPubTime[i] == item.label){
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-        if (!(str == 'Cat')) {
-            $scope.filter.Cat = $scope.dataCatB.filter(function (item) {
-                for (i = 0; i < dataCat.length; i++) {
-                    if (dataCat[i] == item.label) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-
-        $scope.filter.dataKey = $scope.dataKeyB.filter(function (item) {
-            for (i = 0; i < dataKey.length; i++) {
-                if (dataKey[i] == item.label) {
-                    return true;
-                }
+            if ($scope.setFilter.PubTime.length == 0) {
+                renewFilterPubTime(dataPubTime)
+            } else {
+                modifyFilterPubTime(dataPubTime)
             }
-            return false;
-        });
+        };
+
+        if (!(str == 'Cat')) {
+            if ($scope.setFilter.Cat.length == 0) {
+                renewFilterCat(dataCat);// only filter
+            } else {
+                modifyFilterCat(dataCat); // filter and setfilter
+            }
+        };
 
         if (!(str == 'PubType')) {
-            $scope.filter.PubType = $scope.dataPubTypeB.filter(function (item) {
-                for (i = 0; i < dataPubType.length; i++) {
-                    if (dataPubType[i] == item.label) {
-                        return true;
-                    }
-                }
-                return false;
-            });
+            if ($scope.setFilter.PubType.length == 0) {
+                renewFilterPubType(dataPubType)
+            } else {
+                modifyFilterPubType(dataPubType)
+            }
+        }
+
+        if ($scope.setFilter.Key.length == 0) {
+            renewFilterKey(dataKey)
+        } else {
+            modifyFilterKey(dataKey)
         }
         localStorage.setItem('filter', JSON.stringify($scope.filter));
+        localStorage.setItem('setFilter', JSON.stringify($scope.setFilter));
     };
 
     function setFiltertoStr() {
@@ -252,6 +301,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         for(i=0; i<$scope.setFilter.PubType.length; i++){
             strFilter += '&rstfilter=' + $scope.filter.PubType[$scope.setFilter.PubType[i].id].label;
         };
+        strFilter += '&minyear=' + $scope.setFilter.minyear + '&maxyear=' + $scope.setFilter.maxyear;
         return strFilter;
     }
 
@@ -270,13 +320,10 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                 getfiletype();
                 localStorage.setItem('papers', JSON.stringify($scope.papers));
                 localStorage.setItem('totalItems', $scope.totalItems);
-                localStorage.setItem('setPubTime', $scope.setPubTime);
                 localStorage.setItem('strFilter', $scope.strFilter);
             };
         });
     };
-
-
 
     $scope.sort = function(sortby){
         db.getPapersSearchOrder($scope.searchitem, 1, $scope.len, sortby, $scope.strFilter).then(function (response) {
@@ -304,7 +351,6 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
 
     $scope.search = function (searchitem) {
         $scope.searchitem = searchitem;
-        if (searchitem) {
             db.getPapersSearch(searchitem, 1, $scope.len).then(function (response) {
                 $scope.totalItems = response.data.count;
                 angular.copy(response.data.results, $scope.papers);
@@ -320,45 +366,13 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
                     localStorage.setItem('searchitem', searchitem);
                 };
             });
-        } else {
-            db.getPapersList($scope.currentPage, $scope.len).then(function (response) {
-                $scope.totalItems = response.data.count;
-                angular.copy(response.data.results, $scope.papers);
-                clearFilter();
-                clearSetFilter();
-                if (response.data.results) {
-                    getfiletype();
-                    localStorage.setItem('papers', JSON.stringify($scope.papers));
-                    localStorage.setItem('totalItems', $scope.totalItems);
-                };
-            });
-        }
     };
+
     $scope.onSelect = function ($item, $model, $label) {
         $scope.searchitem = $item.value;
-        localStorage.setItem('filter', $item.value);
-        db.getPapersSearch($item.value, 1, $scope.len).then(function (response){
-            $scope.totalItems = response.data.count;
-            angular.copy(response.data.results, $scope.papers);
-            fillfilter(response.data.published_list,
-                response.data.categories_list,
-                response.data.keywords_list,
-                response.data.resource_type_list
-            );
-            var filter = {
-                dataPubTime: $scope.dataPubTime,
-                dataCat: $scope.dataCat,
-                dataKey: $scope.dataKey,
-                dataPubType: $scope.dataPubType
-            };
-            if (response.data.results) {
-                getfiletype();
-                localStorage.setItem('papers', JSON.stringify($scope.papers));
-                localStorage.setItem('totalItems', $scope.totalItems);
-                localStorage.setItem('filter', JSON.stringify(filter));
-            }
-        });
+        $scope.search($scope.searchitem);
     };
+
     $scope.onFilter = function(index) {
         var cat = $scope.filter_frame.categories[index];
         if (!$scope.origpapers) $scope.origpapers = $scope.papers;
