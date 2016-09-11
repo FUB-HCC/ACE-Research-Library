@@ -19,25 +19,19 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         //wenn LocalcStorage leer ist, was dann?????
         $scope.sortby = 'relevance';
         $scope.slider = {
-            min: 1980,
+            min: 1800,
             max: 2016,
             step: 1,
+            show: false,
             options: {
-                floor: 1980,
+                floor: 1800,
                 ceil: 2016
             }
         };
-        if (($scope.setFilter.minyear) || ($scope.setFilter.minyear)) {
-            $scope.slider = {
-                min: $scope.setFilter.minyear,
-                max: $scope.setFilter.maxyear,
-                step: 1,
-                options: {
-                    floor: 1980,
-                    ceil: 2016
-                }
-            };
-        }
+        if (($scope.setFilter.minyear) || ($scope.setFilter.maxyear)) {
+            $scope.slider.min = $scope.setFilter.minyear;
+            $scope.slider.max = $scope.setFilter.maxyear;
+        };
         $scope.fBtnPubTime = {
             buttonDefaultText: 'Publication Time',
             selectionCount:'Publication Time',
@@ -112,7 +106,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         this.Cat = Cat;
         this.Key = Key;
         this.PubType = PubType;
-        this.minyear = 1000;
+        this.minyear = 1800;
         this.maxyear = 2016;
     }
 
@@ -384,6 +378,11 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     $scope.onFullview = function(index) {
         if ($scope.papers[index].full) $scope.papers[index].full = false;
         else $scope.papers[index].full = true;
+    };
+
+    $scope.showSlider = function() {
+        if ($scope.slider.show) $scope.slider.show = false;
+        else $scope.slider.show = true;
     }
 
 });

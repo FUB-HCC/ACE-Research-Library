@@ -12,12 +12,14 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
         $scope.papers = [];
     };
 
-    $scope.getPapersSuggest = function(q) {
-        db.getPapersSuggest(q, $scope.sugestlen).then(function (response){
-            $scope.suggestlist = response.data.results;
-        });
-        return $scope.suggestlist;
-    };
+    function filter(PubTime, Cat, Key, PubType) {
+        this.PubTime = PubTime;
+        this.Cat = Cat;
+        this.Key = Key;
+        this.PubType = PubType;
+        this.minyear = 1800;
+        this.maxyear = 2016;
+    }
 
     function getfiletype(){
         for (i=0; i<$scope.papers.length; i++){
@@ -39,7 +41,7 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
         }
         return array;
     };
-    
+
     function clearSetFilter() {
         $scope.setFilter = new filter([], [], [], []);
         localStorage.setItem('setFilter', JSON.stringify($scope.setFilter));
@@ -48,8 +50,16 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
     function newfilter(dataPubTime, dataCat, dataKey, dataPubType) {
         $scope.filter  = new filter(makearray(dataPubTime), makearray(dataCat),
             makearray(dataKey), makearray(dataPubType));
+        $scope.filter.minyear = dataPubTime[0];
         clearSetFilter();
         localStorage.setItem('filter', JSON.stringify($scope.filter));
+    };
+
+    $scope.getPapersSuggest = function(q) {
+        db.getPapersSuggest(q, $scope.sugestlen).then(function (response){
+            $scope.suggestlist = response.data.results;
+        });
+        return $scope.suggestlist;
     };
 
     $scope.search = function (searchitem) {
@@ -67,7 +77,8 @@ researchLibrary.controller('searchCtrl', function ($scope, $http, $location, $ti
                     getfiletype();
                     localStorage.setItem('papers', JSON.stringify($scope.papers));
                     localStorage.setItem('totalItems', $scope.totalItems);
-                };
+                    $location.path('/searchfull');
+                }
             });
     };
     $scope.onSelect = function ($item, $model, $label) {

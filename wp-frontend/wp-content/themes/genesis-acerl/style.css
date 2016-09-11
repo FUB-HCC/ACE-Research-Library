@@ -141,8 +141,32 @@ h4, h4 > a{
 }
 .rzslider .rz-pointer{
     background-color: #5EA9B1;
+    top: -8px;
+    width: 18px;
+    height: 18px;
 }
 
+.rzslider .rz-pointer:after {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    content: ''
+}
+.wslider{
+    width: 90%;
+    padding-left: 10px;
+    transition:  all linear 0.5s;
+    -webkit-transition:  all linear 0.5s;
+}
+.wslider.ng-hide {
+    opacity: 0;
+}
 .body-lib {
     padding-left: 11px;
 }
@@ -201,17 +225,16 @@ div.vertical-line{
     background-color: inherit;
 }
 
-.nav-sidebar li  a:hover {
+.nav-sidebar li  a:hover, .nav-sidebar a:hover {
     color: #37929b;
     background-color: inherit;
 }
 a{
     color: #000000;
 }
-.nav-sidebar li a {
+.nav-sidebar li a, .nav-sidebar a {
     text-decoration: none;
     padding: 7px 10px;
-
     position: relative;
     display: block;
 }

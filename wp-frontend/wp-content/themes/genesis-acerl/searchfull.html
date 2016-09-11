@@ -2,8 +2,10 @@
     <div class="row">
         <div class="col-md-2 topheader">
             <div>
-                <img src="../wp-content/themes/genesis-acerl/img/logo.small.png"
-                     alt="Logo" class="ace-logo">
+                <a href="#/search">
+                    <img src="../wp-content/themes/genesis-acerl/img/logo.small.png"
+                         alt="Logo" class="ace-logo">
+                </a>
             </div>
         </div>
         <div class="col-md-10 topheader">
@@ -26,18 +28,16 @@
 
             <h4>Filter by</h4>
             <ul class="nav nav-sidebar">
-                <li ng-class="{clicked: setPubTime.length}">
-                    <div ng-dropdown-multiselect="" options="filter.PubTime" selected-model="setFilter.PubTime" checkboxes="true"
-                         translation-texts="fBtnPubTime" extra-settings="fSettingPubTime" events="eventsPubTime">
-                    </div>
-                    <span class="sr-only">(current)</span></a>
-                </li> <!-- class="active" kann-->
-
-                <rzslider
-                        rz-slider-model="slider.min"
-                        rz-slider-high="slider.max"
-                        rz-slider-options="slider.options"></rzslider>
-
+                <a href="" ng-click="showSlider()">
+                    <img class="imgfilter" ng-src="../wp-content/themes/genesis-acerl/img/icon/clock.svg" src="../wp-content/themes/genesis-acerl/img/icon/clock.svg">
+                    &nbsp; Publication Time
+                </a>
+                <div class="wslider" ng-show="slider.show">
+                    <rzslider
+                            rz-slider-model="slider.min"
+                            rz-slider-high="slider.max"
+                            rz-slider-options="slider.options"></rzslider>
+                </div>
                 <li ng-class="{clicked: setCat.length}">
                     <div ng-dropdown-multiselect="" options="filter.Cat" selected-model="setFilter.Cat" checkboxes="true"
                          translation-texts="fBtnCat" extra-settings="fSettingCat" events="eventsCat"></div>
