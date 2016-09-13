@@ -18,15 +18,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-messages.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
 
+    <!-- Angular Material Javascript now available via Google CDN; version 1.0.7 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.js"></script>
+
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap.min.js?ver=4.5.3'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
 
     <script src="<?= get_stylesheet_directory_uri() ?>/src/angularjs-dropdown/angularjs-dropdown-multiselect.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/5.5.0/rzslider.min.js"></script>
-
-    <!-- Angular Material Javascript using GitCDN to load directly from `bower-material/master` -->
-    <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
 
     <script src="<?= get_stylesheet_directory_uri() ?>/js/config_app.js"></script>
     <script src="<?= get_stylesheet_directory_uri() ?>/js/route.js"></script>
