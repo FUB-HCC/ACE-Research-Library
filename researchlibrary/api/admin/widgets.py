@@ -51,7 +51,11 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
             <script type="text/javascript">
                 var select = $('#%s');
                 select.data('entries', %s);
-                initSelect2(select);
+                select.select2({
+                    tags: true,
+                    // selectOnClose: true,  // Too much recursion error
+                    data: select.data('entries')
+                });
                 select.on('select2:select', register);
             </script>\n
         """ % (

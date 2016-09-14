@@ -34,13 +34,10 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript">
-        function initSelect2(select) {
-            select.find('option[data-select2-tag="true"]').remove();
-            select.select2({
-                tags: true,
-                // selectOnClose: true,  // Too much recursion error
-                data: select.data('entries')
-            });
+        function findId(select, optionText) {
+            var tag = select.find('option:contains("' + optionText + '")').filter(function() {
+                return $(this).text() === optionText;});
+            return tag.attr('value');
         }
         function register(event) {
             if (typeof event.params !== 'undefined' &&
@@ -50,7 +47,17 @@
                 });
             }
         }
+        function selectOption(select, id) {
+            var selectedValues = select.val();
+            if (selectedValues == null) {
+                selectedValues = new Array();
+            }
+            selectedValues.push(id);
+            // Have select2 do its thing
+            select.val(selectedValues).trigger('change');
+        }
         function addOption(select, term, success) {
+            // This function assumes that the entry/option does not already exist
             var select = $(select);
             var model = select.data('model');
             $.ajax({
@@ -59,11 +66,13 @@
                 data: $.param({'name': term}),
                 dataType: 'json',
                 success: function(data) {
-                    data.selected = true;
-                    var entries = select.data('entries');
-                    entries.push(data);
-                    select.data('entries', entries);
-                    initSelect2(select);
+                    // Based on https://github.com/select2/select2/issues/3057#issuecomment-77560623
+                    // Remove the temporary entry
+                    select.find('option[data-select2-tag="true"]').remove();
+                    // Append the new entry
+                    select.append('<option value="' + data.id + '">' + data.text + '</option>');
+                    // Get a list of selected entries if any, or create an empty array
+                    selectOption(select, data.id);
                     if (typeof success !== 'undefined')
                         success(select);
                 }
@@ -92,24 +101,12 @@
         }
         $('#keyword_suggestions a').click(function (event) {
             event.preventDefault();
-            var text = this.text;
             var select = $('#id_keywords');
-            var tags = select.val();
-            if (tags === null)
-                tags = new Array();
-            var tag = select.find('option:contains("' + text + '")').filter(function() {
-                return $(this).text() === text;});
-            if (tag.length === 0) {
-                select.append('<option value="-1">' + this.text + '</option>');
-                tags.push('-1');
-                select.trigger('change').val(tags).trigger('change');
-                select.trigger({
-                    type: 'select2:select',
-                    params: {data: {id: -1, text: this.text}}});
-            } else {
-                tags.push(tag.attr('value'));
-                select.trigger('change').val(tags).trigger('change');
-            };
+            var optionId = findId(select, this.text);
+            if (optionId == null)
+                addOption(select, this.text);
+            else
+                selectOption(select, optionId);
         });
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
