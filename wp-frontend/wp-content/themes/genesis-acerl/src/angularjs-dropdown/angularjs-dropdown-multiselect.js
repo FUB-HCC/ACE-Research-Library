@@ -20,10 +20,10 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                 var checkboxes = attrs.checkboxes ? true : false;
                 var groups = attrs.groupBy ? true : false;
 
-                var template = '<div class="btn-group dropdown-multiselect">';
-                template += '<a href="" class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleDropdown()">';
+                var template = '<div class="multiselect-parent btn-group dropdown-multiselect">';
+                template += '<a href="" class="dropdown-toggle" ng-click="toggleDropdown()">';
                 template += '<img class="imgfilter" ng-src="{{settings.imageURL}}">&nbsp {{getButtonText()}}</a>'
-                template += '<ul class="multiselect-parent dfilter dropdown-menu dropdown-menu-form" ng-style="{display: open ? \'block\' : \'none\', height : settings.scrollable ? settings.scrollableHeight : \'auto\' }" >';
+                template += '<ul class="dfilter dropdown-menu dropdown-menu-form" ng-style="{display: open ? \'block\' : \'none\', height : settings.scrollable ? settings.scrollableHeight : \'auto\' }" >';
                 template += '<li ng-hide="!settings.showCheckAll || settings.selectionLimit > 0"><a data-ng-click="selectAll()"><span class="glyphicon glyphicon-ok"></span>  {{texts.checkAll}}</a>';
                 template += '<li ng-show="settings.showUncheckAll"><a data-ng-click="deselectAll();"><span class="glyphicon glyphicon-remove"></span>   {{texts.uncheckAll}}</a></li>';
                 template += '<li ng-hide="(!settings.showCheckAll || settings.selectionLimit > 0) && !settings.showUncheckAll" class="divider"></li>';
@@ -152,16 +152,19 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                     $document.on('click', function (e) {
                         var target = e.target.parentElement;
                         var parentFound = false;
-
+                        console.log("start");
                         while (angular.isDefined(target) && target !== null && !parentFound) {
                             if (_.contains(target.className.split(' '), 'multiselect-parent') && !parentFound) {
+                                console.log("Split:");
+                                console.log(target.className.split(' '));
+                                console.log(_.contains(target.className.split(' '), 'multiselect-parent'));
                                 if(target === $dropdownTrigger) {
                                     parentFound = true;
                                 }
                             }
                             target = target.parentElement;
                         }
-
+                        console.log(parentFound);
                         if (!parentFound) {
                             $scope.$apply(function () {
                                 $scope.open = false;
