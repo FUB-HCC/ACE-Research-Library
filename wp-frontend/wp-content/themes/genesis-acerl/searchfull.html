@@ -15,7 +15,8 @@
                     <input type="text" class="form-control search" id="search" ng-model="searchitem"
                            placeholder="Search the library"  autocomplete="off"
                            uib-typeahead="paper.value for paper in getPapersSuggest($viewValue) | filter:$viewValue | limitTo:8"
-                           typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item,$model,$label)">
+                           typeahead-loading="loadingLocations" typeahead-no-results="noResults"
+                           typeahead-on-select="onSelect($item,$model,$label)" typeahead-focus-first="false">
                     <span class="input-group-btn">
                         <button class="btn btn-sm btn-default search" type="submit" ng-click="search(searchitem)"></button>
                     </span>
