@@ -103,7 +103,10 @@
                                         </span>
                                     </small>
                                 </div>
-                                <div ng-class="{excerpt: paper.excerpt}" ng-show="!(paper.full)"
+                                <div ng-class="{abstract: paper.abstract}" ng-show="(!(paper.full) && !(searchitem))">
+                                    {{paper.abstract}}
+                                </div>
+                                <div ng-class="{excerpt: paper.excerpt}" ng-show="(!(paper.full) && (searchitem))"
                                      ng-bind-html="paper.excerpt | safe">
                                 </div>
                                 <div class="fullView-hide" ng-show="paper.full">
@@ -143,9 +146,9 @@
                                   </span>
                             </strong>
                             </div>
-                            <span class="glyphicon glyphicon-menu-down more" ng-show="!(paper.full)"
+                            <span class="glyphicon glyphicon-menu-down more" ng-show="(!(paper.full) && (paper.abstract))"
                                   ng-click="onFullview($index)" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-menu-up more" ng-show="paper.full"
+                            <span class="glyphicon glyphicon-menu-up more" ng-show="((paper.full) && (paper.abstract))"
                                   ng-click="onFullview($index)" aria-hidden="true"></span>
                         </div>
                         <div class="col-md-1">
