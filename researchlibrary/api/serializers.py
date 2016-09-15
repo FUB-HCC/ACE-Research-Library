@@ -49,7 +49,7 @@ class SearchSerializer(serializers.HyperlinkedModelSerializer):
         model = Resource
         fields = ('authors', 'editors',  'title', 'subtitle', 'abstract', 'publisher', 'journal',
                   'published', 'volume', 'number', 'pages', 'series', 'edition', 'url',
-                  'resource_type', 'categories', 'excerpt')
+                  'resource_type', 'categories', 'excerpt', 'review')
 
 
 class SuggestSerializer(serializers.Serializer):
