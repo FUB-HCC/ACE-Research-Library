@@ -131,7 +131,7 @@
             source: function (request, response) {
                 $.ajax({
                     type: 'GET',
-                    url: 'http://bibsonomy.claviger.net/api/posts?search=' + request.term + '&resourcetype=bibtex&format=json',
+                    url: 'http://bibsonomy.claviger.net/api/posts?search=title:"' + request.term + '"&resourcetype=bibtex&format=json',
                     crossDomain: true,
                     dataType: 'json',
                     success: function (data) {
