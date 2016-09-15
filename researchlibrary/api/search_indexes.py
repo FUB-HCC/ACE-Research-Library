@@ -13,6 +13,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     published = indexes.DateField(model_attr='published')
     abstract = indexes.CharField(model_attr='abstract')
+    review = indexes.CharField(model_attr='review')
     publisher = indexes.CharField(model_attr='publisher')
     journal = indexes.CharField(model_attr='journal')
     volume = indexes.IntegerField(model_attr='volume', null=True)
