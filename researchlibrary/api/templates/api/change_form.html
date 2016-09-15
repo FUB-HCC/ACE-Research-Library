@@ -14,6 +14,18 @@
         .field-keywords p.help {
             margin-left: 0 !important;
         }
+        .field-published .timezonewarning,
+        .field-accessed .timezonewarning {
+            clear: left;
+            margin-top: 0;
+            margin-left: 160px;
+            padding-left: 10px;
+        }
+        .field-published br,
+        .field-accessed br {
+            /* Hack to lessen ugliness */
+            content: "";
+        }
         .field-authors .related-widget-wrapper,
         .field-editors .related-widget-wrapper,
         .field-keywords .related-widget-wrapper {
