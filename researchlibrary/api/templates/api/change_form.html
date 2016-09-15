@@ -39,6 +39,7 @@
                 return $(this).text() === optionText;});
             return tag.attr('value');
         }
+
         function register(event) {
             if (typeof event.params !== 'undefined' &&
                     event.params.data.text == event.params.data.id) {
@@ -47,6 +48,7 @@
                 });
             }
         }
+
         function selectOption(select, id) {
             var selectedValues = select.val();
             if (selectedValues == null) {
@@ -56,6 +58,7 @@
             // Have select2 do its thing
             select.val(selectedValues).trigger('change');
         }
+
         function addOption(select, term, success) {
             // This function assumes that the entry/option does not already exist
             var select = $(select);
@@ -68,7 +71,7 @@
                 success: function(data) {
                     // Based on https://github.com/select2/select2/issues/3057#issuecomment-77560623
                     // Remove the temporary entry
-                    select.find('option[data-select2-tag="true"]').remove();
+                    select.find('option[data-select2-tag="true"][value="' + data.text + '"]').remove();
                     // Append the new entry
                     select.append('<option value="' + data.id + '">' + data.text + '</option>');
                     // Get a list of selected entries if any, or create an empty array
