@@ -18,6 +18,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         console.log($scope.setFilter);
         //wenn LocalcStorage leer ist, was dann?????
         $scope.sortby = 'relevance';
+        $scope.descending = false;
         $scope.slider = {
             min: 1800,
             max: 2016,
@@ -320,6 +321,8 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     };
 
     $scope.sort = function(sortby){
+        if ((sortby==='date') && ($scope.descending)) { sortby = '-date' };
+        $scope.descending = !$scope.descending;
         db.getPapersSearchOrder($scope.searchitem, 1, $scope.len, sortby, $scope.strFilter).then(function (response) {
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
