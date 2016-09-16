@@ -59,12 +59,13 @@ class Resource(models.Model):
     # Mandatory fields
     authors = models.ManyToManyField(Person, related_name='resources_authored')
     title = models.CharField(max_length=300, unique=True)
-    published = models.DateField('date published')
+    published = models.DateField('date published', help_text='ISO 8601 format, e.g., 1946-07-06.')
     resource_type = models.CharField(
         max_length=30, choices=RESOURCE_TYPE_CHOICES, blank=True)
 
     # Optional fields
-    accessed = models.DateField('date accessed', null=True, blank=True)
+    accessed = models.DateField('date accessed', help_text='ISO 8601 format, e.g., 1806-05-20.',
+                                null=True, blank=True)
     url = models.URLField(max_length=2000, blank=True, verbose_name='URL')
     fulltext_url = models.URLField(max_length=2000, blank=True, verbose_name='fulltext URL')
     categories = models.ManyToManyField(Category, blank=True)

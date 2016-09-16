@@ -47,7 +47,7 @@ class ModelSelect2TagWidgetBase(ModelSelect2TagWidget):
         output = super().render(name, value, attrs, choices)
         # Let’s think of something new if and when the page reaches 1+ MiB.
         output += """
-            <p class="help">Complete entries by hitting enter or comma.</p>
+            <p class="help" title="To edit the last tag, hit backspace twice. Sorry for the weirdness.">Complete entries by hitting enter or comma. You can also paste a comma-separated list.</p>
             <script type="text/javascript">
                 var select = $('#%s');
                 select.data('entries', %s);

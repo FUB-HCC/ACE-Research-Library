@@ -105,6 +105,7 @@ class SearchViewSet(viewsets.GenericViewSet):
     def apply_sorting(self, queryset, sorting):
         return {
             'relevance' : queryset.order_by(),
+            '-date' : queryset.order_by('-published'),
             'date' : queryset.order_by('published'),
             'pubtype' : queryset.order_by('resource_type'),
         }.get(sorting, queryset.order_by())
