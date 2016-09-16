@@ -152,19 +152,15 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                     $document.on('click', function (e) {
                         var target = e.target.parentElement;
                         var parentFound = false;
-                        console.log("start");
                         while (angular.isDefined(target) && target !== null && !parentFound) {
                             if (_.contains(target.className.split(' '), 'multiselect-parent') && !parentFound) {
-                                console.log("Split:");
-                                console.log(target.className.split(' '));
-                                console.log(_.contains(target.className.split(' '), 'multiselect-parent'));
                                 if(target === $dropdownTrigger) {
                                     parentFound = true;
                                 }
                             }
                             target = target.parentElement;
                         }
-                        console.log(parentFound);
+
                         if (!parentFound) {
                             $scope.$apply(function () {
                                 $scope.open = false;

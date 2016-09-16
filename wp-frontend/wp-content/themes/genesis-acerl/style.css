@@ -91,6 +91,15 @@ button.search {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
 }
+.artikel-font{
+    line-height: 1.24;
+    font-size: 13px;
+}
+.titel{
+    margin: 0 0 2px;
+    font-size: 17px;
+    line-height: 1.2; /*bei google scholar ist es 1.9 aber margin ist 0*/
+}
 input[type="text"]:focus{
     border-color: rgba(55, 146, 155, 0.8);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(54, 148, 157, 0.6);
@@ -136,6 +145,13 @@ h4, h4 > a{
     box-shadow: 0px 2px 2px 0px rgba(170,170,170,1);
 }
 
+.checkbox label, .radio label{
+    font-size: 13px;
+}
+
+.checkbox, .radio{
+    margin-bottom: 0px;
+}
 .rzslider .rz-bar.rz-selection {
     background: #9BD2D8;
 }
@@ -183,6 +199,20 @@ form {
 .author {
     color: #009953;
 }
+.page{
+    color: #009953;
+    cursor: default;
+}
+.abstr{
+    padding-left: 15px;
+    padding-right: 0px;
+    text-align: justify;
+}
+.review{
+    padding-left: 5px;
+    padding-right: 17px;
+    text-align: justify;
+}
 .publisher {
     position: absolute;
     right: 31px;   /* must be equal to parent's right padding */
@@ -194,7 +224,7 @@ form {
     display: -moz-box;
     -moz-line-clamp: 3;
     -moz-box-orient: vertical;
-    height: 90px;
+/*    height: 90px;*/
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -203,8 +233,21 @@ form {
     text-align:center;
     display:block;
     position: absolute;
-    margin: 30px 10px 0px -30px;
+    margin: 22px 10px 0px -18px;
+    width:50px;
+    height: 50px;
 }
+
+.centerImagewoA
+{
+    text-align:center;
+    display:block;
+    position: absolute;
+    margin: 12px 10px 0px -18px;
+    width:50px;
+    height: 50px;
+}
+
 div.vertical-line{
     border-right: 1px solid #dcdcdc;
 }
@@ -234,7 +277,7 @@ a{
 }
 .nav-sidebar li a, .nav-sidebar a {
     text-decoration: none;
-    padding: 7px 10px;
+    padding: 2px 10px; /*7 und 10 war*/
     position: relative;
     display: block;
 }
@@ -245,11 +288,42 @@ a{
 .sidebar li {
     border-bottom: 0px;
     margin-bottom: 0px;
-    padding-bottom: 0px;
+    padding-bottom: 5px;
 }
 .sidebar h4{
     margin: 0 0 8px;
     padding: 0 0 0 10px;
+}
+.sidebar{
+    font-size: 13px; /*war 16* geerbt von style.css, dort war auch copy in "em" Einheeit*/
+}
+
+/* SQUARED FOUR */
+.squaredFour {
+    width: 20px;
+    margin: 20px auto;
+    position: relative;
+}
+
+.squaredFour label {
+    cursor: pointer;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    border-radius: 4px;
+
+    -webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+    background: #fcfff4;
+
+    background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
 }
 
 .btn-default{
@@ -264,8 +338,8 @@ a{
     border-color: #00959e;
 }
 .imgfilter{
-    width:25px;
-    height: 25px;
+    width:20px;
+    height: 20px;
     display: inline-block;
     vertical-align: top;
 }

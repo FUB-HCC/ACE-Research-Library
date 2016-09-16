@@ -29,16 +29,18 @@
 
             <h4>Filter by</h4>
             <ul class="nav nav-sidebar">
-                <a href="" ng-click="showSlider()">
-                    <img class="imgfilter" ng-src="../wp-content/themes/genesis-acerl/img/icon/clock.svg" src="../wp-content/themes/genesis-acerl/img/icon/clock.svg">
-                    &nbsp; Publication Time
-                </a>
-                <div class="wslider" ng-show="slider.show">
-                    <rzslider
-                            rz-slider-model="slider.min"
-                            rz-slider-high="slider.max"
-                            rz-slider-options="slider.options"></rzslider>
-                </div>
+                <li ng-class="{clicked: setCat.length}">
+                    <a href="" ng-click="showSlider()">
+                        <img class="imgfilter" ng-src="../wp-content/themes/genesis-acerl/img/icon/clock.svg" src="../wp-content/themes/genesis-acerl/img/icon/clock.svg">
+                        &nbsp; Publication Time
+                    </a>
+                    <div class="wslider" ng-show="slider.show">
+                        <rzslider
+                                rz-slider-model="slider.min"
+                                rz-slider-high="slider.max"
+                                rz-slider-options="slider.options"></rzslider>
+                    </div>
+                </li>
                 <li ng-class="{clicked: setCat.length}">
                     <div ng-dropdown-multiselect="" options="filter.Cat" selected-model="setFilter.Cat" checkboxes="true"
                          translation-texts="fBtnCat" extra-settings="fSettingCat" events="eventsCat"></div>
@@ -79,8 +81,8 @@
                 <li class="blocks paper" ng-repeat="paper in papers">
                     <div class="row">
                         <div class="col-md-11">
-                            <h4 class="lib-link-name"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
-                            <div class="vertical-line">
+                            <h4 class="lib-link-name titel"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
+                            <div class="vertical-line artikel-font">
                                 <div class="author">
                                     <img class="imgauthor" src="../wp-content/themes/genesis-acerl/img/icon/people.svg">
                                     <small>
@@ -95,6 +97,11 @@
                                           </span>
                                         </span>
                                         <span ng-show="!paper.authors.length">No Author</span>
+                                        &nbsp;
+                                        <span class="glyphicon glyphicon-book page" ng-show="{{paper.pages}}"
+                                              aria-hidden="true">{{paper.pages}}&nbsp;</span>
+                                        <span class="glyphicon glyphicon-unchecked page" ng-show="{{paper.volume}}"
+                                              aria-hidden="true">{{paper.volume}}</span>
                                         <span class="publisher">
                                             <span ng-show="paper.publisher">
                                                 {{paper.publisher}},
@@ -114,38 +121,47 @@
                                     <div ng-show="paper.excerpt"
                                          ng-bind-html="paper.excerpt | safe">
                                     </div>
-                                    <div ng-show="paper.abstract">
-                                        Abstract: {{paper.abstract}}
+                                    <div class="row">
+                                        <div class="col-md-8 abstr">
+                                            <div ng-show="paper.abstract">
+                                                {{paper.abstract}}
+                                            </div>
+                                            <div ng-show="!(paper.editors.length === 0)">
+                                                Editors: {{paper.editors}}
+                                            </div>
+                                            <div ng-show="paper.subtitle">
+                                                Subtitle: {{paper.subtitle}}
+                                            </div>
+                                            <div ng-show="paper.accessed">
+                                                Accessed: {{paper.accessed}}
+                                            </div>
+                                            <div ng-show="paper.volume">
+                                                Volume: {{paper.volume}}
+                                            </div>
+                                            <div ng-show="(!(paper.pages == 'None - None') && (paper.pages))">
+                                                Pages: {{paper.pages}}
+                                            </div>
+                                            <div ng-show="paper.series">
+                                                Series: {{paper.series}}
+                                            </div>
+                                            <div ng-show="paper.edition">
+                                                Edition: {{paper.edition}}
+                                            </div>
+                                            &nbsp;
+                                        </div>
+                                        <div class="col-md-4 review" ng-show="paper.review">
+                                            <div>
+                                                Review: {{paper.review}}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div ng-show="!(paper.editors.length === 0)">
-                                        Editors: {{paper.editors}}
-                                    </div>
-                                    <div ng-show="paper.subtitle">
-                                        Subtitle: {{paper.subtitle}}
-                                    </div>
-                                    <div ng-show="paper.accessed">
-                                        Accessed: {{paper.accessed}}
-                                    </div>
-                                    <div ng-show="paper.volume">
-                                        Volume: {{paper.volume}}
-                                    </div>
-                                    <div ng-show="(!(paper.pages == 'None - None') && (paper.pages))">
-                                        Pages: {{paper.pages}}
-                                    </div>
-                                    <div ng-show="paper.series">
-                                        Series: {{paper.series}}
-                                    </div>
-                                    <div ng-show="paper.edition">
-                                        Edition: {{paper.edition}}
-                                    </div>
-                                    &nbsp;
                                 </div>
-                            <br>
+                                <br>
 
-                            <strong>
+                                <strong>
                                   <span class="lib-link-full"><a id="link-74" class="track_this_link" style="display: none;" href="#" target="_blank">Full Text Available</a>
                                   </span>
-                            </strong>
+                                </strong>
                             </div>
                             <span class="glyphicon glyphicon-menu-down more" ng-show="(!(paper.full) && (paper.abstract))"
                                   ng-click="onFullview($index)" aria-hidden="true"></span>
@@ -153,12 +169,16 @@
                                   ng-click="onFullview($index)" aria-hidden="true"></span>
                         </div>
                         <div class="col-md-1">
-                            <img class="centerImage" ng-show="paper.filetype == 'html'"
-                                 src="../wp-content/themes/genesis-acerl/img/icon/html.svg"
-                                 alt="pdf" style="width:100px; height: 100px;" >
-                            <img class="centerImage" ng-show="paper.filetype == 'pdf'"
-                                 src="../wp-content/themes/genesis-acerl/img/icon/pdf.svg"
-                                 alt="pdf" style="width:100px; height: 100px;" >
+                            <a ng-href="{{paper.url}}">
+                                <img class="centerImage" ng-class="{centerImagewoA: !paper.abstract}" ng-show="paper.filetype == 'html'"
+                                     src="../wp-content/themes/genesis-acerl/img/icon/html.svg"
+                                     alt="pdf">
+                                </a>
+                            <a ng-href="{{paper.url}}">
+                                <img class="centerImage" ng-class="{centerImagewoA: !paper.abstract}" ng-show="paper.filetype == 'pdf'"
+                                     src="../wp-content/themes/genesis-acerl/img/icon/pdf.svg"
+                                     alt="pdf">
+                            </a>
                         </div>
                     </div>
                     <!--more-->
