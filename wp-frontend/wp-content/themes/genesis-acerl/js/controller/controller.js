@@ -54,37 +54,41 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             dynamicButtonTextSuffix:'Publication Type'
         };
         $scope.fSettingPubTime = {
-                showCheckAll : false, showUncheckAll : false, closeOnSelect : true,
+                showCheckAll : false, showUncheckAll : false, closeOnSelect : false,
                 imageURL: '../wp-content/themes/genesis-acerl/img/icon/clock.svg'
         };
         $scope.fSettingCat = {
-            showCheckAll : false, showUncheckAll : false, closeOnSelect : true,
+            showCheckAll : false, showUncheckAll : false, closeOnSelect : false,
             imageURL: '../wp-content/themes/genesis-acerl/img/icon/category.svg'
         };
         $scope.fSettingKey = {
-            showCheckAll : false, showUncheckAll : false, closeOnSelect : true,
+            showCheckAll : false, showUncheckAll : false, closeOnSelect : false,
             imageURL: '../wp-content/themes/genesis-acerl/img/icon/search_w_key.svg'
         };
         $scope.fSettingPubType = {
-            showCheckAll : false, showUncheckAll : false, closeOnSelect : true,
+            showCheckAll : false, showUncheckAll : false, closeOnSelect : false,
             imageURL: '../wp-content/themes/genesis-acerl/img/icon/copy.svg'
         };
 
         $scope.eventsPubTime = {
-            onItemSelect : function (item) { filterSelect(item, 'PubTime')},
-            onItemDeselect : function (item) { filterSelect(item, 'PubTime')}
+            onItemSelect : function (item) { filterSelect(item, 'PubTime', false)},
+            onItemDeselect : function (item) { filterSelect(item, 'PubTime', true)},
+            onUnselectAll : function () { filterSelect(item, 'PubTime', true)}
         };
         $scope.eventsCat = {
-            onItemSelect : function (item) { filterSelect(item, 'Cat')},
-            onItemDeselect : function (item) { filterSelect(item, 'Cat')}
+            onItemSelect : function (item) { filterSelect(item, 'Cat', false)},
+            onItemDeselect : function (item) { filterSelect(item, 'Cat', true)},
+            onUnselectAll : function () { filterSelect(0, 'Cat', true)}
         };
         $scope.eventsKey = {
-            onItemSelect : function (item) { filterSelect(item, 'Key')},
-            onItemDeselect : function (item) { filterSelect(item, 'Key')}
+            onItemSelect : function (item) { filterSelect(item, 'Key', false)},
+            onItemDeselect : function (item) { filterSelect(item, 'Key', true)},
+            onUnselectAll : function () { filterSelect(item, 'Key', true)}
         };
         $scope.eventsPubType = {
-            onItemSelect : function (item) { filterSelect(item, 'PubType')},
-            onItemDeselect : function (item) { filterSelect(item, 'PubType')}
+            onItemSelect : function (item) { filterSelect(item, 'PubType', false)},
+            onItemDeselect : function (item) { filterSelect(item, 'PubType', true)},
+            onUnselectAll : function () { filterSelect(item, 'PubType', true)}
         };
         //getList(true);
     };
@@ -203,17 +207,17 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
     function modifyFilterPubTime(data) {
         var newarr = makearray(data);
         $scope.setFilter.PubTime = newarr;
-        $scope.filter.PubTime = newarr;
+        $scope.filter.PubTime = angular.copy(newarr);
     }
     function modifyFilterCat(data) {
         var newarr = makearray(data);
         $scope.setFilter.Cat = newarr;
-        $scope.filter.Cat = newarr;
+        $scope.filter.Cat = angular.copy(newarr);
     }
     function modifyFilterPubType(data) {
         var newarr = makearray(data);
         $scope.setFilter.PubType = newarr;
-        $scope.filter.PubType = newarr;
+        $scope.filter.PubType = angular.copy(newarr);
     }
     function modifyFilterKey(data) {
         //var newarr = $scope.setFilter.Key;
@@ -246,9 +250,9 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.filter.Key = newarr;
     }
 
-    function changefilter(dataPubTime, dataCat, dataKey, dataPubType, str) {
+    function changefilter(dataPubTime, dataCat, dataKey, dataPubType, str, des) {
 
-        if (!(str == 'PubTime')){
+        if (!(str == 'PubTime') || des){
             if ($scope.setFilter.PubTime.length == 0) {
                 renewFilterPubTime(dataPubTime)
             } else {
@@ -256,7 +260,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             }
         };
 
-        if (!(str == 'Cat')) {
+        if (!(str == 'Cat') || des) {
             if ($scope.setFilter.Cat.length == 0) {
                 renewFilterCat(dataCat);// only filter
             } else {
@@ -264,7 +268,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             }
         };
 
-        if (!(str == 'PubType')) {
+        if (!(str == 'PubType') || des) {
             if ($scope.setFilter.PubType.length == 0) {
                 renewFilterPubType(dataPubType)
             } else {
@@ -300,17 +304,15 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         return strFilter;
     }
 
-    function filterSelect(item, str){
+    function filterSelect(item, str, des){
         $scope.strFilter = setFiltertoStr();
         db.getPapersSearch($scope.searchitem, 1, $scope.len, $scope.strFilter).then(function (response) {
             $scope.totalItems = response.data.count;
             angular.copy(response.data.results, $scope.papers);
             changefilter(response.data.published_list,
-                response.data.categories_list,
-                response.data.keywords_list,
-                response.data.resource_type_list, str
-            );
-
+                    response.data.categories_list,
+                    response.data.keywords_list,
+                    response.data.resource_type_list, str, des);
             if (response.data.results) {
                 getfiletype();
                 localStorage.setItem('papers', JSON.stringify($scope.papers));

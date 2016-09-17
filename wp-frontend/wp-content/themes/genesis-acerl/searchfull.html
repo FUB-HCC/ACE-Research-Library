@@ -8,7 +8,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-10 topheader">
+        <div class="col-md-10 topheader input">
             <form class="form-horizontal" name="Search" ng-submit="search(searchitem)">
                 <div class="input-group">
                     <label class="sr-only" for="search">Search</label>
@@ -27,12 +27,11 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar filter" ng-show="sidebar_hide">
 
-            <h4>Filter by</h4>
+            <h4 class="titel">Filter by</h4>
             <ul class="nav nav-sidebar">
                 <li ng-class="{clicked: setCat.length}">
                     <a href="" ng-click="showSlider()">
-                        <img class="imgfilter" ng-src="../wp-content/themes/genesis-acerl/img/icon/clock.svg" src="../wp-content/themes/genesis-acerl/img/icon/clock.svg">
-                        &nbsp; Publication Time
+                        <img class="imgfilter" ng-src="../wp-content/themes/genesis-acerl/img/icon/clock.svg" src="../wp-content/themes/genesis-acerl/img/icon/clock.svg">&nbsp; Publication Time
                     </a>
                     <div class="wslider" ng-show="slider.show">
                         <rzslider
@@ -51,7 +50,7 @@
                          translation-texts="fBtnKey" extra-settings="fSettingKey" events="eventsKey"></div>
                     <span class="sr-only">(current)</span></a>
                 </li>
-                <li ng-class="{clicked: setPubType.length}">
+                <li class="ptype" ng-class="{clicked: setPubType.length}">
                     <div ng-dropdown-multiselect="" options="filter.PubType" selected-model="setFilter.PubType" checkboxes="true"
                          translation-texts="fBtnPubType" extra-settings="fSettingPubType" events="eventsPubType"></div>
                     <span class="sr-only">(current)</span></a>
@@ -60,7 +59,7 @@
 
 
             <hr class="lib-link-sep" />
-            <h4>Sort by</h4>
+            <h4 class="titel">Sort by</h4>
             <ul class="nav nav-sidebar">
                 <li class="active">
                     <a href="" ng-click="sort('relevance')">
@@ -80,8 +79,8 @@
             <ul>
                 <li class="blocks paper" ng-repeat="paper in papers">
                     <div class="row">
+                        <h4 class="lib-link-name titel"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
                         <div class="col-md-11">
-                            <h4 class="lib-link-name titel"><a id="link-74" class="track_this_link " ng-title="{{paper.title}}" ng-href="{{paper.url}}" target="_blank" rel="nofollow">{{paper.title}}</a></h4></i>
                             <div class="vertical-line artikel-font">
                                 <div class="author">
                                     <img class="imgauthor" src="../wp-content/themes/genesis-acerl/img/icon/people.svg">
@@ -98,9 +97,9 @@
                                         </span>
                                         <span ng-show="!paper.authors.length">No Author</span>
                                         &nbsp;
-                                        <span class="glyphicon glyphicon-book page" ng-show="{{paper.pages}}"
+                                        <span class="glyphicon glyphicon-file page" ng-show="{{paper.pages}}"
                                               aria-hidden="true">{{paper.pages}}&nbsp;</span>
-                                        <span class="glyphicon glyphicon-unchecked page" ng-show="{{paper.volume}}"
+                                        <span class="glyphicon glyphicon-book page" ng-show="{{paper.volume}}"
                                               aria-hidden="true">{{paper.volume}}</span>
                                         <span class="publisher">
                                             <span ng-show="paper.publisher">
@@ -114,11 +113,11 @@
                                 <div ng-class="{abstract: paper.abstract}" ng-show="(!(paper.full) && !(searchitem))">
                                     {{paper.abstract}}
                                 </div>
-                                <div ng-class="{excerpt: paper.excerpt}" ng-show="(!(paper.full) && (searchitem))"
+                                <div class="excerpt" ng-class="{excerpt: paper.excerpt}" ng-show="(!(paper.full) && (searchitem))"
                                      ng-bind-html="paper.excerpt | safe">
                                 </div>
                                 <div class="fullView-hide" ng-show="paper.full">
-                                    <div ng-show="paper.excerpt"
+                                    <div class="excerpt" ng-show="paper.excerpt"
                                          ng-bind-html="paper.excerpt | safe">
                                     </div>
                                     <div class="row">
