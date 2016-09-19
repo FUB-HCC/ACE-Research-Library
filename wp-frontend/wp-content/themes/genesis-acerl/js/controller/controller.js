@@ -73,22 +73,22 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
         $scope.eventsPubTime = {
             onItemSelect : function (item) { filterSelect(item, 'PubTime', false)},
             onItemDeselect : function (item) { filterSelect(item, 'PubTime', true)},
-            onUnselectAll : function () { filterSelect(item, 'PubTime', true)}
+            onDeselectAll : function () { filterSelect(item, 'PubTime', true)}
         };
         $scope.eventsCat = {
             onItemSelect : function (item) { filterSelect(item, 'Cat', false)},
             onItemDeselect : function (item) { filterSelect(item, 'Cat', true)},
-            onUnselectAll : function () { filterSelect(0, 'Cat', true)}
+            onDeselectAll : function () { filterSelect(0, 'Cat', true); return true}
         };
         $scope.eventsKey = {
             onItemSelect : function (item) { filterSelect(item, 'Key', false)},
             onItemDeselect : function (item) { filterSelect(item, 'Key', true)},
-            onUnselectAll : function () { filterSelect(item, 'Key', true)}
+            onDeselectAll : function () { filterSelect(0, 'Key', true); return true}
         };
         $scope.eventsPubType = {
             onItemSelect : function (item) { filterSelect(item, 'PubType', false)},
             onItemDeselect : function (item) { filterSelect(item, 'PubType', true)},
-            onUnselectAll : function () { filterSelect(item, 'PubType', true)}
+            onDeselectAll : function () { filterSelect(0, 'PubType', true); return true}
         };
         //getList(true);
     };
