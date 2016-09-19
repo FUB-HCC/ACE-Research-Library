@@ -48,7 +48,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             sqs = self.queryset \
                 .filter(content__contains=Raw(Clean(query))) \
                 .models(Resource).highlight()
-            sqs = self.apply_filters(sqs, catfilters, kywfilters, rstfilters, minyearfilter, maxyearfilter)
+            sqs = self.apply_filters(sqs, catfilters, kywfilters, rstfilters, minyearfilter, maxyearfilter, False)
             response_catlist = self.get_common_value_list(sqs, 'categories', listamount)
             response_kywlist = self.get_common_value_list(sqs, 'keywords', listamount)
             response_rstlist = self.get_common_value_list(sqs, 'resource_type', listamount)
@@ -57,7 +57,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             # SearchQuerySet.models(Resource).all() is far slower than this
             sqs = Resource.objects.all()
             sqs = self.apply_filters(sqs, catfilters, kywfilters, rstfilters,
-                                     minyearfilter, maxyearfilter)
+                                     minyearfilter, maxyearfilter, True)
             response_catlist = [
                 category.name for category
                 in Category.objects.all().order_by('name')[:listamount]]
@@ -92,11 +92,13 @@ class SearchViewSet(viewsets.GenericViewSet):
         return sorted(ret)[:amount]
 
     def apply_filters(self, queryset, catfilters, kywfilters, rstfilters,
-                      minyearfilter, maxyearfilter):
+                      minyearfilter, maxyearfilter, emptyQuery):
         if catfilters:
-            queryset = queryset.filter(categories__in=catfilters)
+            if emptyQuery: queryset = queryset.filter(categories__name__in=catfilters)
+            else: queryset = queryset.filter(categories__in=catfilters)
         if kywfilters:
-            queryset = queryset.filter(keywords__in=kywfilters)
+            if emptyQuery: queryset = queryset.filter(keywords__name__in=kywfilters)
+            else: queryset = queryset.filter(keywords__in=kywfilters)
         if rstfilters:
             queryset = queryset.filter(resource_type__in=rstfilters)
         queryset = queryset.filter(published__year__range=[minyearfilter, maxyearfilter])
