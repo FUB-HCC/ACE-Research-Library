@@ -252,7 +252,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
 
     function changefilter(dataPubTime, dataCat, dataKey, dataPubType, str, des) {
 
-        if (!(str == 'PubTime') || des){
+        if (!(str == 'PubTime')){
             if ($scope.setFilter.PubTime.length == 0) {
                 renewFilterPubTime(dataPubTime)
             } else {
@@ -260,7 +260,7 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             }
         };
 
-        if (!(str == 'Cat') || des) {
+        if (!(str == 'Cat')) {
             if ($scope.setFilter.Cat.length == 0) {
                 renewFilterCat(dataCat);// only filter
             } else {
@@ -268,19 +268,29 @@ researchLibrary.controller('mainCtrl', function ($scope, $http, $location, $time
             }
         };
 
-        if (!(str == 'PubType') || des) {
+        if (!(str == 'PubType')) {
             if ($scope.setFilter.PubType.length == 0) {
                 renewFilterPubType(dataPubType)
             } else {
                 modifyFilterPubType(dataPubType)
             }
-        }
-
+        };
+        if (des) {
+            if ((str == 'PubTime') && ($scope.setFilter.PubTime.length == 0)) {
+                renewFilterPubTime(dataPubTime)
+            }
+            if ((str == 'Cat') && ($scope.setFilter.Cat.length == 0)) {
+                renewFilterCat(dataCat);
+            }// only filter
+            if ((str == 'PubType') && ($scope.setFilter.PubType.length == 0)) {
+                renewFilterPubType(dataPubType)
+            };
+        };
         if ($scope.setFilter.Key.length == 0) {
             renewFilterKey(dataKey)
         } else {
             modifyFilterKey(dataKey)
-        }
+        };
         localStorage.setItem('filter', JSON.stringify($scope.filter));
         localStorage.setItem('setFilter', JSON.stringify($scope.setFilter));
     };

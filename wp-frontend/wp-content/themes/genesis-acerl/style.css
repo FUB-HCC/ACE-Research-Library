@@ -263,6 +263,9 @@ form {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.lcase{
+    text-transform: lowercase;
+}
 .centerImage
 {
     text-align:center;
