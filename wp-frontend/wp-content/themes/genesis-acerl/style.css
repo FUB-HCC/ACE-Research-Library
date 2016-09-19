@@ -157,6 +157,13 @@ h4, h4 > a{
 .dfilter a {
     cursor: pointer;
 }
+.truncate{
+    white-space: nowrap;
+    width: 11em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid rgba(255, 255, 255, 0);
+}
 .checkbox label, .radio label{
     font-size: 13px;
 }
@@ -224,6 +231,17 @@ form {
     padding-left: 15px;
     padding-right: 0px;
     text-align: justify;
+}
+.abstr-truncate{
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+    display: -moz-box;
+    -moz-line-clamp: 10;
+    -moz-box-orient: vertical;
+    /* height: 90px; */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .review{
     padding-left: 9px;
