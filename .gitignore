@@ -27,4 +27,3 @@ __pycache__
 /*.sock
 /wp-frontend/wp-content/themes/genesis-sample/
 /docs/Makefile
-/daemonocle.pid

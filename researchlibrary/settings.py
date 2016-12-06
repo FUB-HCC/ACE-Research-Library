@@ -188,11 +188,3 @@ LOGGING = {
         }
     },
 }
-
-
-GUNICORN_SETTINGS = {
-    'bind': '127.0.0.1:8010',
-    'workers': 1,
-    'accesslog': os.path.join(BASE_DIR, 'logs/access.log'),
-    'errorlog': os.path.join(BASE_DIR, 'logs/error.log'),
-}

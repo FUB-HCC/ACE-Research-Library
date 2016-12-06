@@ -31,9 +31,13 @@ Forthcoming.
 
 ## Starting the Server
 
-This project uses [daemonocle](https://pypi.python.org/pypi/daemonocle). Start the server with:
+This project uses [Supervisor](https://pypi.python.org/pypi/supervisor). Start the server with:
 
-    bin/server start
+    supervisord
+
+Restart with:
+
+    supervisorctl restart all
 
 ## Tests
 
