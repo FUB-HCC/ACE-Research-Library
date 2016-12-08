@@ -3,14 +3,19 @@
 The Acerl API is self-documenting. Call the API base URL in a
 web browser for an overview of the available endpoints.
 """
-
-from haystack.inputs import Clean, Raw
-from rest_framework import viewsets
-from .models import Resource, Category, Keyword
-from .serializers import ResourceSerializer, SearchSerializer, SuggestSerializer
-from haystack.query import SearchQuerySet
-from itertools import chain
 import datetime
+from collections import defaultdict
+from itertools import chain
+from operator import itemgetter
+
+from haystack.inputs import Raw
+from haystack.query import SearchQuerySet
+from rest_framework import viewsets
+from utilofies.stdlib import lgroupby
+
+from .models import Resource
+from .serializers import (ResourceSerializer, SearchSerializer,
+                          SuggestSerializer)
 
 
 class ResourceViewSet(viewsets.ReadOnlyModelViewSet):
@@ -36,85 +41,54 @@ class SearchViewSet(viewsets.GenericViewSet):
         Return a paginated list of search hits filtered according to
         user-selected criteria.
         """
-        query = request.GET.get('q', '')
-        listamount = 10
-        catfilters = request.GET.getlist('catfilter')
-        kywfilters = request.GET.getlist('kywfilter')
-        rstfilters = request.GET.getlist('rstfilter')
-        minyearfilter = request.GET.get('minyear', 1000)
-        maxyearfilter = request.GET.get('maxyear', datetime.MAXYEAR)
-        sorting = request.GET.get('sort', '')
-        if query:
-            sqs = self.queryset \
-                .filter(content__contains=Raw(Clean(query))) \
-                .models(Resource).highlight()
-            sqs = self.apply_filters(sqs, catfilters, kywfilters, rstfilters, minyearfilter, maxyearfilter, False)
-            response_catlist = self.get_common_value_list(sqs, 'categories', listamount)
-            response_kywlist = self.get_common_value_list(sqs, 'keywords', listamount)
-            response_rstlist = self.get_common_value_list(sqs, 'resource_type', listamount)
-            response_publist = self.get_common_value_list(sqs, 'published', listamount)
-        else:
-            # SearchQuerySet.models(Resource).all() is far slower than this
-            sqs = Resource.objects.all()
-            sqs = self.apply_filters(sqs, catfilters, kywfilters, rstfilters,
-                                     minyearfilter, maxyearfilter, True)
-            response_catlist = [
-                category.name for category
-                in Category.objects.all().order_by('name')[:listamount]]
-            response_kywlist = [
-                keyword.name for keyword
-                in Keyword.objects.all().order_by('name')[:listamount]]
-            response_rstlist = self.get_common_value_list(sqs, 'resource_type', listamount)
-            response_publist = self.get_common_value_list(sqs, 'published', listamount)
-        sqs = self.apply_sorting(sqs, sorting)
-        page = self.paginate_queryset(sqs)
+        queryset = self._filtered_queryset(request)
+        page = self.paginate_queryset(queryset)
         serializer = SearchSerializer(page, many=True, context={'request': request})
-        ret = self.get_paginated_response(serializer.data)
-        ret.data['categories_list'] = response_catlist
-        ret.data['keywords_list'] = response_kywlist
-        ret.data['resource_type_list'] = response_rstlist
-        ret.data['published_list'] = response_publist
-        return ret
+        response = self.get_paginated_response(serializer.data)
+        sets = self._get_attribute_sets(queryset)
+        response.data.update(sets)
+        return response
 
-    def get_common_value_list(self, queryset, field, amount):
-        if field not in ['categories', 'keywords', 'resource_type', 'published']:
-            return []
-        else:
-            val_sqs = queryset.values_list(field, flat=True)
-            ret = []
-            if field == 'published':
-                ret = [d.year for d in val_sqs]
-            elif field == 'categories' or field == 'keywords':
-                ret = chain.from_iterable(val_sqs)
-            elif field == 'resource_type':
-                ret = map(str, val_sqs[:amount])
-            ret = list(set(ret)) # Remove duplicates
-        return sorted(ret)[:amount]
-
-    def apply_filters(self, queryset, catfilters, kywfilters, rstfilters,
-                      minyearfilter, maxyearfilter, emptyQuery):
-        if catfilters:
-            if emptyQuery:
-                queryset = queryset.filter(categories__name__in=catfilters)
-            else:
-                queryset = queryset.filter(categories__in=catfilters)
-        if kywfilters:
-            if emptyQuery:
-                queryset = queryset.filter(keywords__name__in=kywfilters)
-            else:
-                queryset = queryset.filter(keywords__in=kywfilters)
-        if rstfilters:
-            queryset = queryset.filter(resource_type__in=rstfilters)
-        queryset = queryset.filter(published__year__range=[minyearfilter, maxyearfilter])
+    def _filtered_queryset(self, request):
+        query = request.GET.get('q', 'magick')  # Getting all resources unfiltered takes about 3 s;
+                                                # getting all resources filtered by a word that’s
+                                                # contained in every one of them less than 0.1 s.
+        category_filters = request.GET.getlist('category')
+        keyword_filters = request.GET.getlist('keyword')
+        resource_type_filters = request.GET.getlist('type')
+        min_year_filter = request.GET.get('minyear', 1000)
+        max_year_filter = request.GET.get('maxyear', datetime.MAXYEAR)
+        sorting = request.GET.get('sort', '')
+        queryset = self.queryset \
+            .filter(content__contains=Raw(query)) \
+            .models(Resource).highlight()
+        if category_filters:
+            queryset = queryset.filter(categories__in=category_filters)
+        if keyword_filters:
+            queryset = queryset.filter(keywords__in=keyword_filters)
+        if resource_type_filters:
+            queryset = queryset.filter(resource_type__in=resource_type_filters)
+        queryset = queryset.filter(published__year__range=[min_year_filter, max_year_filter])
+        if sorting.strip('-') in queryset[0]._additional_fields:
+            queryset = queryset.order_by(sorting)
         return queryset
 
-    def apply_sorting(self, queryset, sorting):
-        return {
-            'relevance' : queryset.order_by(),
-            '-date' : queryset.order_by('-published'),
-            'date' : queryset.order_by('published'),
-            'pubtype' : queryset.order_by('resource_type'),
-        }.get(sorting, queryset.order_by())
+    def _get_attribute_sets(self, queryset):
+        lists = defaultdict(list)
+        for hit in queryset:
+            # Linearize all attributes including all duplicates
+            lists['categories_list'].extend(hit.categories)
+            lists['keywords_list'].extend(hit.keywords)
+            lists['resource_type_list'].append(hit.resource_type)
+            lists['published_list'].append(hit.published.year)
+        for key in lists.keys():
+            # Sort attributes by their frequency
+            lists[key].sort()  # Necessary for groupby and lgroupby
+            lists[key] = [(key_, len(group)) for key_, group in lgroupby(lists[key])]
+            lists[key].sort(key=itemgetter(1), reverse=True)  # Sort by frequency
+            lists[key] = list(zip(*lists[key]))[0]
+        lists['keywords_list'] = lists['keywords_list'][:50]  # Limit length
+        return lists
 
 
 class SuggestViewSet(viewsets.GenericViewSet):
