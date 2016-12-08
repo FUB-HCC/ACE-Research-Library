@@ -6,7 +6,7 @@ module defines the indices.
 """
 
 from haystack import indexes
-from .models import Resource
+from .models import Resource, Keyword, Person
 
 
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
@@ -54,3 +54,27 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_author(self, obj):
         return (' '.join([a.name for a in obj.authors.all() | obj.editors.all()]))
+
+
+class PersonIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=False)
+    name = indexes.CharField(model_attr='name')
+    name_auto = indexes.EdgeNgramField(model_attr='name')
+
+    def get_model(self):
+        return Person
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+
+class KeywordIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=False)
+    keyword = indexes.CharField(model_attr='name')
+    keyword_auto = indexes.EdgeNgramField(model_attr='name')
+
+    def get_model(self):
+        return Keyword
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()

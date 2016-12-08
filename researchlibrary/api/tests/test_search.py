@@ -74,7 +74,7 @@ class SearchTests(TestCase):
         self.assertEqual(response.json()['count'], 6)
 
     def test_sortby_date(self):
-        response = self.client.get(self.endpoint_url + '?q=mock&sort=date')
+        response = self.client.get(self.endpoint_url + '?q=mock&sort=published')
         self.assertEqual(response.json()['results'][0]['published'], '1994-10-19')
 
     def test_text(self):

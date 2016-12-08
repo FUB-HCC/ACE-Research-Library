@@ -53,7 +53,7 @@ class Gist:
         with whoosh_backend.index.searcher() as searcher:
             keywords = searcher.key_terms_from_text(
                 'text', text, numterms=10, normalize=False)
-        keywords = list(zip(*keywords))[0]
+        keywords = list(zip(*keywords))[0] if keywords else []
         keywords = [cls._find_representative(keyword, text) for keyword in keywords]
         keywords = [keyword for keyword in keywords if cls._is_good_keyword(keyword)]
         #no double keywords in list

@@ -5,7 +5,6 @@ web browser for an overview of the available endpoints.
 """
 import datetime
 from collections import defaultdict
-from itertools import chain
 from operator import itemgetter
 
 from haystack.inputs import Raw
@@ -13,7 +12,7 @@ from haystack.query import SearchQuerySet
 from rest_framework import viewsets
 from utilofies.stdlib import lgroupby
 
-from .models import Resource
+from .models import Resource, Keyword, Person
 from .serializers import (ResourceSerializer, SearchSerializer,
                           SuggestSerializer)
 
@@ -84,7 +83,7 @@ class SearchViewSet(viewsets.GenericViewSet):
             lists[key].sort()  # Necessary for groupby and lgroupby
             lists[key] = [(key_, len(group)) for key_, group in lgroupby(lists[key])]
             lists[key].sort(key=itemgetter(1), reverse=True)  # Sort by frequency
-            lists[key] = list(zip(*lists[key]))[0]
+            lists[key] = list(zip(*lists[key]))[0] if lists[key] else []
         lists['keywords_list'] = lists['keywords_list'][:50]  # Limit length
         return lists
 
@@ -106,13 +105,13 @@ class SuggestViewSet(viewsets.GenericViewSet):
         search_text = (request.GET.get('q', '')).strip()
         if search_text:
             sq1 = [{'value': result.title, 'field': 'title'} for result
-                   in SearchQuerySet().autocomplete(title_auto=search_text)]
-            sq2 = [{'value': result.name, 'field': 'author'} for result
-                   in SearchQuerySet().autocomplete(name_auto=search_text)]
-            sq3 = [{'value': result.subtitle, 'field': 'subtitle'} for result
-                   in SearchQuerySet().autocomplete(subtitle_auto=search_text)]
+                   in SearchQuerySet().models(Resource).autocomplete(title_auto=search_text)]
+            sq2 = [{'value': result.subtitle, 'field': 'subtitle'} for result
+                   in SearchQuerySet().models(Resource).autocomplete(subtitle_auto=search_text)]
+            sq3 = [{'value': result.name, 'field': 'author'} for result
+                   in SearchQuerySet().models(Person).autocomplete(name_auto=search_text)]
             sq4 = [{'value': result.keyword, 'field': 'keyword'} for result
-                   in SearchQuerySet().autocomplete(keyword_auto=search_text)]
+                   in SearchQuerySet().models(Keyword).autocomplete(keyword_auto=search_text)]
             results = sq1 + sq2 + sq3 + sq4
         else:
             results = []
