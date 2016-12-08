@@ -94,11 +94,15 @@ class SearchViewSet(viewsets.GenericViewSet):
     def apply_filters(self, queryset, catfilters, kywfilters, rstfilters,
                       minyearfilter, maxyearfilter, emptyQuery):
         if catfilters:
-            if emptyQuery: queryset = queryset.filter(categories__name__in=catfilters)
-            else: queryset = queryset.filter(categories__in=catfilters)
+            if emptyQuery:
+                queryset = queryset.filter(categories__name__in=catfilters)
+            else:
+                queryset = queryset.filter(categories__in=catfilters)
         if kywfilters:
-            if emptyQuery: queryset = queryset.filter(keywords__name__in=kywfilters)
-            else: queryset = queryset.filter(keywords__in=kywfilters)
+            if emptyQuery:
+                queryset = queryset.filter(keywords__name__in=kywfilters)
+            else:
+                queryset = queryset.filter(keywords__in=kywfilters)
         if rstfilters:
             queryset = queryset.filter(resource_type__in=rstfilters)
         queryset = queryset.filter(published__year__range=[minyearfilter, maxyearfilter])

@@ -95,7 +95,8 @@ class PersonAdmin(admin.ModelAdmin):
         return obj.edi_count
 
     def get_queryset(self, request):
-        return Person.objects.annotate(auth_count=Count('resources_authored')).annotate(edi_count=Count('resources_edited'))
+        return Person.objects.annotate(auth_count=Count('resources_authored')) \
+            .annotate(edi_count=Count('resources_edited'))
 
     def usage_count(self, obj):
         return obj.ct_count
