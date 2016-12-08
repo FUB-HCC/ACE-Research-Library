@@ -59,9 +59,7 @@ class SearchViewSet(viewsets.GenericViewSet):
         min_year_filter = request.GET.get('minyear', 1000)
         max_year_filter = request.GET.get('maxyear', datetime.MAXYEAR)
         sorting = request.GET.get('sort', '')
-        queryset = self.queryset \
-            .filter(content__contains=Raw(query)) \
-            .models(Resource).highlight()
+        queryset = self.queryset.filter(content=Raw(query)).models(Resource).highlight()
         if category_filters:
             queryset = queryset.filter(categories__in=category_filters)
         if keyword_filters:
