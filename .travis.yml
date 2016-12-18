@@ -3,7 +3,7 @@ python:
   - "3.4"
 install:
   - sudo aptitude install -y python3-dev libpq-dev libzmq3-dev
-  - python bootstrap.py -c staging.cfg
+  - python bootstrap.py -c staging.cfg --setuptools-version=31.0.0
   - bin/buildout -c staging.cfg
   - sudo -u postgres psql -f db_create.sql
   - bin/django migrate
