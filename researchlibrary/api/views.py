@@ -66,7 +66,7 @@ class SearchViewSet(viewsets.GenericViewSet):
         if resource_type_filters:
             queryset = queryset.filter(resource_type__in=resource_type_filters)
         queryset = queryset.filter(published__year__range=[min_year_filter, max_year_filter])
-        if sorting.strip('-') in queryset[0]._additional_fields:
+        if queryset and sorting.strip('-') in queryset[0]._additional_fields:
             queryset = queryset.order_by(sorting)
         return queryset
 
